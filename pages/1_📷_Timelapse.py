@@ -19,22 +19,6 @@ warnings.filterwarnings("ignore")
 def ee_authenticate(token_name="EARTHENGINE_TOKEN"):
     geemap.ee_initialize(token_name=token_name)
 
-
-# st.sidebar.info(
-#     """
-#     - Web App URL: <https://streamlit.geemap.org>
-#     - GitHub repository: <https://github.com/giswqs/streamlit-geospatial>
-#     """
-# )
-
-# st.sidebar.title("Contact")
-# st.sidebar.info(
-#     """
-#     Qiusheng Wu: <https://wetlands.io>
-#     [GitHub](https://github.com/giswqs) | [Twitter](https://twitter.com/giswqs) | [YouTube](https://www.youtube.com/c/QiushengWu) | [LinkedIn](https://www.linkedin.com/in/qiushengwu)
-#     """
-# )
-
 goes_rois = {
     "Creek Fire, CA (2020-09-05)": {
         "region": Polygon(
@@ -264,13 +248,6 @@ def app():
     today = date.today()
 
     st.title("Satellite Timelapse")
-
-    # st.markdown(
-    #     """
-    #     An interactive web app for creating [Landsat](https://developers.google.com/earth-engine/datasets/catalog/landsat)/[GOES](https://jstnbraaten.medium.com/goes-in-earth-engine-53fbc8783c16) timelapse for any location around the globe. 
-    #     The app was built using [streamlit](https://streamlit.io), [geemap](https://geemap.org), and [Google Earth Engine](https://earthengine.google.com). For more info, check out my streamlit [blog post](https://blog.streamlit.io/creating-satellite-timelapse-with-streamlit-and-earth-engine). 
-    # """
-    # )
 
     row1_col1, row1_col2 = st.columns([2, 1])
 
@@ -580,10 +557,10 @@ def app():
 
     with row1_col1:
 
-        # with st.expander(
-        #     "Steps: Draw a rectangle on the map -> Export it as a GeoJSON -> Upload it back to the app -> Click the Submit button. Expand this tab to see a demo 👉"
-        # ):
-        #     video_empty = st.empty()
+        with st.expander(
+            "Steps: Draw a rectangle on the map -> Export it as a GeoJSON -> Upload it back to the app -> Click the Submit button. Expand this tab to see a demo 👉"
+        ):
+            video_empty = st.empty()
 
         data = st.file_uploader(
             "Upload a GeoJSON file to use as an ROI. Customize timelapse parameters and then click the Submit button.",

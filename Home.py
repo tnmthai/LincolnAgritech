@@ -14,7 +14,7 @@ st.sidebar.info(
 st.sidebar.title("Contact")
 st.sidebar.info(
     """
-    Thai Tran: Thai.Tran@
+    Thai Tran: email@lincolnagritech.co.nz
     """
 )
 
@@ -26,12 +26,12 @@ st.markdown(
     """
 )
 
-st.info("Click on the left sidebar menu to navigate to the different apps.")
+# st.info("Click on the left sidebar menu to navigate to the different apps.")
 
 st.subheader("Timelapse of Satellite Imagery")
 st.markdown(
     """
-    The following timelapse animations were created using the Timelapse web app. Click `Timelapse` on the left sidebar menu to create your own timelapse for any location around the globe.
+    The following timelapse animations for three areas.
 """
 )
 

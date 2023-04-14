@@ -37,7 +37,7 @@ st.markdown(
 
 row1_col1, row1_col2 = st.columns(2)
 with row1_col1:
-    st.image("https://github.com/giswqs/data/raw/main/timelapse/spain.gif")
+    st.image("data/can.gif")
     st.image("https://github.com/giswqs/data/raw/main/timelapse/las_vegas.gif")
 
 with row1_col2:

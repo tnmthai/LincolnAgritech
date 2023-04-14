@@ -663,7 +663,7 @@ def app():
                 sensor_start_year = 2015
                 timelapse_title = "Sentinel-2 Timelapse"
                 timelapse_speed = 5
-            video_empty.video("https://youtu.be/VVRK_-dEjR4")
+            # video_empty.video("https://youtu.be/VVRK_-dEjR4")
 
             with st.form("submit_landsat_form"):
 
@@ -849,7 +849,7 @@ def app():
 
         elif collection == "Geostationary Operational Environmental Satellites (GOES)":
 
-            video_empty.video("https://youtu.be/16fA2QORG4A")
+            # video_empty.video("https://youtu.be/16fA2QORG4A")
 
             with st.form("submit_goes_form"):
 
@@ -1013,7 +1013,7 @@ def app():
 
         elif collection == "MODIS Vegetation Indices (NDVI/EVI) 16-Day Global 1km":
 
-            video_empty.video("https://youtu.be/16fA2QORG4A")
+            # video_empty.video("https://youtu.be/16fA2QORG4A")
 
             satellite = st.selectbox("Select a satellite:", ["Terra", "Aqua"])
             band = st.selectbox("Select a band:", ["NDVI", "EVI"])

@@ -35,11 +35,12 @@ st.markdown(
 """
 )
 
-row1_col1, row1_col2 = st.columns(2)
+row1_col1, row1_col2, row1_col3 = st.columns(3)
 with row1_col1:
     st.image("data/can.gif")
     
-
 with row1_col2:
     st.image("data/urewera.gif")
     
+with row1_col3:
+    st.image("data/mitimiti.gif")

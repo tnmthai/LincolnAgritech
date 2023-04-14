@@ -42,6 +42,7 @@ with row1_col1:
     
 with row1_col2:
     st.image("data/urewera.gif")
-    
+    st.markdown("""Urewera""")
 with row1_col3:
     st.image("data/mitimiti.gif")
+    st.markdown("""Mitimiti""")

@@ -38,7 +38,7 @@ st.markdown(
 row1_col1, row1_col2, row1_col3 = st.columns(3)
 with row1_col1:
     st.image("data/can.gif")
-    st.mardown("""Canterbury Region""")
+    st.markdown("""Canterbury Region""")
     
 with row1_col2:
     st.image("data/urewera.gif")

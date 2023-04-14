@@ -3,6 +3,21 @@ import leafmap.foliumap as leafmap
 
 st.set_page_config(layout="wide")
 
+
+st.sidebar.info(
+    """
+    - Web App URL: https://lincolnagritech.streamlit.app/
+   
+    """
+)
+
+st.sidebar.title("Contact")
+st.sidebar.info(
+    """
+    Thai Tran: Thai.Tran@
+    """
+)
+
 st.sidebar.title("About")
 st.sidebar.info(
     """

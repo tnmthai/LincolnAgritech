@@ -14,7 +14,7 @@ st.sidebar.info(
 st.sidebar.title("Contact")
 st.sidebar.info(
     """
-    Thai Tran: email@lincolnagritech.co.nz
+    Thai Tran: Thai.Tran@LincolnAgritech.co.nz
     """
 )
 

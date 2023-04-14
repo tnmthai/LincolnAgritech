@@ -558,7 +558,7 @@ def app():
     with row1_col1:
 
         with st.expander(
-            "Steps: Draw a rectangle on the map -> Export it as a GeoJSON -> Upload it back to the app -> Click the Submit button. Expand this tab to see a demo 👉"
+            # "Steps: Draw a rectangle on the map -> Export it as a GeoJSON -> Upload it back to the app -> Click the Submit button. Expand this tab to see a demo."
         ):
             video_empty = st.empty()
 

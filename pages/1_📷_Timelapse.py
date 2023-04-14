@@ -561,8 +561,8 @@ def app():
            ""
             # "Steps: Draw a rectangle on the map -> Export it as a GeoJSON -> Upload it back to the app -> Click the Submit button. Expand this tab to see a demo."
         ):
-            # video_empty = st.empty()
-            print()
+            video_empty = st.empty()
+            # print()
         data = st.file_uploader(
             "Upload a GeoJSON file to use as an ROI. Customize timelapse parameters and then click the Submit button.",
             type=["geojson", "kml", "zip"],

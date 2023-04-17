@@ -266,7 +266,7 @@ def app():
             plugin_Draw=True,
             Draw_export=True,
             locate_control=True,
-            plugin_LatLngPopup=False,#center=(-43.525650, 172.639847), zoom=6.25,
+            plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
         )
         m.add_basemap("ROADMAP")
 

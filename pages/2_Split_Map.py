@@ -22,7 +22,7 @@ st.title("Split-panel Map")
 
 with st.expander("See source code"):
     with st.echo():
-        m = leafmap.Map(center=(-43.525650, 172.639847), zoom=8)
+        m = leafmap.Map(center=(-43.525650, 172.639847), zoom=6.25)
         m.split_map(
             left_layer='ESA WorldCover 2020 S2 FCC', right_layer='ESA WorldCover 2020'
         )

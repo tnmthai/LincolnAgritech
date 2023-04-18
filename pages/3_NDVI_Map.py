@@ -79,21 +79,21 @@ def addDOY(image):
     img_doy = ee.Number.parse(img_date.format('D'))
     return image.addBands(ee.Image(img_doy).rename('doy').toInt())
 
-withNDVI = l8.map(addNDVI).map(addDate).map(addMonth).map(addDOY)
+# withNDVI = l8.map(addNDVI).map(addDate).map(addMonth).map(addDOY)
 
-greenest = withNDVI.qualityMosaic('NDVI')
+# greenest = withNDVI.qualityMosaic('NDVI')
 
-ndvi = greenest.select('NDVI')
-palette = [
-    '#d73027',
-    '#f46d43',
-    '#fdae61',
-    '#fee08b',
-    '#d9ef8b',
-    '#a6d96a',
-    '#66bd63',
-    '#1a9850',
-]
-# m.addLayer(ndvi, {'palette': palette}, 'NDVI')
-m.addLayer(ndvi, {}, 'NDVI')
+# ndvi = greenest.select('NDVI')
+# # palette = [
+# #     '#d73027',
+# #     '#f46d43',
+# #     '#fdae61',
+# #     '#fee08b',
+# #     '#d9ef8b',
+# #     '#a6d96a',
+# #     '#66bd63',
+# #     '#1a9850',
+# # ]
+# # m.addLayer(ndvi, {'palette': palette}, 'NDVI')
+# m.addLayer(ndvi, {}, 'NDVI')
 m.to_streamlit(height=700)

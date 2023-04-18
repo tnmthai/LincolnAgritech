@@ -28,17 +28,17 @@ m = geemap.Map(center=(-43.525650, 172.639847), zoom=6.25)
 # m.add_legend(title='ESA Land Cover', builtin_legend='ESA_WorldCover')
 
 import geopandas as gpd
-shapefile = gpd.read_file("data/nzshp/Canterbury.shp")
-# gdf = shp.to_crs({'init': 'epsg:4326'}) 
+shp = gpd.read_file("data/nzshp/Canterbury.shp")
+gdf = shp.to_crs({'init': 'epsg:4326'}) 
 
-features = []
-for i in range(shapefile.shape[0]):
-    geom = shapefile.iloc[i:i+1,:] 
-    jsonDict = eval(geom.to_json()) 
-    geojsonDict = jsonDict['features'][0] 
-    features.append(ee.Feature(geojsonDict)) 
+# features = []
+# for i in range(shapefile.shape[0]):
+#     geom = shapefile.iloc[i:i+1,:] 
+#     jsonDict = eval(geom.to_json()) 
+#     geojsonDict = jsonDict['features'][0] 
+#     features.append(ee.Feature(geojsonDict)) 
 
-roi = ee.FeatureCollection(features)
-
-m.addLayer(roi, {}, 'Can')
+# roi = ee.FeatureCollection(features)
+m.add_gdf(gdf, "ROI")
+# m.addLayer(roi, {}, 'Can')
 m.to_streamlit(height=700)

@@ -26,50 +26,17 @@ m = leafmap.Map(center=(-43.525650, 172.639847), zoom=6.25)
 # )
 # m.add_legend(title='ESA Land Cover', builtin_legend='ESA_WorldCover')
 
+import geopandas as gpd
+shapefile = gpd.read_file("data/nzshp/Canterbury.shp")
+# gdf = shp.to_crs({'init': 'epsg:4326'}) 
 
+features = []
+for i in range(shapefile.shape[0]):
+    geom = shapefile.iloc[i:i+1,:] 
+    jsonDict = eval(geom.to_json()) 
+    geojsonDict = jsonDict['features'][0] 
+    features.append(ee.Feature(geojsonDict)) 
 
-# Map = geemap.Map()
-
-image = (
-    ee.ImageCollection('MODIS/MCD43A4_006_NDVI')
-    .filter(ee.Filter.date('2018-04-01', '2018-05-01'))
-    .select("NDVI")
-    .first()
-)
-
-vis_params = {
-    'min': 0.0,
-    'max': 1.0,
-    'palette': [
-        'FFFFFF',
-        'CE7E45',
-        'DF923D',
-        'F1B555',
-        'FCD163',
-        '99B718',
-        '74A901',
-        '66A000',
-        '529400',
-        '3E8601',
-        '207401',
-        '056201',
-        '004C00',
-        '023B01',
-        '012E01',
-        '011D01',
-        '011301',
-    ],
-}
-# m.setCenter(-7.03125, 31.0529339857, 2)
-m.addLayer(image, vis_params, 'MODISNDVI')
-
-# countries = geemap.shp_to_ee("../data/countries.shp")
-# style = {"color": "00000088", "width": 1, "fillColor": "00000000"}
-# Map.addLayer(countries.style(**style), {}, "Countries")
-
-ndvi = image.visualize(**vis_params)
-# blend = ndvi.blend(countries.style(**style))
-
-m.addLayer(ndvi, {}, "NDVI")
-
+roi = ee.FeatureCollection(features)
+m.addLayer(roi, {}, 'Can')
 m.to_streamlit(height=700)

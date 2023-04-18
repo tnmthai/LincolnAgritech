@@ -44,7 +44,7 @@ vis_param = {'bands': ['B5_median', 'B4_median', 'B3_median'], 'gamma': 2}
 Map.setCenter(-122.3355, 37.7924, 8)
 Map.addLayer(median, vis_param)
 
-
+Map.to_streamlit(height=700)
 
 # m = geemap.Map(center=(-43.525650, 172.639847), zoom=6.25)
 
@@ -120,4 +120,3 @@ Map.addLayer(median, vis_param)
 # # # ]
 # # # m.addLayer(ndvi, {'palette': palette}, 'NDVI')
 # # m.addLayer(ndvi, {}, 'NDVI')
-Map.to_streamlit(height=700)

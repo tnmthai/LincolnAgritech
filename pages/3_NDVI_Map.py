@@ -25,32 +25,19 @@ def ee_authenticate(token_name="EARTHENGINE_TOKEN"):
 st.title("NDVI Map")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")
 # geemap.ee_initialize()
-# Map = geemap.Map()
+Map = geemap.Map()
 
 
-Map = geemap.Map(center=(-43.525650, 172.639847), zoom=6.25)
 
-shp = gpd.read_file("data/nzshp/Canterbury.shp")
-# gdf = shp.to_crs({'init': 'epsg:4326'}) 
 
-# Map.add_gdf(gdf, "Canterbury")
-
-features = []
-for i in range(shp.shape[0]):
-    geom = shp.iloc[i:i+1,:] 
-    jsonDict = eval(geom.to_json()) 
-    geojsonDict = jsonDict['features'][0] 
-    features.append(ee.Feature(geojsonDict)) 
-
-roi = ee.FeatureCollection(features)
 
 # Load an image collection, filtered so it's not too much data.
 collection = (
     ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA')
     .filterDate('2021-01-01', '2021-12-31')
-    # .filter(ee.Filter.eq('WRS_PATH', 44))
-    # .filter(ee.Filter.eq('WRS_ROW', 34))
-    .filterBounds(roi)
+    .filter(ee.Filter.eq('WRS_PATH', 74))
+    .filter(ee.Filter.eq('WRS_ROW', 90))
+    # .filterBounds(roi)
 )
 
 # Compute the median in each band, each pixel.

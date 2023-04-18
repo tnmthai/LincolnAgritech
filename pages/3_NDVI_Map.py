@@ -60,7 +60,7 @@ visParams = {
     'max': 0.4,
 }
 
-m.addLayer(median, {}, 'Median')
+# m.addLayer(median, {}, 'Median')
 
 def addNDVI(image):
     ndvi = image.normalizedDifference(['B5', 'B4']).rename('NDVI')

@@ -292,7 +292,7 @@ def app():
                 "Landsat TM-ETM-OLI Surface Reflectance",
                 "Sentinel-2 MSI Surface Reflectance",
                 # "Geostationary Operational Environmental Satellites (GOES)",
-                # "MODIS Vegetation Indices (NDVI/EVI) 16-Day Global 1km",
+                "MODIS Vegetation Indices (NDVI/EVI) 16-Day Global 1km",
                 # "MODIS Gap filled Land Surface Temperature Daily",
                 # "MODIS Ocean Color SMI",
                 # "USDA National Agriculture Imagery Program (NAIP)",

@@ -91,6 +91,6 @@ palette = [
     '#66bd63',
     '#1a9850',
 ]
-m.addLayer(ndvi, {'palette': palette}, 'NDVI')
-
+# m.addLayer(ndvi, {'palette': palette}, 'NDVI')
+m.addLayer(ndvi, {}, 'NDVI')
 m.to_streamlit(height=700)

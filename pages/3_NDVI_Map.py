@@ -27,16 +27,12 @@ ee_authenticate(token_name="EARTHENGINE_TOKEN")
 # geemap.ee_initialize()
 Map = geemap.Map()
 
-
-
-
-
 # Load an image collection, filtered so it's not too much data.
 collection = (
     ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA')
     .filterDate('2021-01-01', '2021-12-31')
     .filter(ee.Filter.eq('WRS_PATH', 74))
-    .filter(ee.Filter.eq('WRS_ROW', 90))
+    .filter(ee.Filter.eq('WRS_ROW', {90,91}))
     # .filterBounds(roi)
 )
 
@@ -46,7 +42,7 @@ median = collection.reduce(ee.Reducer.median())
 
 # The output is an Image.  Add it to the map.
 vis_param = {'bands': ['B5_median', 'B4_median', 'B3_median'], 'gamma': 2}
-# Map.setCenter(-122.3355, 37.7924, 8)
+Map.setCenter(-43.525650, 172.639847, 8)
 Map.addLayer(median, vis_param)
 
 Map.to_streamlit(height=700)

@@ -4,7 +4,9 @@ import geemap.foliumap as geemap
 import ee
 import geopandas as gpd
 # st.set_page_config(layout="wide")
-
+@st.cache_data
+def ee_authenticate(token_name="EARTHENGINE_TOKEN"):
+    geemap.ee_initialize(token_name=token_name)
 # st.sidebar.info(
 #     """
 #     - Web App URL: <https://streamlit.geemap.org>
@@ -21,8 +23,8 @@ import geopandas as gpd
 # )
 
 st.title("NDVI Map")
-
-geemap.ee_initialize()
+ee_authenticate(token_name="EARTHENGINE_TOKEN")
+# geemap.ee_initialize()
 Map = geemap.Map()
 
 # Load an image collection, filtered so it's not too much data.

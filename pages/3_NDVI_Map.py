@@ -61,5 +61,36 @@ visParams = {
 }
 
 m.addLayer(median, visParams, 'Median')
+def addNDVI(image):
+    ndvi = image.normalizedDifference(['B5', 'B4']).rename('NDVI')
+    return image.addBands(ndvi)
+
+def addDate(image):
+    img_date = ee.Date(image.date())
+    img_date = ee.Number.parse(img_date.format('YYYYMMdd'))
+    return image.addBands(ee.Image(img_date).rename('date').toInt())
+def addMonth(image):
+    img_date = ee.Date(image.date())
+    img_doy = ee.Number.parse(img_date.format('M'))
+    return image.addBands(ee.Image(img_doy).rename('month').toInt())
+def addDOY(image):
+    img_date = ee.Date(image.date())
+    img_doy = ee.Number.parse(img_date.format('D'))
+    return image.addBands(ee.Image(img_doy).rename('doy').toInt())
+withNDVI = l8.map(addNDVI).map(addDate).map(addMonth).map(addDOY)
+greenest = withNDVI.qualityMosaic('NDVI')
+
+ndvi = greenest.select('NDVI')
+palette = [
+    '#d73027',
+    '#f46d43',
+    '#fdae61',
+    '#fee08b',
+    '#d9ef8b',
+    '#a6d96a',
+    '#66bd63',
+    '#1a9850',
+]
+m.addLayer(ndvi, {'palette': palette}, 'NDVI')
 
 m.to_streamlit(height=700)

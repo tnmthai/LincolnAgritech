@@ -20,7 +20,7 @@ st.set_page_config(layout="wide")
 
 st.title("NDVI Map")
 
-m = leafmap.Map(center=(-43.525650, 172.639847), zoom=6.25)
+m = geemap.Map(center=(-43.525650, 172.639847), zoom=6.25)
 # m.split_map(
 #     left_layer='ESA WorldCover 2020 S2 FCC', right_layer='ESA WorldCover 2020'
 # )

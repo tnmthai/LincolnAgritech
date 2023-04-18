@@ -31,14 +31,6 @@ import geopandas as gpd
 shp = gpd.read_file("data/nzshp/Canterbury.shp")
 gdf = shp.to_crs({'init': 'epsg:4326'}) 
 
-# features = []
-# for i in range(shapefile.shape[0]):
-#     geom = shapefile.iloc[i:i+1,:] 
-#     jsonDict = eval(geom.to_json()) 
-#     geojsonDict = jsonDict['features'][0] 
-#     features.append(ee.Feature(geojsonDict)) 
+m.add_gdf(gdf, "Canterbury")
 
-# roi = ee.FeatureCollection(features)
-m.add_gdf(gdf, "ROI")
-# m.addLayer(roi, {}, 'Can')
 m.to_streamlit(height=700)

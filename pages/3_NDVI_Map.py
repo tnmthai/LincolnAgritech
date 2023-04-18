@@ -33,7 +33,7 @@ collection = (
     .filterDate('2021-01-01', '2021-12-31')
     .filter(ee.Filter.eq('WRS_PATH', 74))
     .filter(ee.Filter.eq('WRS_ROW', 90))
-    .filter(ee.Filter.eq('WRS_ROW', 91))
+    # .filter(ee.Filter.eq('WRS_ROW', 91))
     # .filterBounds(roi)
 )
 

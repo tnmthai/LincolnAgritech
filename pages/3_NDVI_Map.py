@@ -37,6 +37,15 @@ m.add_gdf(gdf, "Canterbury")
 start_date = '2022-01-01'
 end_date = '2022-12-31'
 
+features = []
+for i in range(shp.shape[0]):
+    geom = shp.iloc[i:i+1,:] 
+    jsonDict = eval(geom.to_json()) 
+    geojsonDict = jsonDict['features'][0] 
+    features.append(ee.Feature(geojsonDict)) 
+
+roi = ee.FeatureCollection(features)
+
 # l8 = (
 #     geemap.ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA') 
 #     .filterBounds(gdf)

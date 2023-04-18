@@ -49,7 +49,7 @@ roi = ee.FeatureCollection(features)
 
 l8 = (
     ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA') 
-    .filterBounds(gdf)
+    .filterBounds(roi)
     .filterDate(start_date, end_date)
 )
 

@@ -40,5 +40,5 @@ for i in range(shapefile.shape[0]):
 
 roi = ee.FeatureCollection(features)
 
-# m.addLayer(roi, {}, 'Can')
+m.addLayer(roi, {}, 'Can')
 m.to_streamlit(height=700)

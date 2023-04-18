@@ -22,6 +22,7 @@ import geopandas as gpd
 
 st.title("NDVI Map")
 
+geemap.ee_initialize()
 Map = geemap.Map()
 
 # Load an image collection, filtered so it's not too much data.

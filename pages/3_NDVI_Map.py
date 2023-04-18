@@ -61,6 +61,7 @@ visParams = {
 }
 
 m.addLayer(median, visParams, 'Median')
+
 def addNDVI(image):
     ndvi = image.normalizedDifference(['B5', 'B4']).rename('NDVI')
     return image.addBands(ndvi)
@@ -77,7 +78,9 @@ def addDOY(image):
     img_date = ee.Date(image.date())
     img_doy = ee.Number.parse(img_date.format('D'))
     return image.addBands(ee.Image(img_doy).rename('doy').toInt())
+
 withNDVI = l8.map(addNDVI).map(addDate).map(addMonth).map(addDOY)
+
 greenest = withNDVI.qualityMosaic('NDVI')
 
 ndvi = greenest.select('NDVI')

@@ -32,7 +32,7 @@ m = geemap.Map(center=(-43.525650, 172.639847), zoom=6.25)
 shp = gpd.read_file("data/nzshp/Canterbury.shp")
 gdf = shp.to_crs({'init': 'epsg:4326'}) 
 
-m.add_gdf(gdf, "Canterbury")
+# m.add_gdf(gdf, "Canterbury")
 
 
 start_date = '2022-01-01'
@@ -61,7 +61,7 @@ visParams = {
 }
 
 
-# m.addLayer(median, {}, 'l8')
+m.addLayer(median, {}, 'l8')
 
 
 def addNDVI(image):

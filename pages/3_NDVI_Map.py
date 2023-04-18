@@ -61,7 +61,7 @@ visParams = {
 }
 
 
-m.addLayer(median, {}, 'l8')
+# m.addLayer(median, {}, 'l8')
 
 
 def addNDVI(image):

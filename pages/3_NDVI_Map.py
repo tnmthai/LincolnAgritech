@@ -3,7 +3,7 @@ import streamlit as st
 import geemap.foliumap as geemap
 import ee
 import geopandas as gpd
-st.set_page_config(layout="wide")
+# st.set_page_config(layout="wide")
 
 # st.sidebar.info(
 #     """
@@ -61,7 +61,7 @@ visParams = {
 }
 
 
-m.addLayer(l8, {}, 'l8')
+m.addLayer(median, {}, 'l8')
 
 
 def addNDVI(image):
@@ -72,10 +72,12 @@ def addDate(image):
     img_date = ee.Date(image.date())
     img_date = ee.Number.parse(img_date.format('YYYYMMdd'))
     return image.addBands(ee.Image(img_date).rename('date').toInt())
+
 def addMonth(image):
     img_date = ee.Date(image.date())
     img_doy = ee.Number.parse(img_date.format('M'))
     return image.addBands(ee.Image(img_doy).rename('month').toInt())
+
 def addDOY(image):
     img_date = ee.Date(image.date())
     img_doy = ee.Number.parse(img_date.format('D'))

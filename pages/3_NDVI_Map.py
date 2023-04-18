@@ -32,7 +32,8 @@ collection = (
     ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA')
     .filterDate('2021-01-01', '2021-12-31')
     .filter(ee.Filter.eq('WRS_PATH', 74))
-    .filter(ee.Filter.eq('WRS_ROW', [90,91]))
+    .filter(ee.Filter.eq('WRS_ROW', 90))
+    .filter(ee.Filter.eq('WRS_ROW', 91))
     # .filterBounds(roi)
 )
 

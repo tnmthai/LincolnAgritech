@@ -37,11 +37,11 @@ m.add_gdf(gdf, "Canterbury")
 start_date = '2022-01-01'
 end_date = '2022-12-31'
 
-l8 = (
-    geemap.ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA') 
-    .filterBounds(gdf)
-    .filterDate(start_date, end_date)
-)
+# l8 = (
+#     geemap.ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA') 
+#     .filterBounds(gdf)
+#     .filterDate(start_date, end_date)
+# )
 
 
 m.to_streamlit(height=700)

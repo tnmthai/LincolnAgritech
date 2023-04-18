@@ -61,7 +61,7 @@ vis_params = {
     ],
 }
 # m.setCenter(-7.03125, 31.0529339857, 2)
-m.addLayer(image, vis_params, 'MODIS NDVI')
+m.addLayer(image, vis_params, 'MODISNDVI')
 
 # countries = geemap.shp_to_ee("../data/countries.shp")
 # style = {"color": "00000088", "width": 1, "fillColor": "00000000"}

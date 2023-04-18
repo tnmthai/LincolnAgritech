@@ -25,7 +25,15 @@ def ee_authenticate(token_name="EARTHENGINE_TOKEN"):
 st.title("NDVI Map")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")
 # geemap.ee_initialize()
-Map = geemap.Map()
+# Map = geemap.Map()
+
+
+Map = geemap.Map(center=(-43.525650, 172.639847), zoom=6.25)
+
+shp = gpd.read_file("data/nzshp/Canterbury.shp")
+gdf = shp.to_crs({'init': 'epsg:4326'}) 
+
+Map.add_gdf(gdf, "Canterbury")
 
 # Load an image collection, filtered so it's not too much data.
 collection = (

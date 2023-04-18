@@ -59,8 +59,7 @@ visParams = {
     'min': 0,
     'max': 0.4,
 }
-color = st.color_picker('Select a color', '#FF5500')
-style = {'fillColor': '00000000', 'color': color}
+
 
 m.addLayer(l8, {}, 'l8')
 

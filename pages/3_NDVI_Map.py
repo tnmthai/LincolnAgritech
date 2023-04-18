@@ -42,9 +42,9 @@ for i in range(shp.shape[0]):
     geom = shp.iloc[i:i+1,:] 
     jsonDict = eval(geom.to_json()) 
     geojsonDict = jsonDict['features'][0] 
-    features.append(ee.Feature(geojsonDict)) 
+    features.append(geemap.ee.Feature(geojsonDict)) 
 
-roi = ee.FeatureCollection(features)
+roi = geemap.ee.FeatureCollection(features)
 
 l8 = (
     geemap.ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA') 

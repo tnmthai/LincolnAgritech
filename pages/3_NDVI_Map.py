@@ -37,12 +37,12 @@ collection = (
 
 # Compute the median in each band, each pixel.
 # Band names are B1_median, B2_median, etc.
-median = collection.reduce(ee.Reducer.median())
+# median = collection.reduce(ee.Reducer.median())
 
-# The output is an Image.  Add it to the map.
-vis_param = {'bands': ['B5_median', 'B4_median', 'B3_median'], 'gamma': 2}
-Map.setCenter(-122.3355, 37.7924, 8)
-Map.addLayer(median, vis_param)
+# # The output is an Image.  Add it to the map.
+# vis_param = {'bands': ['B5_median', 'B4_median', 'B3_median'], 'gamma': 2}
+# Map.setCenter(-122.3355, 37.7924, 8)
+# Map.addLayer(median, vis_param)
 
 Map.to_streamlit(height=700)
 

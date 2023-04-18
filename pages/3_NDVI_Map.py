@@ -52,6 +52,14 @@ l8 = (
     .filterBounds(roi)
     .filterDate(start_date, end_date)
 )
+median = l8.median()
 
+visParams = {
+    'bands': ['B4', 'B3', 'B2'],
+    'min': 0,
+    'max': 0.4,
+}
+
+m.addLayer(median, visParams, 'Median')
 
 m.to_streamlit(height=700)

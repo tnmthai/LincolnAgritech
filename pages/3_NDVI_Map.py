@@ -62,7 +62,7 @@ visParams = {
 color = st.color_picker('Select a color', '#FF5500')
 style = {'fillColor': '00000000', 'color': color}
 
-m.addLayer(l8.style(**style), {}, 'l8')
+m.addLayer(l8, {}, 'l8')
 
 # m.addLayer(median,{})
 # m.addLayer(l8, {}, 'Median')

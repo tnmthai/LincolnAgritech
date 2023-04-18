@@ -22,7 +22,7 @@ def ee_authenticate(token_name="EARTHENGINE_TOKEN"):
 #     """
 # )
 
-st.title("NDVI Map")
+st.title("NIR Map")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")
 # geemap.ee_initialize()
 Map = geemap.Map(center=(-43.525650, 172.639847), zoom=6.25)

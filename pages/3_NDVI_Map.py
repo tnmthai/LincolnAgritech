@@ -55,8 +55,9 @@ visParams = {
     'max': 0.4,
 }
 
+m.add_landsat_ts_gif(label= 'Pucallpa, Peru', bands=['SWIR1', 'NIR', 'Red'], nd_bands=['NIR', 'Red'], nd_palette=['black', 'green'], nd_threshold=0.3, start_year=2000, start_date='01-01', end_date='12-31', frames_per_second=5)
 
-m.addLayer(median, {}, 'l8')
+# m.addLayer(median, {}, 'l8')
 
 
 def addNDVI(image):

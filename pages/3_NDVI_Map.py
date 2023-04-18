@@ -23,11 +23,6 @@ import geopandas as gpd
 st.title("NDVI Map")
 
 m = geemap.Map(center=(-43.525650, 172.639847), zoom=6.25)
-# m.split_map(
-#     left_layer='ESA WorldCover 2020 S2 FCC', right_layer='ESA WorldCover 2020'
-# )
-# m.add_legend(title='ESA Land Cover', builtin_legend='ESA_WorldCover')
-
 
 shp = gpd.read_file("data/nzshp/Canterbury.shp")
 gdf = shp.to_crs({'init': 'epsg:4326'}) 
@@ -38,14 +33,14 @@ gdf = shp.to_crs({'init': 'epsg:4326'})
 start_date = '2022-01-01'
 end_date = '2022-12-31'
 
-features = []
-for i in range(shp.shape[0]):
-    geom = shp.iloc[i:i+1,:] 
-    jsonDict = eval(geom.to_json()) 
-    geojsonDict = jsonDict['features'][0] 
-    features.append(ee.Feature(geojsonDict)) 
+# features = []
+# for i in range(shp.shape[0]):
+#     geom = shp.iloc[i:i+1,:] 
+#     jsonDict = eval(geom.to_json()) 
+#     geojsonDict = jsonDict['features'][0] 
+#     features.append(ee.Feature(geojsonDict)) 
 
-roi = ee.FeatureCollection(features)
+# roi = ee.FeatureCollection(features)
 
 l8 = (
     ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA') 

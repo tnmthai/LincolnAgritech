@@ -1,7 +1,8 @@
 import streamlit as st
-import leafmap.foliumap as leafmap
+# import leafmap.foliumap as leafmap
 import geemap.foliumap as geemap
 import ee
+import geopandas as gpd
 st.set_page_config(layout="wide")
 
 # st.sidebar.info(
@@ -27,7 +28,7 @@ m = geemap.Map(center=(-43.525650, 172.639847), zoom=6.25)
 # )
 # m.add_legend(title='ESA Land Cover', builtin_legend='ESA_WorldCover')
 
-import geopandas as gpd
+
 shp = gpd.read_file("data/nzshp/Canterbury.shp")
 gdf = shp.to_crs({'init': 'epsg:4326'}) 
 
@@ -42,12 +43,12 @@ for i in range(shp.shape[0]):
     geom = shp.iloc[i:i+1,:] 
     jsonDict = eval(geom.to_json()) 
     geojsonDict = jsonDict['features'][0] 
-    features.append(geemap.ee.Feature(geojsonDict)) 
+    features.append(ee.Feature(geojsonDict)) 
 
-roi = geemap.ee.FeatureCollection(features)
+roi = ee.FeatureCollection(features)
 
 l8 = (
-    geemap.ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA') 
+    ee.ImageCollection('LANDSAT/LC08/C02/T1_TOA') 
     .filterBounds(gdf)
     .filterDate(start_date, end_date)
 )

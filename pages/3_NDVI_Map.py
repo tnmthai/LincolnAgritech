@@ -25,7 +25,7 @@ def ee_authenticate(token_name="EARTHENGINE_TOKEN"):
 st.title("NDVI Map")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")
 # geemap.ee_initialize()
-Map = geemap.Map()
+Map = geemap.Map(center=(-43.525650, 172.639847), zoom=6.25)
 
 # Load an image collection, filtered so it's not too much data.
 collection = (
@@ -42,7 +42,7 @@ median = collection.reduce(ee.Reducer.median())
 
 # The output is an Image.  Add it to the map.
 vis_param = {'bands': ['B5_median', 'B4_median', 'B3_median'], 'gamma': 2}
-Map.setCenter(-43.525650, 172.639847, 8)
+# Map.setCenter(-43.525650, 172.639847, 5)
 Map.addLayer(median, vis_param)
 
 Map.to_streamlit(height=700)

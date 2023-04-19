@@ -68,7 +68,7 @@ ndvi_vis = {
 }
 
 Map.addLayer(image, {}, 'MODIS NDVI Time-series')
-Map.addLayer(image.select(0), ndvi_vis, 'NDVI')
+Map.addLayer(image.select(0), ndvi_vis, 'NDVI (1ST DAY)')
 
 # Map
 

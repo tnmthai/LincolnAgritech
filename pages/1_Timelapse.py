@@ -139,7 +139,7 @@ for index, row in gdf.iterrows():
     for pt in list(row['geometry'].exterior.coords): 
         can.append(list(pt))
 
-shp = gpd.read_file("data/nzshp/Mitimiti.shp")
+shp = gpd.read_file("data/nzshp/Trust_Mitimiti.shp")
 gdf = shp.to_crs({'init': 'epsg:4326'}) 
 
 Mitimiti = []
@@ -147,7 +147,7 @@ for index, row in gdf.iterrows():
     for pt in list(row['geometry'].exterior.coords): 
         Mitimiti.append(list(pt))
 
-shp = gpd.read_file("data/nzshp/Urewera.shp")
+shp = gpd.read_file("data/nzshp/Urewera_forest.shp")
 gdf = shp.to_crs({'init': 'epsg:4326'}) 
 
 Urewera = []

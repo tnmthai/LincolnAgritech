@@ -53,22 +53,22 @@ Map.addLayer(median, vis_param, 'NIR')
 
 # Map = geemap.Map()
 
-collection = (
-    ee.ImageCollection('MODIS/061/MOD13A2')
-    .filterDate('2015-01-01', '2019-12-31')
-    .select('NDVI')
-)
+# collection = (
+#     ee.ImageCollection('MODIS/061/MOD13A2')
+#     .filterDate('2015-01-01', '2019-12-31')
+#     .select('NDVI')
+# )
 
-image = collection.toBands()
+# image = collection.toBands()
 
-ndvi_vis = {
-    'min': 0.0,
-    'max': 9000.0,
-    'palette': 'ndvi',
-}
+# ndvi_vis = {
+#     'min': 0.0,
+#     'max': 9000.0,
+#     'palette': 'ndvi',
+# }
 
-Map.addLayer(image, {}, 'MODIS NDVI Time-series')
-Map.addLayer(image.select(0), ndvi_vis, 'NDVI (1ST DAY)')
+# Map.addLayer(image, {}, 'MODIS NDVI Time-series')
+# Map.addLayer(image.select(0), ndvi_vis, 'NDVI (1ST DAY)')
 
 # Map
 

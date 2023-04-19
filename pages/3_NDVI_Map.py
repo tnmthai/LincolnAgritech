@@ -31,8 +31,8 @@ Map = geemap.Map(center=(-43.525650, 172.639847), zoom=6.25)
 collection = (
     ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA')
     .filterDate('2021-01-01', '2021-12-31')
-    .filter(ee.Filter.eq('WRS_PATH', 74))
-    .filter(ee.Filter.eq('WRS_ROW', 90))
+    # .filter(ee.Filter.eq('WRS_PATH', 74))
+    # .filter(ee.Filter.eq('WRS_ROW', 90))
     # .filter(ee.Filter.eq('WRS_ROW', 91))
     # .filterBounds(roi)
     .filter(ee.Filter.Or(
@@ -40,6 +40,7 @@ collection = (
                   ee.Filter.eq('WRS_ROW', 90)),
     ee.Filter.And(ee.Filter.eq('WRS_PATH', 74), 
                   ee.Filter.eq('WRS_ROW', 91))))
+)
 
 # Compute the median in each band, each pixel.
 # Band names are B1_median, B2_median, etc.

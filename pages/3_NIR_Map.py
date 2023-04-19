@@ -51,6 +51,29 @@ vis_param = {'bands': ['B5_median', 'B4_median', 'B3_median'], 'gamma': 2}
 # Map.setCenter(-43.525650, 172.639847, 5)
 Map.addLayer(median, vis_param)
 
+# Map = geemap.Map()
+
+collection = (
+    ee.ImageCollection('MODIS/061/MOD13A2')
+    .filterDate('2015-01-01', '2019-12-31')
+    .select('NDVI')
+)
+
+image = collection.toBands()
+
+ndvi_vis = {
+    'min': 0.0,
+    'max': 9000.0,
+    'palette': 'ndvi',
+}
+
+Map.addLayer(image, {}, 'MODIS NDVI Time-series')
+Map.addLayer(image.select(0), ndvi_vis, 'NDVI')
+
+# Map
+
+
+
 Map.to_streamlit(height=700)
 
 # m = geemap.Map(center=(-43.525650, 172.639847), zoom=6.25)

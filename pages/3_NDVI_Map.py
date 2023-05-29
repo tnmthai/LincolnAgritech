@@ -49,7 +49,14 @@ def addDate(image):
 
 st.title("NDVI Map")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")
-map1 = geemap.Map()
+map1 = geemap.Map(
+    basemap="HYBRID",
+    plugin_Draw=True,
+    Draw_export=True,
+    locate_control=True,
+    plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
+)
+map1.add_basemap("ROADMAP")
 
 data = st.file_uploader(
     "Upload a GeoJSON file to use as an ROI. Customize timelapse parameters and then click the Submit button.",

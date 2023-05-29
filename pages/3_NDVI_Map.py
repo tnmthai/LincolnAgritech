@@ -6,6 +6,8 @@ import geopandas as gpd
 from shapely.geometry import Polygon
 import warnings
 import fiona
+import geopandas as gpd
+import datetime
 # st.set_page_config(layout="wide")
 st.set_page_config(layout="wide")
 warnings.filterwarnings("ignore")
@@ -62,7 +64,7 @@ map1 = geemap.Map(
 # map1.add_basemap("ROADMAP")
 
 
-import geopandas as gpd
+
 shp = gpd.read_file("data/nzshp/Canterbury.shp")
 gdf = shp.to_crs({'init': 'epsg:4326'}) 
 
@@ -104,6 +106,16 @@ sample_roi = st.selectbox(
     roi_options,
     index=0,
 )
+sd = st.date_input(
+    "Start date",
+    datetime.date(2019, 7, 6))
+st.write('Your start date is:', sd)
+
+ed = st.date_input(
+    "End date",
+    datetime.date(2019, 7, 6))
+st.write('Your end date is:', ed)
+
 if sample_roi != "Uploaded GeoJSON":
     gdf = gpd.GeoDataFrame(
         index=[0], crs=crs, geometry=[landsat_rois[sample_roi]]

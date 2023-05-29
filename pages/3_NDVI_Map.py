@@ -125,7 +125,7 @@ with row1_col2:
     ed = st.date_input(
         "End date",
         default_date_yesterday)
-    end_date = (ed)
+    end_date = ed
     
     st.write('Your dates between:', start_date ,' and ', end_date)
 

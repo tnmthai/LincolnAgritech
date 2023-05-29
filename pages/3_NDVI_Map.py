@@ -115,7 +115,7 @@ complition_date = st.date_input("Date of completion", default_date_yesterday)
 
 sd = st.date_input(
     "Start date",
-    date.date(2022, 1, 1))
+    date(2022, 1, 1))
 st.write('Your start date is:', sd)
 
 ed = st.date_input(

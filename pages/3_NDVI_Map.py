@@ -46,7 +46,7 @@ def getNDVI(image):
 
 def addDate(image):
     img_date = ee.Date(image.date())
-    img_date = ee.Number.parse(img_date.format('YYYYMMdd'))
+    img_date = ee.Number.parse(img_date.format('YYYY-MM-dd'))
     return image.addBands(ee.Image(img_date).rename('date').toInt())
 
 color = ['FFFFFF', 'CE7E45', 'DF923D', 'F1B555', 'FCD163', '99B718',
@@ -128,8 +128,8 @@ with row1_col2:
         "End date",
         default_date_yesterday)
     
-    end_date = datetime.date (ed)
-    end_date = ee.Number.parse(end_date.format('YYYYMMdd'))
+    end_date = ed
+
 
 
     st.write('Your dates between:', start_date ,' and ', end_date)

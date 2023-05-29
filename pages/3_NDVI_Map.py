@@ -32,10 +32,10 @@ ee_authenticate(token_name="EARTHENGINE_TOKEN")
 # shp = gpd.read_file("data/nzshp/Canterbury.shp")
 # gdf = shp.to_crs({'init': 'epsg:4326'}) 
 
-can = []
-for index, row in gdf.iterrows():
-    for pt in list(row['geometry'].exterior.coords): 
-        can.append(list(pt))
+# can = []
+# for index, row in gdf.iterrows():
+#     for pt in list(row['geometry'].exterior.coords): 
+#         can.append(list(pt))
 # aoi = {
 #     "Canterbury": Polygon(can),
 # }

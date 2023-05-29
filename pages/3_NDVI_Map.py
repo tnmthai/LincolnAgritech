@@ -123,12 +123,12 @@ with row1_col2:
         "Start date",
         date(2022, 1, 1))
     start_date = "2022-01-01"
-    
+
     ed = st.date_input(
         "End date",
         default_date_yesterday)
     
-    end_date = ee.Date(ed)
+    end_date = ed
     end_date = ee.Number.parse(end_date.format('YYYYMMdd'))
 
 

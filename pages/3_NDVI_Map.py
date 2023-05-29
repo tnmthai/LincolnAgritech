@@ -1,5 +1,5 @@
 import streamlit as st
-import geemap.foliumap as geemap
+import geemap
 import ee
 import geopandas as gpd
 from shapely.geometry import Polygon

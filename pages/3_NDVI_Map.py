@@ -121,11 +121,11 @@ with row1_col2:
     sd = st.date_input(
         "Start date",
         date(2022, 1, 1))
-    start_date = sd
+    start_date = date(2022, 1, 1)
     ed = st.date_input(
         "End date",
         default_date_yesterday)
-    end_date = ed
+    end_date = default_date_yesterday
     st.write('Your dates between:', start_date ,' and ', end_date)
 
 if sample_roi != "Uploaded GeoJSON":

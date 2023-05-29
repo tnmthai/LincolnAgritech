@@ -111,17 +111,13 @@ today = date.today()
 
 default_date_yesterday = today - timedelta(days=1)
 
-complition_date = st.date_input("Date of completion", default_date_yesterday)
-
 sd = st.date_input(
     "Start date",
     date(2022, 1, 1))
-st.write('Your start date is:', sd)
-
 ed = st.date_input(
     "End date",
     default_date_yesterday)
-st.write('Your end date is:', ed)
+st.write('Date between:',sd ,' and ', ed)
 
 if sample_roi != "Uploaded GeoJSON":
     gdf = gpd.GeoDataFrame(

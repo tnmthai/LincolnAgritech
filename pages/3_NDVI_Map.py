@@ -78,7 +78,7 @@ NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate("2022-03-01","2022
 .map(getNDVI).map(addDate).median()
 
 map1.centerObject(aoi, 7)
-map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI-Canterbury")
+map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
 
 map1.addLayerControl()
 

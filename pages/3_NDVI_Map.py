@@ -110,11 +110,12 @@ if sample_roi != "Uploaded GeoJSON":
     )
     map1.add_gdf(gdf, "ROI")
     aoi = geemap.gdf_to_ee(gdf, geodesic=False)
-            
-data = st.file_uploader(
-    "Upload a GeoJSON file to use as an ROI. Customize timelapse parameters and then click the Submit button.",
-    type=["geojson", "kml", "zip"],
-)
+elif sample_roi != "Uploaded GeoJSON":
+    data = st.file_uploader(
+        "Upload a GeoJSON file to use as an ROI. Customize timelapse parameters and then click the Submit button.",
+        type=["geojson", "kml", "zip"],
+    )
+
 if data:
     gdf = uploaded_file_to_gdf(data)
     st.session_state["aoi"] = geemap.gdf_to_ee(gdf, geodesic=False)

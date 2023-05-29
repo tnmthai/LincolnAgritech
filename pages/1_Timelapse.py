@@ -44,10 +44,17 @@ for index, row in gdf.iterrows():
     for pt in list(row['geometry'].exterior.coords): 
         Urewera.append(list(pt))
 
+ee_authenticate(token_name="EARTHENGINE_TOKEN")
+region_geometry = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
+
+coordcan = region_geometry.coordinates().getInfo()
+
+
 landsat_rois = {
     "Canterbury":Polygon (can),
     "Mitimiti": Polygon(  Mitimiti  ),
     "Te Urewera": Polygon(  Urewera  ),
+    "test": Polygon(coordcan),
 }
 
 

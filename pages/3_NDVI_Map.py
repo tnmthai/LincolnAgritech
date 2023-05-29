@@ -46,7 +46,10 @@ def addDate(image):
     img_date = ee.Number.parse(img_date.format('YYYYMMdd'))
     return image.addBands(ee.Image(img_date).rename('date').toInt())
 
-
+color = ['FFFFFF', 'CE7E45', 'DF923D', 'F1B555', 'FCD163', '99B718',
+               '74A901', '66A000', '529400', '3E8601', '207401', '056201',
+               '004C00', '023B01', '012E01', '011D01', '011301']
+pallete = {"min":0, "max":1, 'palette':color}
 st.title("NDVI Map")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")
 map1 = geemap.Map(
@@ -71,18 +74,11 @@ if data:
 else:
     aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
 
-NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate("2022-03-01","2022-03-31").filterBounds(aoi) \
+    NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate("2022-03-01","2022-03-31").filterBounds(aoi) \
     .map(getNDVI).map(addDate).median()
 
-color = ['FFFFFF', 'CE7E45', 'DF923D', 'F1B555', 'FCD163', '99B718',
-               '74A901', '66A000', '529400', '3E8601', '207401', '056201',
-               '004C00', '023B01', '012E01', '011D01', '011301']
-pallete = {"min":0, "max":1, 'palette':color}
-
-# initialize our map
-
-map1.centerObject(aoi, 7)
-map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI-Canterbury")
+    map1.centerObject(aoi, 7)
+    map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI-Canterbury")
 
 map1.addLayerControl()
 

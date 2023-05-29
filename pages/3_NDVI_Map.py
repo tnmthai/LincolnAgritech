@@ -7,7 +7,7 @@ from shapely.geometry import Polygon
 import warnings
 import fiona
 import geopandas as gpd
-import datetime
+from datetime import date, timedelta
 # st.set_page_config(layout="wide")
 st.set_page_config(layout="wide")
 warnings.filterwarnings("ignore")
@@ -106,14 +106,21 @@ sample_roi = st.selectbox(
     roi_options,
     index=0,
 )
+
+today = date.today()
+
+default_date_yesterday = today - timedelta(days=1)
+
+complition_date = st.date_input("Date of completion", default_date_yesterday)
+
 sd = st.date_input(
     "Start date",
-    datetime.date(2019, 7, 6))
+    date.date(2022, 01, 01))
 st.write('Your start date is:', sd)
 
 ed = st.date_input(
     "End date",
-    datetime.date(2019, 7, 6))
+    default_date_yesterday)
 st.write('Your end date is:', ed)
 
 if sample_roi != "Uploaded GeoJSON":

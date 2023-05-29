@@ -57,11 +57,8 @@ data = st.file_uploader(
 )
 if data:
     gdf = uploaded_file_to_gdf(data)
-
     st.session_state["roi"] = geemap.gdf_to_ee(gdf, geodesic=False)
     map1.add_gdf(gdf, "ROI")
-
-
 
 aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
 
@@ -75,8 +72,8 @@ pallete = {"min":0, "max":1, 'palette':color}
 
 # initialize our map
 
-map1.centerObject(aoi, 7)
-map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI-Canterbury")
+# map1.centerObject(aoi, 7)
+# map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI-Canterbury")
 
 map1.addLayerControl()
 

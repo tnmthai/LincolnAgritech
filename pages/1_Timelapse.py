@@ -19,13 +19,14 @@ def ee_authenticate(token_name="EARTHENGINE_TOKEN"):
     geemap.ee_initialize(token_name=token_name)
 
 import geopandas as gpd
-shp = gpd.read_file("data/nzshp/Canterbury.shp")
-gdf = shp.to_crs({'init': 'epsg:4326'}) 
+# shp = gpd.read_file("data/nzshp/Canterbury.shp")
+# gdf = shp.to_crs({'init': 'epsg:4326'}) 
 
-can = []
-for index, row in gdf.iterrows():
-    for pt in list(row['geometry'].exterior.coords): 
-        can.append(list(pt))
+# can = []
+# for index, row in gdf.iterrows():
+#     for pt in list(row['geometry'].exterior.coords): 
+#         can.append(list(pt))
+can = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
 
 shp = gpd.read_file("data/nzshp/Mitimiti.shp")
 gdf = shp.to_crs({'init': 'epsg:4326'}) 

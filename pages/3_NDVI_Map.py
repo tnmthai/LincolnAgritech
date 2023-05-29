@@ -81,8 +81,8 @@ pallete = {"min":0, "max":1, 'palette':color}
 
 # initialize our map
 
-# map1.centerObject(aoi, 7)
-# map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI-Canterbury")
+map1.centerObject(aoi, 7)
+map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI-Canterbury")
 
 map1.addLayerControl()
 

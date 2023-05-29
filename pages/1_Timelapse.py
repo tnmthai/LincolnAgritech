@@ -14,121 +14,9 @@ from shapely.geometry import Polygon
 st.set_page_config(layout="wide")
 warnings.filterwarnings("ignore")
 
-
 @st.cache_data
 def ee_authenticate(token_name="EARTHENGINE_TOKEN"):
     geemap.ee_initialize(token_name=token_name)
-
-goes_rois = {
-    "Creek Fire, CA (2020-09-05)": {
-        "region": Polygon(
-            [
-                [-121.003418, 36.848857],
-                [-121.003418, 39.049052],
-                [-117.905273, 39.049052],
-                [-117.905273, 36.848857],
-                [-121.003418, 36.848857],
-            ]
-        ),
-        "start_time": "2020-09-05T15:00:00",
-        "end_time": "2020-09-06T02:00:00",
-    },
-    "Bomb Cyclone (2021-10-24)": {
-        "region": Polygon(
-            [
-                [-159.5954, 60.4088],
-                [-159.5954, 24.5178],
-                [-114.2438, 24.5178],
-                [-114.2438, 60.4088],
-            ]
-        ),
-        "start_time": "2021-10-24T14:00:00",
-        "end_time": "2021-10-25T01:00:00",
-    },
-    "Hunga Tonga Volcanic Eruption (2022-01-15)": {
-        "region": Polygon(
-            [
-                [-192.480469, -32.546813],
-                [-192.480469, -8.754795],
-                [-157.587891, -8.754795],
-                [-157.587891, -32.546813],
-                [-192.480469, -32.546813],
-            ]
-        ),
-        "start_time": "2022-01-15T03:00:00",
-        "end_time": "2022-01-15T07:00:00",
-    },
-    "Hunga Tonga Volcanic Eruption Closer Look (2022-01-15)": {
-        "region": Polygon(
-            [
-                [-178.901367, -22.958393],
-                [-178.901367, -17.85329],
-                [-171.452637, -17.85329],
-                [-171.452637, -22.958393],
-                [-178.901367, -22.958393],
-            ]
-        ),
-        "start_time": "2022-01-15T03:00:00",
-        "end_time": "2022-01-15T07:00:00",
-    },
-}
-
-
-# landsat_rois = {
-#     "Aral Sea": Polygon(
-#         [
-#             [57.667236, 43.834527],
-#             [57.667236, 45.996962],
-#             [61.12793, 45.996962],
-#             [61.12793, 43.834527],
-#             [57.667236, 43.834527],
-#         ]
-#     ),
-#     "Dubai": Polygon(
-#         [
-#             [54.541626, 24.763044],
-#             [54.541626, 25.427152],
-#             [55.632019, 25.427152],
-#             [55.632019, 24.763044],
-#             [54.541626, 24.763044],
-#         ]
-#     ),
-#     "Hong Kong International Airport": Polygon(
-#         [
-#             [113.825226, 22.198849],
-#             [113.825226, 22.349758],
-#             [114.085121, 22.349758],
-#             [114.085121, 22.198849],
-#             [113.825226, 22.198849],
-#         ]
-#     ),
-#     "Las Vegas, NV": Polygon(
-#         [
-#             [-115.554199, 35.804449],
-#             [-115.554199, 36.558188],
-#             [-113.903503, 36.558188],
-#             [-113.903503, 35.804449],
-#             [-115.554199, 35.804449],
-#         ]
-#     ),
-#     "Pucallpa, Peru": Polygon(
-#         [
-#             [-74.672699, -8.600032],
-#             [-74.672699, -8.254983],
-#             [-74.279938, -8.254983],
-#             [-74.279938, -8.600032],
-#         ]
-#     ),
-#     "Sierra Gorda, Chile": Polygon(
-#         [
-#             [-69.315491, -22.837104],
-#             [-69.315491, -22.751488],
-#             [-69.190006, -22.751488],
-#             [-69.190006, -22.837104],
-#             [-69.315491, -22.837104],
-#         ]
-#     ),
-# }
 
 import geopandas as gpd
 shp = gpd.read_file("data/nzshp/Canterbury.shp")
@@ -197,7 +85,6 @@ ocean_rois = {
         ]
     ),
 }
-
 
 @st.cache_data
 def uploaded_file_to_gdf(data):
@@ -283,9 +170,6 @@ def app():
             "Sentinel-2 MSI Surface Reflectance",
         ]:
             roi_options = ["Uploaded GeoJSON"] + list(landsat_rois.keys())
-
-        elif collection == "Geostationary Operational Environmental Satellites (GOES)":
-            roi_options = ["Uploaded GeoJSON"] + list(goes_rois.keys())
 
         elif collection in [
             "MODIS Vegetation Indices (NDVI/EVI) 16-Day Global 1km",
@@ -567,13 +451,6 @@ def app():
                 gdf = gpd.GeoDataFrame(
                     index=[0], crs=crs, geometry=[landsat_rois[sample_roi]]
                 )
-            elif (
-                collection
-                == "Geostationary Operational Environmental Satellites (GOES)"
-            ):
-                gdf = gpd.GeoDataFrame(
-                    index=[0], crs=crs, geometry=[goes_rois[sample_roi]["region"]]
-                )
             elif collection == "MODIS Vegetation Indices (NDVI/EVI) 16-Day Global 1km":
                 gdf = gpd.GeoDataFrame(
                     index=[0], crs=crs, geometry=[modis_rois[sample_roi]]
@@ -588,13 +465,7 @@ def app():
                 gdf = gpd.GeoDataFrame(
                     index=[0], crs=crs, geometry=[landsat_rois[sample_roi]]
                 )
-            elif (
-                collection
-                == "Geostationary Operational Environmental Satellites (GOES)"
-            ):
-                gdf = gpd.GeoDataFrame(
-                    index=[0], crs=crs, geometry=[goes_rois[sample_roi]["region"]]
-                )
+
             elif collection in [
                 "MODIS Vegetation Indices (NDVI/EVI) 16-Day Global 1km",
                 "MODIS Gap filled Land Surface Temperature Daily",
@@ -845,19 +716,7 @@ def app():
                     roi_end_date = today - datetime.timedelta(days=1)
                     roi_start_time = datetime.time(14, 00)
                     roi_end_time = datetime.time(1, 00)
-                else:
-                    roi_start = goes_rois[sample_roi]["start_time"]
-                    roi_end = goes_rois[sample_roi]["end_time"]
-                    roi_start_date = datetime.datetime.strptime(
-                        roi_start[:10], "%Y-%m-%d"
-                    )
-                    roi_end_date = datetime.datetime.strptime(roi_end[:10], "%Y-%m-%d")
-                    roi_start_time = datetime.time(
-                        int(roi_start[11:13]), int(roi_start[14:16])
-                    )
-                    roi_end_time = datetime.time(
-                        int(roi_end[11:13]), int(roi_end[14:16])
-                    )
+
 
                 start_date = st.date_input("Select the start date:", roi_start_date)
                 end_date = st.date_input("Select the end date:", roi_end_date)

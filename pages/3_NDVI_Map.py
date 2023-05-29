@@ -145,7 +145,7 @@ aoi = geemap.gdf_to_ee(gdf, geodesic=False)
 # else:
     # aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
 
-NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate("2022-03-01","2022-03-31").filterBounds(aoi) \
+NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(sd,ed).filterBounds(aoi) \
 .map(getNDVI).map(addDate).median()
 
 map1.centerObject(aoi)

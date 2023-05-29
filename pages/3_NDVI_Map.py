@@ -121,7 +121,7 @@ with row1_col2:
     sd = st.date_input(
         "Start date",
         date(2022, 1, 1))
-    start_date = date(2022, 1, 1)
+    start_date = "2022-01-01"
     ed = st.date_input(
         "End date",
         default_date_yesterday)

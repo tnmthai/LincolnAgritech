@@ -49,10 +49,22 @@ def addDate(image):
 
 st.title("NDVI Map")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")
+map1 = geemap.Map()
+
 data = st.file_uploader(
     "Upload a GeoJSON file to use as an ROI. Customize timelapse parameters and then click the Submit button.",
     type=["geojson", "kml", "zip"],
 )
+if data:
+    gdf = uploaded_file_to_gdf(data)
+    try:
+        st.session_state["roi"] = geemap.gdf_to_ee(gdf, geodesic=False)
+        map1.add_gdf(gdf, "ROI")
+    except Exception as e:
+        st.error(e)
+        st.error("Please draw another ROI and try again.")
+
+
 aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
 
 NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate("2022-03-01","2022-03-31").filterBounds(aoi) \
@@ -64,7 +76,7 @@ color = ['FFFFFF', 'CE7E45', 'DF923D', 'F1B555', 'FCD163', '99B718',
 pallete = {"min":0, "max":1, 'palette':color}
 
 # initialize our map
-map1 = geemap.Map()
+
 map1.centerObject(aoi, 7)
 map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI-Canterbury")
 

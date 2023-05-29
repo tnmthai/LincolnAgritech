@@ -61,6 +61,49 @@ map1 = geemap.Map(
 )
 map1.add_basemap("ROADMAP")
 
+
+import geopandas as gpd
+shp = gpd.read_file("data/nzshp/Canterbury.shp")
+gdf = shp.to_crs({'init': 'epsg:4326'}) 
+
+can = []
+for index, row in gdf.iterrows():
+    for pt in list(row['geometry'].exterior.coords): 
+        can.append(list(pt))
+
+
+shp = gpd.read_file("data/nzshp/Mitimiti.shp")
+gdf = shp.to_crs({'init': 'epsg:4326'}) 
+
+Mitimiti = []
+for index, row in gdf.iterrows():
+    for pt in list(row['geometry'].exterior.coords): 
+        Mitimiti.append(list(pt))
+
+shp = gpd.read_file("data/nzshp/Urewera.shp")
+gdf = shp.to_crs({'init': 'epsg:4326'}) 
+
+Urewera = []
+for index, row in gdf.iterrows():
+    for pt in list(row['geometry'].exterior.coords): 
+        Urewera.append(list(pt))
+
+
+landsat_rois = {
+    "Canterbury":Polygon (can),
+    "Mitimiti": Polygon(  Mitimiti  ),
+    "Te Urewera": Polygon(  Urewera  ),
+
+}
+
+roi_options = ["Uploaded GeoJSON"] + list(landsat_rois.keys())
+
+
+sample_roi = st.selectbox(
+    "Select a sample ROI or upload a GeoJSON file:",
+    roi_options,
+    index=0,
+)
 data = st.file_uploader(
     "Upload a GeoJSON file to use as an ROI. Customize timelapse parameters and then click the Submit button.",
     type=["geojson", "kml", "zip"],

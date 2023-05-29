@@ -46,7 +46,7 @@ def getNDVI(image):
 
 def addDate(image):
     img_date = ee.Date(image.date())
-    img_date = ee.Number.parse(img_date.format('YYYY-MM-dd'))
+    img_date = ee.Number.parse(img_date.format('YYYYMMdd'))
     return image.addBands(ee.Image(img_date).rename('date').toInt())
 
 color = ['FFFFFF', 'CE7E45', 'DF923D', 'F1B555', 'FCD163', '99B718',

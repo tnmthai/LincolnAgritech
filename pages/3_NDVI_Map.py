@@ -65,9 +65,10 @@ data = st.file_uploader(
 if data:
     gdf = uploaded_file_to_gdf(data)
     st.session_state["roi"] = geemap.gdf_to_ee(gdf, geodesic=False)
+    aoi = gdf
     map1.add_gdf(gdf, "ROI")
-
-aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
+else:
+    aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
 
 NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate("2022-03-01","2022-03-31").filterBounds(aoi) \
     .map(getNDVI).map(addDate).median()

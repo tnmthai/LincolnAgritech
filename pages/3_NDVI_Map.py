@@ -8,6 +8,7 @@ import warnings
 import fiona
 import geopandas as gpd
 from datetime import date, timedelta
+import datetime
 # st.set_page_config(layout="wide")
 st.set_page_config(layout="wide")
 warnings.filterwarnings("ignore")
@@ -122,11 +123,15 @@ with row1_col2:
         "Start date",
         date(2022, 1, 1))
     start_date = "2022-01-01"
+    
     ed = st.date_input(
         "End date",
         default_date_yesterday)
-    end_date = ed
     
+    end_date = ee.Date(ed)
+    end_date = ee.Number.parse(end_date.format('YYYYMMdd'))
+
+
     st.write('Your dates between:', start_date ,' and ', end_date)
 
 if sample_roi != "Uploaded GeoJSON":

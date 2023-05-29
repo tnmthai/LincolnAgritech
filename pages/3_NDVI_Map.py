@@ -128,7 +128,7 @@ with row1_col2:
         "End date",
         default_date_yesterday)
     
-    end_date = ed
+    end_date = datetime.date (ed)
     end_date = ee.Number.parse(end_date.format('YYYYMMdd'))
 
 

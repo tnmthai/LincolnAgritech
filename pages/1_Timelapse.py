@@ -26,6 +26,7 @@ import geopandas as gpd
 # for index, row in gdf.iterrows():
 #     for pt in list(row['geometry'].exterior.coords): 
 #         can.append(list(pt))
+ee_authenticate(token_name="EARTHENGINE_TOKEN")
 can = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
 
 shp = gpd.read_file("data/nzshp/Mitimiti.shp")

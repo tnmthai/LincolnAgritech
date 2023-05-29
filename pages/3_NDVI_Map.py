@@ -100,7 +100,7 @@ roi_options = ["Uploaded GeoJSON"] + list(landsat_rois.keys())
 crs = "epsg:4326"
 
 sample_roi = st.selectbox(
-    "Select a sample ROI or upload a GeoJSON file:",
+    "Select a existing ROI or upload a GeoJSON file:",
     roi_options,
     index=0,
 )

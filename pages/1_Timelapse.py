@@ -10,6 +10,7 @@ import geemap.colormaps as cm
 import geemap.foliumap as geemap
 from datetime import date
 from shapely.geometry import Polygon
+from shapely.geometry import MultiPolygon
 
 st.set_page_config(layout="wide")
 warnings.filterwarnings("ignore")
@@ -54,7 +55,7 @@ landsat_rois = {
     "Canterbury":Polygon (can),
     "Mitimiti": Polygon(  Mitimiti  ),
     "Te Urewera": Polygon(  Urewera  ),
-    "test": coordcan,
+    "test":MultiPolygon (coordcan),
 }
 
 

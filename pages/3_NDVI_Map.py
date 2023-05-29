@@ -55,6 +55,7 @@ color = ['FFFFFF', 'CE7E45', 'DF923D', 'F1B555', 'FCD163', '99B718',
 pallete = {"min":0, "max":1, 'palette':color}
 st.title("NDVI Map")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")
+ee.Initialize()
 map1 = geemap.Map(
     basemap="HYBRID",
     plugin_Draw=True,
@@ -127,10 +128,10 @@ with row1_col2:
         "End date",
         default_date_yesterday)       
     # start_date = ee.Date(sd.strftime("%Y-%m-%d"))
-    # end_date = ee.Date(ed.strftime("%Y-%m-%d"))
+    end_date = ee.Date(ed.strftime("%Y-%m-%d"))
     # st.write('start2:', start_date )
-    st.write('Your dates between', start_date ,' and ', end_date)
-
+    st.write('Your dates between', ee.Date(sd.strftime("%Y-%m-%d")) ,' and ', end_date)
+    end_date = '2022-12-31'
 if sample_roi != "Uploaded GeoJSON":
     gdf = gpd.GeoDataFrame(
         index=[0], crs=crs, geometry=[landsat_rois[sample_roi]]

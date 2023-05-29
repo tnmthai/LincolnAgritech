@@ -46,14 +46,14 @@ for index, row in gdf.iterrows():
         Urewera.append(list(pt))
 
 landsat_rois = {
-    "Canterbury": Polygon(can),
+    "Canterbury": can,
     "Mitimiti": Polygon(  Mitimiti  ),
     "Te Urewera": Polygon(  Urewera  ),
 }
 
 
 modis_rois = {
-    "Canterbury": Polygon(can),
+    "Canterbury": can,
     "Mitimiti": Polygon(  Mitimiti  ),
     "Te Urewera": Polygon(  Urewera  ),
 }

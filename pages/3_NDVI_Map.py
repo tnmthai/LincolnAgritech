@@ -47,20 +47,9 @@ def addDate(image):
     return image.addBands(ee.Image(img_date).rename('date').toInt())
 
 
-st.title("NDVI Map")
+st.title("NDVI Map Canterbury Region")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")
 
-# import geopandas as gpd
-# shp = gpd.read_file("data/nzshp/Canterbury.shp")
-# gdf = shp.to_crs({'init': 'epsg:4326'}) 
-
-# can = []
-# for index, row in gdf.iterrows():
-#     for pt in list(row['geometry'].exterior.coords): 
-#         can.append(list(pt))
-# aoi = {
-#     "Canterbury": Polygon(can),
-# }
 aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
 
 NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate("2022-03-01","2022-03-31").filterBounds(aoi) \
@@ -74,7 +63,7 @@ pallete = {"min":0, "max":1, 'palette':color}
 # initialize our map
 map1 = geemap.Map()
 map1.centerObject(aoi, 7)
-map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
+map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI-Canterbury")
 
 map1.addLayerControl()
 

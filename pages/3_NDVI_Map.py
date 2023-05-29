@@ -57,12 +57,10 @@ data = st.file_uploader(
 )
 if data:
     gdf = uploaded_file_to_gdf(data)
-    try:
-        st.session_state["roi"] = geemap.gdf_to_ee(gdf, geodesic=False)
-        map1.add_gdf(gdf, "ROI")
-    except Exception as e:
-        st.error(e)
-        st.error("Please draw another ROI and try again.")
+
+    st.session_state["roi"] = geemap.gdf_to_ee(gdf, geodesic=False)
+    map1.add_gdf(gdf, "ROI")
+
 
 
 aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()

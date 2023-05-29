@@ -3,8 +3,10 @@ import geemap
 import ee
 import geopandas as gpd
 from shapely.geometry import Polygon
-
+import warnings
+# st.set_page_config(layout="wide")
 st.set_page_config(layout="wide")
+warnings.filterwarnings("ignore")
 @st.cache_data
 def ee_authenticate(token_name="EARTHENGINE_TOKEN"):
     geemap.ee_initialize(token_name=token_name)

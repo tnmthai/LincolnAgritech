@@ -128,9 +128,9 @@ with row1_col2:
         "End date",
         default_date_yesterday)       
     # start_date = ee.Date(sd.strftime("%Y-%m-%d"))
-    end_date = ee.Date(ed.strftime("%Y-%m-%d"))
+    # end_date = ee.Date(ed.strftime("%Y-%m-%d"))
     # st.write('start2:', start_date )
-    st.write('Your dates between', ee.Date(sd.strftime("%Y-%m-%d")) ,' and ', end_date)
+    st.write('Your dates between', ee.Date(sd.strftime("%Y-%m-%d")) ,' and ')
     end_date = '2022-12-31'
 if sample_roi != "Uploaded GeoJSON":
     gdf = gpd.GeoDataFrame(

@@ -122,7 +122,7 @@ with row1_col2:
     ed = st.date_input(
         "End date",
         default_date_yesterday)
-    st.write('Date between:',sd ,' and ', ed)
+    st.write('Your dates between:',sd ,' and ', ed)
 
 if sample_roi != "Uploaded GeoJSON":
     gdf = gpd.GeoDataFrame(

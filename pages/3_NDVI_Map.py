@@ -102,6 +102,8 @@ roi_options = ["Uploaded GeoJSON"] + list(landsat_rois.keys())
 crs = "epsg:4326"
 
 row1_col1, row1_col2 = st.columns([2, 1])
+start_date = '2022-01-01'
+end_date = '2022-12-31'
 
 with row1_col1:
 
@@ -119,10 +121,12 @@ with row1_col2:
     sd = st.date_input(
         "Start date",
         date(2022, 1, 1))
+    start_date = sd
     ed = st.date_input(
         "End date",
         default_date_yesterday)
-    st.write('Your dates between:',sd ,' and ', ed)
+    end_date = ed
+    st.write('Your dates between:', start_date ,' and ', end_date)
 
 if sample_roi != "Uploaded GeoJSON":
     gdf = gpd.GeoDataFrame(
@@ -145,7 +149,7 @@ aoi = geemap.gdf_to_ee(gdf, geodesic=False)
 # else:
     # aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
 
-NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(sd,ed).filterBounds(aoi) \
+NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date,end_date).filterBounds(aoi) \
 .map(getNDVI).map(addDate).median()
 
 map1.centerObject(aoi)

@@ -101,23 +101,28 @@ landsat_rois = {
 roi_options = ["Uploaded GeoJSON"] + list(landsat_rois.keys())
 crs = "epsg:4326"
 
-sample_roi = st.selectbox(
-    "Select a existing ROI or upload a GeoJSON file:",
-    roi_options,
-    index=0,
-)
+row1_col1, row1_col2 = st.columns([2, 1])
 
-today = date.today()
+with row1_col1:
 
-default_date_yesterday = today - timedelta(days=1)
+    sample_roi = st.selectbox(
+        "Select a existing ROI or upload a GeoJSON file:",
+        roi_options,
+        index=0,
+    )
+with row1_col2:
+    today = date.today()
 
-sd = st.date_input(
-    "Start date",
-    date(2022, 1, 1))
-ed = st.date_input(
-    "End date",
-    default_date_yesterday)
-st.write('Date between:',sd ,' and ', ed)
+    default_date_yesterday = today - timedelta(days=1)
+
+
+    sd = st.date_input(
+        "Start date",
+        date(2022, 1, 1))
+    ed = st.date_input(
+        "End date",
+        default_date_yesterday)
+    st.write('Date between:',sd ,' and ', ed)
 
 if sample_roi != "Uploaded GeoJSON":
     gdf = gpd.GeoDataFrame(

@@ -115,13 +115,12 @@ elif sample_roi == "Uploaded GeoJSON":
         "Upload a GeoJSON file to use as an ROI. Customize timelapse parameters and then click the Submit button.",
         type=["geojson", "kml", "zip"],
     )
-
-if data:
-    gdf = uploaded_file_to_gdf(data)
-    st.session_state["aoi"] = geemap.gdf_to_ee(gdf, geodesic=False)    
-    map1.add_gdf(gdf, "ROI")
-else:
-    aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
+    if data:
+        gdf = uploaded_file_to_gdf(data)
+        st.session_state["aoi"] = geemap.gdf_to_ee(gdf, geodesic=False)    
+        map1.add_gdf(gdf, "ROI")
+    else:
+        aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
 aoi = geemap.gdf_to_ee(gdf, geodesic=False)
 # else:
     # aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()

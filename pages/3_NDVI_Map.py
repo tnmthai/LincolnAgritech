@@ -121,7 +121,7 @@ elif sample_roi == "Uploaded GeoJSON":
         map1.add_gdf(gdf, "ROI")
     else:
         aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
-# aoi = geemap.gdf_to_ee(gdf, geodesic=False)
+aoi = geemap.gdf_to_ee(gdf, geodesic=False)
 # else:
     # aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
 

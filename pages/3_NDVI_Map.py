@@ -67,7 +67,7 @@ if data:
     st.session_state["aoi"] = geemap.gdf_to_ee(gdf, geodesic=False)
     
     map1.add_gdf(gdf, "ROI")
-    aoi = gdf
+    aoi = geemap.gdf_to_ee(gdf, geodesic=False)
 else:
     aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
 

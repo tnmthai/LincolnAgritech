@@ -128,6 +128,7 @@ with row1_col2:
         default_date_yesterday)       
     start_date = ee.Date(sd.strftime("%Y-%m-%d"))
     end_date = ee.Date(ed.strftime("%Y-%m-%d"))
+    st.write('start2:', start_date )
     st.write('Your dates between', start_date ,' and ', end_date)
 
 if sample_roi != "Uploaded GeoJSON":

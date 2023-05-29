@@ -130,6 +130,7 @@ with row1_col2:
     # start_date = ee.Date(sd.strftime("%Y-%m-%d"))
     # end_date = ee.Date(ed.strftime("%Y-%m-%d"))
     # st.write('start2:', start_date )
+    start_date = sd.strftime("%Y-%m-%d") + "T" 
     st.write('Your dates between', start_date ,' and ')
     end_date = '2022-12-31'
 if sample_roi != "Uploaded GeoJSON":

@@ -59,7 +59,7 @@ map1 = geemap.Map(
     locate_control=True,
     plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
 )
-map1.add_basemap("ROADMAP")
+# map1.add_basemap("ROADMAP")
 
 
 import geopandas as gpd

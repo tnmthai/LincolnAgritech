@@ -97,13 +97,20 @@ landsat_rois = {
 }
 
 roi_options = ["Uploaded GeoJSON"] + list(landsat_rois.keys())
-
+crs = "epsg:4326"
 
 sample_roi = st.selectbox(
     "Select a sample ROI or upload a GeoJSON file:",
     roi_options,
     index=0,
 )
+if sample_roi != "Uploaded GeoJSON":
+    gdf = gpd.GeoDataFrame(
+        index=[0], crs=crs, geometry=[landsat_rois[sample_roi]]
+    )
+    map1.add_gdf(gdf, "ROI")
+    aoi = geemap.gdf_to_ee(gdf, geodesic=False)
+            
 data = st.file_uploader(
     "Upload a GeoJSON file to use as an ROI. Customize timelapse parameters and then click the Submit button.",
     type=["geojson", "kml", "zip"],

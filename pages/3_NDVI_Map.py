@@ -64,7 +64,7 @@ data = st.file_uploader(
 )
 if data:
     gdf = uploaded_file_to_gdf(data)
-    st.session_state["roi"] = geemap.gdf_to_ee(gdf, geodesic=False)
+    st.session_state["aoi"] = geemap.gdf_to_ee(gdf, geodesic=False)
     
     map1.add_gdf(gdf, "ROI")
     # aoi = gdf

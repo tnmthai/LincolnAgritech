@@ -54,7 +54,6 @@ map1.centerObject(aoi, 7)
 map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
 
 map1.addLayerControl()
-map1
-
+# map1
 map1.to_streamlit(height=700)
 

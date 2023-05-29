@@ -1,5 +1,6 @@
 import streamlit as st
-import geemap
+# import geemap
+import geemap.foliumap as geemap
 import ee
 import geopandas as gpd
 from shapely.geometry import Polygon
@@ -27,9 +28,9 @@ def addDate(image):
 st.title("NDVI Map")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")
 
-import geopandas as gpd
-shp = gpd.read_file("data/nzshp/Canterbury.shp")
-gdf = shp.to_crs({'init': 'epsg:4326'}) 
+# import geopandas as gpd
+# shp = gpd.read_file("data/nzshp/Canterbury.shp")
+# gdf = shp.to_crs({'init': 'epsg:4326'}) 
 
 can = []
 for index, row in gdf.iterrows():

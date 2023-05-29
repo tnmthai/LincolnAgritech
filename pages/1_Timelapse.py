@@ -55,7 +55,7 @@ landsat_rois = {
     "Canterbury":Polygon (can),
     "Mitimiti": Polygon(  Mitimiti  ),
     "Te Urewera": Polygon(  Urewera  ),
-    "test":MultiPolygon (coordcan),
+    "test":MultiPolygon (coordcan[0]),
 }
 
 

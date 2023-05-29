@@ -128,7 +128,7 @@ aoi = geemap.gdf_to_ee(gdf, geodesic=False)
 NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate("2022-03-01","2022-03-31").filterBounds(aoi) \
 .map(getNDVI).map(addDate).max()
 
-map1.centerObject(aoi, 7)
+map1.centerObject(aoi)
 map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
 
 map1.addLayerControl()

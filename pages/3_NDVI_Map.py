@@ -49,7 +49,10 @@ def addDate(image):
 
 st.title("NDVI Map")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")
-
+data = st.file_uploader(
+    "Upload a GeoJSON file to use as an ROI. Customize timelapse parameters and then click the Submit button.",
+    type=["geojson", "kml", "zip"],
+)
 aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
 
 NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate("2022-03-01","2022-03-31").filterBounds(aoi) \

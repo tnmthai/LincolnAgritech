@@ -49,7 +49,7 @@ def addDate(image):
     return image.addBands(ee.Image(img_date).rename('date').toInt())
 
 
-st.title("NDVI Map")
+# st.title("NDVI Map")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")
 
 aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
@@ -181,11 +181,11 @@ def app():
 
             m.to_streamlit(height=600)
 # initialize our map
-map1 = geemap.Map()
-map1.centerObject(aoi, 7)
-map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
+    map1 = geemap.Map()
+    map1.centerObject(aoi, 7)
+    map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
 
-map1.addLayerControl()
+    map1.addLayerControl()
 
-map1.to_streamlit(height=700)
+    map1.to_streamlit(height=700)
 

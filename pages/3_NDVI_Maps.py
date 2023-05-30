@@ -206,7 +206,7 @@ graph_ndvi = st.checkbox('Show NDVI graph')
 if graph_ndvi:
     
     image_ids = NDVI_plot.aggregate_array('system:index').getInfo()
-    image_ids
+    # image_ids
     dates = []
     ndvi_values = []
     # Iterate over the image IDs

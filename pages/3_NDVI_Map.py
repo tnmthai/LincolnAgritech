@@ -132,8 +132,8 @@ with row1_col1:
         index=0,
     )
 
-slider = cols1.slider('Select date', min_value=s_date, value=e_date ,max_value=e_date, format=format)    
-st.write(slider)
+
+
 with row1_col2:
     today = date.today()
 
@@ -155,7 +155,12 @@ with row1_col2:
     end_date = ed.strftime("%Y-%m-%d") + "T" 
     months = [dt.strftime("%m-%Y") for dt in rrule(MONTHLY, dtstart=sd, until=ed)]
     # st.write(months)    
-        
+mo = st.select_slider(
+    'Select a month',
+    options=months
+    )
+st.write('Selected month:', mo)
+
 if sample_roi != "Uploaded GeoJSON":
     gdf = gpd.GeoDataFrame(
         index=[0], crs=crs, geometry=[landsat_rois[sample_roi]]

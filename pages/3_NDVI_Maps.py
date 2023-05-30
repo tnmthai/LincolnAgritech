@@ -222,7 +222,7 @@ if graph_ndvi:
             st.session_state["ndvi_value"] = ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi, scale=10).get('NDVI').getInfo()
         except Exception as e:
             st.error(e)
-            st.error("Please select additional dates!")
+            st.error("Please select smaller polygon!")
 
         # Add the date and NDVI value to the lists
         dates.append(date.getInfo())

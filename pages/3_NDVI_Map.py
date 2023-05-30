@@ -33,6 +33,18 @@ def uploaded_file_to_gdf(data):
         gdf = gpd.read_file(file_path)
 
     return gdf
+def maskCloudAndShadows(image):
+  cloudProb = image.select('MSK_CLDPRB')
+  snowProb = image.select('MSK_SNWPRB')
+  cloud = cloudProb.lt(5)
+  snow = snowProb.lt(5)
+  scl = image.select('SCL')
+  shadow = scl.eq(3); # 3 = cloud shadow
+  cirrus = scl.eq(10); # 10 = cirrus
+  # Cloud probability less than 5% or cloud shadow classification
+  mask = (cloud.And(snow)).And(cirrus.neq(1)).And(shadow.neq(1))
+  return image.updateMask(mask)
+
 
 def ee_authenticate(token_name="EARTHENGINE_TOKEN"):
     geemap.ee_initialize(token_name=token_name)
@@ -154,8 +166,9 @@ aoi = geemap.gdf_to_ee(gdf, geodesic=False)
 # else:
     # aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
 
-NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi) \
-.map(getNDVI).map(addDate).median()
+# NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi) \
+# .map(getNDVI).map(addDate).median()
+NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
 
 map1.centerObject(aoi)
 map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")

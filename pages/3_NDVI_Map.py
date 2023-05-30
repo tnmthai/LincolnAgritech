@@ -7,7 +7,7 @@ from shapely.geometry import Polygon
 import warnings
 import fiona
 import geopandas as gpd
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 import datetime
 from dateutil.rrule import rrule, MONTHLY
 from dateutil.relativedelta import relativedelta # to add days or years
@@ -119,11 +119,8 @@ cols1,_ = st.beta_columns((1,2)) # To make it narrower
 row1_col1, row1_col2 = st.columns([2, 1])
 start_date = '2022-01-01'
 end_date = '2022-12-31'
-format = 'MMM DD, YYYY'  # format output
 
-s_date = datetime.date(year=2021,month=1,day=1)-relativedelta(years=2)  #  I need some range in the past
-e_date = datetime.datetime.now().date()-relativedelta(years=2)
-max_days = e_date-s_date
+
 with row1_col2:
     today = date.today()
 

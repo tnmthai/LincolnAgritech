@@ -224,10 +224,10 @@ for image_id in image_ids:
 df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
 
 # # Convert the 'Date' column to datetime format
-df['Date'] = pd.to_datetime(df['Date'])
+# df['Date'] = pd.to_datetime(df['Date'])
 
 # Sort the DataFrame by date
-df.sort_values(by='Date', inplace=True)
+# df.sort_values(by='Date', inplace=True)
 st.line_chart(df, y="NDVI", x="Date")
 
 map1.centerObject(aoi)

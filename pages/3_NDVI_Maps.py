@@ -207,7 +207,7 @@ with row1_col1:
             st.write('Selected date:', ad)
            
             start_date = ad
-            end_date = ad
+            end_date = start_date + timedelta(days=1)
             
     #     NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
     #     NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
@@ -226,8 +226,6 @@ areas = geemap.ee_to_gdf(aoi)
 # Calculate the area of the polygon
 area = areas.geometry.area.item()
 st.write('Area: ', round(area*10**4,1),' Square Kilometers.')
-
-
 
 graph_ndvi = st.checkbox('Show NDVI graph')
 if graph_ndvi:    

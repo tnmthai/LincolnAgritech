@@ -123,17 +123,6 @@ format = 'MMM DD, YYYY'  # format output
 s_date = datetime.date(year=2021,month=1,day=1)-relativedelta(years=2)  #  I need some range in the past
 e_date = datetime.datetime.now().date()-relativedelta(years=2)
 max_days = e_date-s_date
-
-with row1_col1:
-
-    sample_roi = st.selectbox(
-        "Select a existing ROI or upload a GeoJSON file:",
-        roi_options,
-        index=0,
-    )
-
-
-
 with row1_col2:
     today = date.today()
 
@@ -151,13 +140,21 @@ with row1_col2:
         min_value= date(2015, 6, 23),max_value= today)       
     
     st.write('Dates between', sd ,' and ', ed)
+
 start_date = sd.strftime("%Y-%m-%d") + "T" 
 end_date = ed.strftime("%Y-%m-%d") + "T" 
 months = [dt.strftime("%m-%Y") for dt in rrule(MONTHLY, dtstart=sd, until=ed)]
 
-agree = st.checkbox('Select a month between ' + str(sd))
-if agree:
-    st.write('Great!')
+with row1_col1:
+
+    sample_roi = st.selectbox(
+        "Select a existing ROI or upload a GeoJSON file:",
+        roi_options,
+        index=0,
+    )
+    agree = st.checkbox('Select a month between ' + str(sd) + ' and '+ str(ed))
+    if agree:
+        st.write('Great!')
 
 mo = st.select_slider(
     'Select a month',

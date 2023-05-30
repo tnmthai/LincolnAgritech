@@ -144,7 +144,7 @@ with row1_col2:
     st.write('Dates between', sd ,' and ', ed)
     start_date = sd.strftime("%Y-%m-%d") + "T" 
     end_date = ed.strftime("%Y-%m-%d") + "T" 
-    months = [dt.strftime("%m-%Y") for dt in rrule(MONTHLY, dtstart=start_date, until=end_date)]
+    months = [dt.strftime("%m-%Y") for dt in rrule(MONTHLY, dtstart=sd, until=ed)]
     st.write(months)    
         
 if sample_roi != "Uploaded GeoJSON":

@@ -209,7 +209,7 @@ ndvi_values = []
 # Iterate over the image IDs
 for image_id in image_ids:
     # Get the image by ID
-    image = collection.filter(ee.Filter.eq('system:index', image_id)).first()   
+    image = NDVI_plot.filter(ee.Filter.eq('system:index', image_id)).first()   
     
     # Get the image date and NDVI value
     date = image.date().format('yyyy-MM-dd')

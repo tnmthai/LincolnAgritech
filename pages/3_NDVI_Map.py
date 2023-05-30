@@ -154,7 +154,10 @@ with row1_col2:
     start_date = sd.strftime("%Y-%m-%d") + "T" 
     end_date = ed.strftime("%Y-%m-%d") + "T" 
     months = [dt.strftime("%m-%Y") for dt in rrule(MONTHLY, dtstart=sd, until=ed)]
-    # st.write(months)    
+agree = st.checkbox('Select a month between ', sd, ' and ', ed)
+if agree:
+    st.write('Great!')
+
 mo = st.select_slider(
     'Select a month',
     options=months

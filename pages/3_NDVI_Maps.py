@@ -228,7 +228,7 @@ df['Date'] = pd.to_datetime(df['Date'])
 
 # Sort the DataFrame by date
 df.sort_values(by='Date', inplace=True)
-st.line_chart(df)
+st.line_chart(df, x="NDVI", y="Date")
 
 map1.centerObject(aoi)
 try:

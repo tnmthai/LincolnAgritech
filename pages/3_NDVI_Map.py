@@ -151,13 +151,13 @@ with row1_col2:
         min_value= date(2015, 6, 23),max_value= today)       
     
     st.write('Dates between', sd ,' and ', ed)
-    start_date = sd.strftime("%Y-%m-%d") + "T" 
-    end_date = ed.strftime("%Y-%m-%d") + "T" 
-    months = [dt.strftime("%m-%Y") for dt in rrule(MONTHLY, dtstart=sd, until=ed)]
+start_date = sd.strftime("%Y-%m-%d") + "T" 
+end_date = ed.strftime("%Y-%m-%d") + "T" 
+months = [dt.strftime("%m-%Y") for dt in rrule(MONTHLY, dtstart=sd, until=ed)]
 
-    agree = st.checkbox('Select a month between ')
-    if agree:
-        st.write('Great!')
+agree = st.checkbox('Select a month between ', start_date)
+if agree:
+    st.write('Great!')
 
 mo = st.select_slider(
     'Select a month',

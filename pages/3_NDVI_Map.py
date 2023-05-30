@@ -10,6 +10,7 @@ import geopandas as gpd
 from datetime import date, timedelta
 import datetime
 from dateutil.rrule import rrule, MONTHLY
+from dateutil.relativedelta import relativedelta # to add days or years
 
 # st.set_page_config(layout="wide")
 st.set_page_config(layout="wide")
@@ -113,10 +114,15 @@ landsat_rois = {
 
 roi_options = ["Uploaded GeoJSON"] + list(landsat_rois.keys())
 crs = "epsg:4326"
-
+cols1,_ = st.beta_columns((1,2)) # To make it narrower
 row1_col1, row1_col2 = st.columns([2, 1])
 start_date = '2022-01-01'
 end_date = '2022-12-31'
+format = 'MMM DD, YYYY'  # format output
+
+s_date = datetime.date(year=2021,month=1,day=1)-relativedelta(years=2)  #  I need some range in the past
+e_date = datetime.datetime.now().date()-relativedelta(years=2)
+max_days = end_date-start_date
 
 with row1_col1:
 
@@ -125,6 +131,10 @@ with row1_col1:
         roi_options,
         index=0,
     )
+
+    slider = cols1.slider('Select date', min_value=start_date, value=end_date ,max_value=end_date, format=format)    
+
+
 with row1_col2:
     today = date.today()
 
@@ -145,7 +155,7 @@ with row1_col2:
     start_date = sd.strftime("%Y-%m-%d") + "T" 
     end_date = ed.strftime("%Y-%m-%d") + "T" 
     months = [dt.strftime("%m-%Y") for dt in rrule(MONTHLY, dtstart=sd, until=ed)]
-    st.write(months)    
+    # st.write(months)    
         
 if sample_roi != "Uploaded GeoJSON":
     gdf = gpd.GeoDataFrame(

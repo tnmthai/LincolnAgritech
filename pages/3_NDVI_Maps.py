@@ -120,7 +120,7 @@ landsat_rois = {
 
 roi_options = ["Uploaded GeoJSON"] + list(landsat_rois.keys())
 crs = "epsg:4326"
-cols1,_ = st.beta_columns((1,2)) # To make it narrower
+cols1,_ = st.columns((1,2)) # To make it narrower
 row1_col1, row1_col2 = st.columns([2, 1])
 start_date = '2022-01-01'
 end_date = '2022-12-31'
@@ -244,12 +244,7 @@ try:
 except Exception as e:
     st.error(e)
     st.error("Please select additional dates!")
-    
 
-# try:    
-#     map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
-# except ValueError:
-#     print("Please choose more dates!!!")
 
 map1.addLayerControl()
 

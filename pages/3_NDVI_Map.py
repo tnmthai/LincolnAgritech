@@ -172,10 +172,17 @@ aoi = geemap.gdf_to_ee(gdf, geodesic=False)
     
 NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
 map1.centerObject(aoi)
-try:    
-    map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
-except ValueError:
-    print("Please choose more dates!!!")
+try:
+    st.session_state["roi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
+except Exception as e:
+    st.error(e)
+    st.error("Please choose more dates!!!")
+    
+
+# try:    
+#     map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
+# except ValueError:
+#     print("Please choose more dates!!!")
 
 map1.addLayerControl()
 

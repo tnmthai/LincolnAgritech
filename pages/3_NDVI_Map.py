@@ -155,7 +155,7 @@ with row1_col2:
     end_date = ed.strftime("%Y-%m-%d") + "T" 
     months = [dt.strftime("%m-%Y") for dt in rrule(MONTHLY, dtstart=sd, until=ed)]
 
-    agree = st.checkbox('Select a month between ', sd, ' and ', ed)
+    agree = st.checkbox('Select a month between ')
     if agree:
         st.write('Great!')
 

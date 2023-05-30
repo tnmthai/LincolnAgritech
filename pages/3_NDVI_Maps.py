@@ -206,7 +206,8 @@ with row1_col1:
                 )
             st.write('Selected date:', ad)
            
-            start_date = ad.strftime("%Y-%m-%d")
+            start_date = datetime.strptime(ad, "%Y-%m-%d")
+ 
             next_date = start_date + timedelta(days=1)
             end_date.strftime("%Y-%m-%d")
             

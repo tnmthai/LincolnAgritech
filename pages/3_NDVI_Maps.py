@@ -263,7 +263,8 @@ map1.centerObject(aoi)
 try:
     st.session_state["ndvi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
 except Exception as e:
-    st.error(e)
+    # st.error(e)
+    st.error("Too much cloud on this day.")
     st.error("Please select additional dates!")
 
 

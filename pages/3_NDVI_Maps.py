@@ -203,7 +203,7 @@ NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_da
 NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
 
 image_ids = NDVI_plot.aggregate_array('system:index').getInfo()
-
+image_ids
 dates = []
 ndvi_values = []
 # Iterate over the image IDs

@@ -122,7 +122,7 @@ format = 'MMM DD, YYYY'  # format output
 
 s_date = datetime.date(year=2021,month=1,day=1)-relativedelta(years=2)  #  I need some range in the past
 e_date = datetime.datetime.now().date()-relativedelta(years=2)
-max_days = end_date-start_date
+max_days = e_date-s_date
 
 with row1_col1:
 

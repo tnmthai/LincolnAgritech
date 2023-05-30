@@ -195,12 +195,14 @@ with row1_col1:
         adate = st.checkbox('Select a date between ' + str(start_date) + ' and '+ str(end_date))
         collect_date = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi)
         image_ids = collect_date.aggregate_array('system:index').getInfo()
+        dates = [image_id.split('_')[0][:8] for image_id in image_ids]
+        listdates = [date[:4] + '-' + date[4:6] + '-' + date[6:] for date in dates]
 
         if adate:
             # st.write('Great!')
             ad = st.select_slider(
                 'Select a date',
-                options=image_ids
+                options=listdates
                 )
             st.write('Selected date:', ad)
 

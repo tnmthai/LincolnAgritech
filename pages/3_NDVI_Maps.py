@@ -204,7 +204,7 @@ NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_da
 # ndvi_values = NDVI_plot.sample(scale=10).first().get('NDVI')
 
 # Convert NDVI values to pandas DataFrame
-ndvi_df = geemap.ee_to_pandas(NDVI_data.clip(aoi).select('NDVI'))
+ndvi_df = geemap.ee_to_pandas(selectors=[NDVI_plot, "NDVI"])
 st.line_chart(ndvi_df)
 map1.centerObject(aoi)
 try:

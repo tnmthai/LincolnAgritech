@@ -133,7 +133,7 @@ with row1_col2:
 
 
     sd = st.date_input(
-        "Start date", date(2022, 1, 1), min_value= date(2015, 6, 23)
+        "Start date", date(2022, 1, 1), min_value= date(2015, 6, 23),
         max_value= today,
         )
     # st.write('start:', sd.strftime("%Y-%m-%d") )

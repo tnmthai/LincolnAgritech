@@ -214,8 +214,13 @@ for image_id in image_ids:
     # Get the image date and NDVI value
     date = image.date().format('yyyy-MM-dd')
     # print(date)
-    ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi, scale=10).get('NDVI').getInfo()
-    
+    # ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi, scale=10).get('NDVI').getInfo()
+    try:
+        st.session_state["ndvi_value"] = ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi, scale=10).get('NDVI').getInfo()
+    except Exception as e:
+        st.error(e)
+        st.error("Please select additional dates!")
+
     # Add the date and NDVI value to the lists
     dates.append(date.getInfo())
     ndvi_values.append(ndvi_value)

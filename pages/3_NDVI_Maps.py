@@ -207,7 +207,7 @@ areas = geemap.ee_to_gdf(aoi)
 
 # Calculate the area of the polygon
 area = areas.geometry.area.item()
-st.write(round(area*10**4,1))
+st.write('Area: ', round(area*10**4,1),' square kilometer.')
 
 
 

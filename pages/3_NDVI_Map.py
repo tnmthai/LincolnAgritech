@@ -133,14 +133,14 @@ with row1_col2:
 
 
     sd = st.date_input(
-        "Start date", date(2022, 1, 1),
+        "Start date", date(2022, 1, 1), min_value= date(2015, 6, 23)
         max_value= today,
         )
     # st.write('start:', sd.strftime("%Y-%m-%d") )
     ed = st.date_input(
         "End date",
         default_date_yesterday,
-        min_value= date(2015, 6, 23),)       
+        min_value= date(2015, 6, 23),max_value= today)       
     
     st.write('Dates between', sd ,' and ', ed)
     start_date = sd.strftime("%Y-%m-%d") + "T" 

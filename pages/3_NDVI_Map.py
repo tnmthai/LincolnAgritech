@@ -154,13 +154,12 @@ with row1_col1:
     )
     agree = st.checkbox('Select a month between ' + str(sd) + ' and '+ str(ed))
     if agree:
-        st.write('Great!')
-
-mo = st.select_slider(
-    'Select a month',
-    options=months
-    )
-st.write('Selected month:', mo)
+        # st.write('Great!')
+        mo = st.select_slider(
+            'Select a month',
+            options=months
+            )
+        st.write('Selected month:', mo)
 
 if sample_roi != "Uploaded GeoJSON":
     gdf = gpd.GeoDataFrame(

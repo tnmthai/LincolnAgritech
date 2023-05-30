@@ -9,6 +9,8 @@ import fiona
 import geopandas as gpd
 from datetime import date, timedelta
 import datetime
+from dateutil.rrule import rrule, MONTHLY
+
 # st.set_page_config(layout="wide")
 st.set_page_config(layout="wide")
 warnings.filterwarnings("ignore")
@@ -75,9 +77,6 @@ map1 = geemap.Map(
     locate_control=True,
     plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
 )
-# map1.add_basemap("ROADMAP")
-
-
 
 shp = gpd.read_file("data/nzshp/Canterbury.shp")
 gdf = shp.to_crs({'init': 'epsg:4326'}) 
@@ -145,8 +144,9 @@ with row1_col2:
     st.write('Dates between', sd ,' and ', ed)
     start_date = sd.strftime("%Y-%m-%d") + "T" 
     end_date = ed.strftime("%Y-%m-%d") + "T" 
-    
-    
+    months = [dt.strftime("%m-%Y") for dt in rrule(MONTHLY, dtstart=start_date, until=end_date)]
+    st.write(months)    
+        
 if sample_roi != "Uploaded GeoJSON":
     gdf = gpd.GeoDataFrame(
         index=[0], crs=crs, geometry=[landsat_rois[sample_roi]]
@@ -175,7 +175,7 @@ aoi = geemap.gdf_to_ee(gdf, geodesic=False)
 NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
 map1.centerObject(aoi)
 try:
-    st.session_state["roi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
+    st.session_state["ndvi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
 except Exception as e:
     st.error(e)
     st.error("Please select additional dates!")
@@ -189,4 +189,3 @@ except Exception as e:
 map1.addLayerControl()
 
 map1.to_streamlit(height=700)
-

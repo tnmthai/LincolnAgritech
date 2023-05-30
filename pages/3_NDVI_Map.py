@@ -131,8 +131,9 @@ with row1_col2:
     # end_date = ee.Date(ed.strftime("%Y-%m-%d"))
     # st.write('start2:', start_date )
     start_date = sd.strftime("%Y-%m-%d") + "T" 
-    st.write('Your dates between', start_date ,' and ')
     end_date = ed.strftime("%Y-%m-%d") + "T" 
+    st.write('Your dates between', start_date ,' and ', end_date)
+    
 if sample_roi != "Uploaded GeoJSON":
     gdf = gpd.GeoDataFrame(
         index=[0], crs=crs, geometry=[landsat_rois[sample_roi]]

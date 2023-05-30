@@ -151,6 +151,23 @@ with row1_col1:
         roi_options,
         index=0,
     )
+    if sample_roi != "Uploaded GeoJSON":
+        gdf = gpd.GeoDataFrame(
+            index=[0], crs=crs, geometry=[landsat_rois[sample_roi]]
+        )
+        # map1.add_gdf(gdf, "ROI")
+        aoi = geemap.gdf_to_ee(gdf, geodesic=False)
+    elif sample_roi == "Uploaded GeoJSON":
+        data = st.file_uploader(
+            "Upload a GeoJSON file to use as an ROI. Customize timelapse parameters and then click the Submit button.",
+            type=["geojson", "kml", "zip"],
+        )
+        if data:
+            gdf = uploaded_file_to_gdf(data)
+            st.session_state["aoi"] = geemap.gdf_to_ee(gdf, geodesic=False)    
+            # map1.add_gdf(gdf, "ROI")
+        else:
+            aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
     agree = st.checkbox('Select a month between ' + str(sd) + ' and '+ str(ed))
     if agree:
         # st.write('Great!')
@@ -173,26 +190,12 @@ with row1_col1:
         end_date = datetime(year, month, last_day).strftime("%Y-%m-%d")
         st.write('Dates between', start_date ,' and ', end_date)
         NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
+        NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
     else:
         NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
+        NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
 
-    if sample_roi != "Uploaded GeoJSON":
-        gdf = gpd.GeoDataFrame(
-            index=[0], crs=crs, geometry=[landsat_rois[sample_roi]]
-        )
-        # map1.add_gdf(gdf, "ROI")
-        aoi = geemap.gdf_to_ee(gdf, geodesic=False)
-    elif sample_roi == "Uploaded GeoJSON":
-        data = st.file_uploader(
-            "Upload a GeoJSON file to use as an ROI. Customize timelapse parameters and then click the Submit button.",
-            type=["geojson", "kml", "zip"],
-        )
-        if data:
-            gdf = uploaded_file_to_gdf(data)
-            st.session_state["aoi"] = geemap.gdf_to_ee(gdf, geodesic=False)    
-            # map1.add_gdf(gdf, "ROI")
-        else:
-            aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
+    
 map1.add_gdf(gdf, "ROI")
 aoi = geemap.gdf_to_ee(gdf, geodesic=False)
 # else:
@@ -201,7 +204,7 @@ aoi = geemap.gdf_to_ee(gdf, geodesic=False)
 # NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi) \
 # .map(getNDVI).map(addDate).median()
 
-NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
+
 
 graph_ndvi = st.checkbox('Show NDVI graph')
 if graph_ndvi:    
@@ -230,12 +233,6 @@ if graph_ndvi:
 
     # # Create a pandas DataFrame from the lists
     df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
-
-    # # Convert the 'Date' column to datetime format
-    # df['Date'] = pd.to_datetime(df['Date'])
-
-    # Sort the DataFrame by date
-    # df.sort_values(by='Date', inplace=True)
     st.line_chart(df, y="NDVI", x="Date")
 
 map1.centerObject(aoi)

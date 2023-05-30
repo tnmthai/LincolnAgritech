@@ -202,38 +202,41 @@ aoi = geemap.gdf_to_ee(gdf, geodesic=False)
 NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
 NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
 
-image_ids = NDVI_plot.aggregate_array('system:index').getInfo()
-image_ids
-dates = []
-ndvi_values = []
-# Iterate over the image IDs
-for image_id in image_ids:
-    # Get the image by ID
-    image = NDVI_plot.filter(ee.Filter.eq('system:index', image_id)).first()   
+graph_ndvi = st.checkbox('Show NDVI graph')
+if graph_ndvi:
     
-    # Get the image date and NDVI value
-    date = image.date().format('yyyy-MM-dd')
-    # print(date)
-    # ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi, scale=10).get('NDVI').getInfo()
-    try:
-        st.session_state["ndvi_value"] = ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi, scale=10).get('NDVI').getInfo()
-    except Exception as e:
-        st.error(e)
-        st.error("Please select additional dates!")
+    image_ids = NDVI_plot.aggregate_array('system:index').getInfo()
+    image_ids
+    dates = []
+    ndvi_values = []
+    # Iterate over the image IDs
+    for image_id in image_ids:
+        # Get the image by ID
+        image = NDVI_plot.filter(ee.Filter.eq('system:index', image_id)).first()   
+        
+        # Get the image date and NDVI value
+        date = image.date().format('yyyy-MM-dd')
+        # print(date)
+        # ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi, scale=10).get('NDVI').getInfo()
+        try:
+            st.session_state["ndvi_value"] = ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi, scale=10).get('NDVI').getInfo()
+        except Exception as e:
+            st.error(e)
+            st.error("Please select additional dates!")
 
-    # Add the date and NDVI value to the lists
-    dates.append(date.getInfo())
-    ndvi_values.append(ndvi_value)
+        # Add the date and NDVI value to the lists
+        dates.append(date.getInfo())
+        ndvi_values.append(ndvi_value)
 
-# # Create a pandas DataFrame from the lists
-df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
+    # # Create a pandas DataFrame from the lists
+    df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
 
-# # Convert the 'Date' column to datetime format
-# df['Date'] = pd.to_datetime(df['Date'])
+    # # Convert the 'Date' column to datetime format
+    # df['Date'] = pd.to_datetime(df['Date'])
 
-# Sort the DataFrame by date
-# df.sort_values(by='Date', inplace=True)
-st.line_chart(df, y="NDVI", x="Date")
+    # Sort the DataFrame by date
+    # df.sort_values(by='Date', inplace=True)
+    st.line_chart(df, y="NDVI", x="Date")
 
 map1.centerObject(aoi)
 try:

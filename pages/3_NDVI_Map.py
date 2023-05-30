@@ -175,8 +175,8 @@ map1.centerObject(aoi)
 try:
     st.session_state["roi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
 except Exception as e:
-    st.error(e)
-    st.error("Please choose more dates!!!")
+    st.error(e + "Please select additional dates!")
+    
     
 
 # try:    

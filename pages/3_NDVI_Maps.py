@@ -172,6 +172,9 @@ with row1_col1:
         # Create the end date for the month
         end_date = datetime(year, month, last_day).strftime("%Y-%m-%d")
         st.write('Dates between', start_date ,' and ', end_date)
+        NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
+    else:
+        NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
 
     if sample_roi != "Uploaded GeoJSON":
         gdf = gpd.GeoDataFrame(
@@ -198,13 +201,10 @@ aoi = geemap.gdf_to_ee(gdf, geodesic=False)
 # NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi) \
 # .map(getNDVI).map(addDate).median()
 
-    
-NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
 NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
 
 graph_ndvi = st.checkbox('Show NDVI graph')
-if graph_ndvi:
-    
+if graph_ndvi:    
     image_ids = NDVI_plot.aggregate_array('system:index').getInfo()
     # image_ids
     dates = []

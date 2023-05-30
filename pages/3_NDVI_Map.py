@@ -168,10 +168,14 @@ aoi = geemap.gdf_to_ee(gdf, geodesic=False)
 
 # NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi) \
 # .map(getNDVI).map(addDate).median()
-NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
 
-map1.centerObject(aoi)
-map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
+    
+NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
+try:
+    map1.centerObject(aoi)
+    map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
+except ValueError:
+    print("Please choose more dates!!!")
 
 map1.addLayerControl()
 

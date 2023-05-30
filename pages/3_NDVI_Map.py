@@ -12,6 +12,7 @@ import datetime
 from dateutil.rrule import rrule, MONTHLY
 from dateutil.relativedelta import relativedelta # to add days or years
 import pandas as pd
+import calendar
 # st.set_page_config(layout="wide")
 st.set_page_config(layout="wide")
 warnings.filterwarnings("ignore")
@@ -160,6 +161,18 @@ with row1_col1:
             options=months
             )
         st.write('Selected month:', mo)
+        # Convert month string to datetime object
+        month_date = datetime.strptime(mo, "%m-%Y")
+
+        # Extract year and month from the datetime object
+        year = month_date.year
+        month = month_date.month
+
+        # Create start_date and end_date based on the given month
+        start_date = datetime(year, month, 1).strftime("%Y-%m-%d")
+        last_day = calendar.monthrange(year, month)[1]
+        # Create the end date for the month
+        end_date = datetime(year, month, last_day).strftime("%Y-%m-%d")
 
 if sample_roi != "Uploaded GeoJSON":
     gdf = gpd.GeoDataFrame(

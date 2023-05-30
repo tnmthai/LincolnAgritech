@@ -164,7 +164,7 @@ with row1_col1:
         )
         if data:
             gdf = uploaded_file_to_gdf(data)
-            st.session_state["aoi"] = geemap.gdf_to_ee(gdf, geodesic=False)    
+            st.session_state["aoi"] = aoi= geemap.gdf_to_ee(gdf, geodesic=False)    
             # map1.add_gdf(gdf, "ROI")
         else:
             aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()

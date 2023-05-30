@@ -133,7 +133,7 @@ with row1_col1:
     )
 
 slider = cols1.slider('Select date', min_value=s_date, value=e_date ,max_value=e_date, format=format)    
-
+st.write(slider)
 with row1_col2:
     today = date.today()
 

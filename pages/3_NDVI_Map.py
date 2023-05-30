@@ -120,18 +120,14 @@ row1_col1, row1_col2 = st.columns([2, 1])
 start_date = '2022-01-01'
 end_date = '2022-12-31'
 
-
 with row1_col2:
     today = date.today()
-
     default_date_yesterday = today - timedelta(days=1)
-
-
     sd = st.date_input(
         "Start date", date(2022, 1, 1), min_value= date(2015, 6, 23),
         max_value= today,
         )
-    # st.write('start:', sd.strftime("%Y-%m-%d") )
+
     ed = st.date_input(
         "End date",
         default_date_yesterday,
@@ -176,7 +172,7 @@ if sample_roi != "Uploaded GeoJSON":
     gdf = gpd.GeoDataFrame(
         index=[0], crs=crs, geometry=[landsat_rois[sample_roi]]
     )
-    map1.add_gdf(gdf, "ROI")
+    # map1.add_gdf(gdf, "ROI")
     aoi = geemap.gdf_to_ee(gdf, geodesic=False)
 elif sample_roi == "Uploaded GeoJSON":
     data = st.file_uploader(
@@ -186,9 +182,10 @@ elif sample_roi == "Uploaded GeoJSON":
     if data:
         gdf = uploaded_file_to_gdf(data)
         st.session_state["aoi"] = geemap.gdf_to_ee(gdf, geodesic=False)    
-        map1.add_gdf(gdf, "ROI")
+        # map1.add_gdf(gdf, "ROI")
     else:
         aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
+map1.add_gdf(gdf, "ROI")
 aoi = geemap.gdf_to_ee(gdf, geodesic=False)
 # else:
     # aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()

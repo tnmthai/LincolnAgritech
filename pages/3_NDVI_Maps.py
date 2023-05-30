@@ -200,12 +200,11 @@ aoi = geemap.gdf_to_ee(gdf, geodesic=False)
 
     
 NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
-NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate).median()
-ndvi_values = NDVI_plot.sample(scale=10).first().get('NDVI')
-st.write(ndvi_values)
-# Convert NDVI values to pandas DataFrame
-# ndvi_df = geemap.ee_to_pandas(NDVI_plot, selectors=["NDVI"])
-# st.line_chart(ndvi_df)
+NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
+
+image_ids = NDVI_plot.aggregate_array('system:index').getInfo()
+image_ids
+st.write(image_ids)
 map1.centerObject(aoi)
 try:
     st.session_state["ndvi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")

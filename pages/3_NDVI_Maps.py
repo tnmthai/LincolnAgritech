@@ -189,7 +189,7 @@ with row1_col1:
         last_day = calendar.monthrange(year, month)[1]
         # Create the end date for the month
         end_date = datetime(year, month, last_day).strftime("%Y-%m-%d")
-        st.write('Dates between', start_date ,' and ', end_date)
+        # st.write('Dates between', start_date ,' and ', end_date)
         ####
         
         adate = st.checkbox('Select a date between ' + str(start_date) + ' and '+ str(end_date))

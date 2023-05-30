@@ -190,7 +190,30 @@ with row1_col1:
         # Create the end date for the month
         end_date = datetime(year, month, last_day).strftime("%Y-%m-%d")
         st.write('Dates between', start_date ,' and ', end_date)
+        ####
+        
+        adate = st.checkbox('Select a date between ' + str(start_date) + ' and '+ str(end_date))
+        if adate:
+            # st.write('Great!')
+            ad = st.select_slider(
+                'Select a date',
+                options=months
+                )
+            st.write('Selected date:', ad)
 
+            # # Convert month string to datetime object
+            # month_date = datetime.strptime(mo, "%m-%Y")
+
+            # # Extract year and month from the datetime object
+            # year = month_date.year
+            # month = month_date.month
+
+            # # Create start_date and end_date based on the given month
+            # start_date = datetime(year, month, 1).strftime("%Y-%m-%d")
+            # last_day = calendar.monthrange(year, month)[1]
+            # # Create the end date for the month
+            # end_date = datetime(year, month, last_day).strftime("%Y-%m-%d")
+            # st.write('Dates between', start_date ,' and ', end_date)
     #     NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
     #     NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
     # else:

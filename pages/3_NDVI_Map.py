@@ -132,7 +132,7 @@ with row1_col1:
         index=0,
     )
 
-slider = cols1.slider('Select date', min_value=start_date, value=end_date ,max_value=end_date, format=format)    
+st.slider('Select date', min_value=start_date, value=end_date ,max_value=end_date, format=format)    
 
 
 with row1_col2:

@@ -228,11 +228,7 @@ with row1_col1:
 
 if st.button('Say hello'):
     st.write('Why hello there')
-    if m.user_roi is not None:
-        bbox = m.user_roi_bounds()
-    else:
-        bbox = [-122.1497, 37.6311, -122.1203, 37.6458]
-    st.write(bbox)
+
     # map1.add_gdf(aoi, "ROI")
     # aoi = geemap.gdf_to_ee(gdf, geodesic=False)
 

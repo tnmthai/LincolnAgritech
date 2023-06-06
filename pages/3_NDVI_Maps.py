@@ -1,6 +1,6 @@
 import streamlit as st
-import geemap
-# import geemap.foliumap as geemap
+# import geemap
+import geemap.foliumap as geemap
 import ee
 import geopandas as gpd
 from shapely.geometry import Polygon
@@ -13,7 +13,6 @@ from dateutil.rrule import rrule, MONTHLY
 from dateutil.relativedelta import relativedelta # to add days or years
 import pandas as pd
 import calendar
-import leafmap
 # st.set_page_config(layout="wide")
 st.set_page_config(layout="wide")
 warnings.filterwarnings("ignore")
@@ -58,11 +57,13 @@ def getNDVI(image):
     # Normalized difference vegetation index (NDVI)
     ndvi = image.normalizedDifference(['B8','B4']).rename("NDVI")
     image = image.addBands(ndvi)
-    return(image)
 
+    return(image)
 def calculate_ndvi(image):
     ndvi = image.normalizedDifference(['B8', 'B4'])
     return ndvi.rename('NDVI').copyProperties(image, ['system:time_start'])
+
+
 
 def addDate(image):
     img_date = ee.Date(image.date())
@@ -83,13 +84,6 @@ map1 = geemap.Map(
     locate_control=True,
     plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
 )
-map1.to_streamlit(height=600)
-map1.draw_features
-roi = ee.FeatureCollection(map1.draw_features)
-roi
-# m = leafmap.Map(plugin_Draw=True, Draw_export=True,locate_control=True, center=(-43.525650, 172.639847), zoom=6.25, height="800px")
-# m.add_basemap("SATELLITE")
-# m
 
 shp = gpd.read_file("data/nzshp/Canterbury.shp")
 gdf = shp.to_crs({'init': 'epsg:4326'}) 
@@ -128,14 +122,14 @@ roi_options = ["Uploaded GeoJSON"] + list(landsat_rois.keys())
 crs = "epsg:4326"
 cols1,_ = st.columns((1,2)) 
 row1_col1, row1_col2 = st.columns([2, 1])
-start_date = '2023-01-01'
-end_date = '2023-05-31'
+start_date = '2022-01-01'
+end_date = '2022-12-31'
 
 with row1_col2:
     today = date.today()
     default_date_yesterday = today - timedelta(days=1)
     sd = st.date_input(
-        "Start date", date(2023, 1, 1), min_value= date(2015, 6, 23),
+        "Start date", date(2022, 1, 1), min_value= date(2015, 6, 23),
         max_value= today,
         )
 
@@ -151,6 +145,7 @@ end_date = ed.strftime("%Y-%m-%d") + "T"
 months = [dt.strftime("%m-%Y") for dt in rrule(MONTHLY, dtstart=sd, until=ed)]
 
 with row1_col1:
+
     sample_roi = st.selectbox(
         "Select a existing ROI or upload a GeoJSON file:",
         roi_options,
@@ -171,15 +166,8 @@ with row1_col1:
             gdf = uploaded_file_to_gdf(data)
             st.session_state["aoi"] = aoi= geemap.gdf_to_ee(gdf, geodesic=False)    
             # map1.add_gdf(gdf, "ROI")
-        # else:
-        #     # aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
-        #     if map1.user_roi is not None:
-        #         aoi = map1.user_roi_bounds()
-        #         aoi
-        #         st.write(aoi)
-            # else:
-                # bbox = [-122.1497, 37.6311, -122.1203, 37.6458]
-
+        else:
+            aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
     
     agree = st.checkbox('Select a month between ' + str(sd) + ' and '+ str(ed))
     if agree:
@@ -228,68 +216,58 @@ with row1_col1:
     # else:
     #     NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
         # NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
-
-if st.button('Say hello'):
-    st.write('Why hello there')
-    map1.draw_features
-    # map1.add_gdf(aoi, "ROI")
-    # aoi = geemap.gdf_to_ee(gdf, geodesic=False)
-
-else:
-    st.write('Goodbye')
+map1.add_gdf(gdf, "ROI")
+aoi = geemap.gdf_to_ee(gdf, geodesic=False)
 
 
-
-
-# NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
-# NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
+NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
+NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
 # st.write(start_date, end_date)
-# areas = geemap.ee_to_gdf(aoi)
-# # Calculate the area of the polygon
-# area = areas.geometry.area.item()
-# st.write('Area: ', round(area*10**4,1),' Square Kilometers.')
+areas = geemap.ee_to_gdf(aoi)
 
-# graph_ndvi = st.checkbox('Show NDVI graph')
-# if graph_ndvi:    
-#     image_ids = NDVI_plot.aggregate_array('system:index').getInfo()
-#     # image_ids
-#     st.write(f"Total images: {len(image_ids)}")
-#     dates = []
-#     ndvi_values = []
-#     # Iterate over the image IDs
-#     for image_id in image_ids:
-#         # Get the image by ID
-#         # st.write("Image ID: ",image_id)
-#         image = NDVI_plot.filter(ee.Filter.eq('system:index', image_id)).first()   
+# Calculate the area of the polygon
+area = areas.geometry.area.item()
+st.write('Area: ', round(area*10**4,1),' Square Kilometers.')
+
+graph_ndvi = st.checkbox('Show NDVI graph')
+if graph_ndvi:    
+    image_ids = NDVI_plot.aggregate_array('system:index').getInfo()
+    # image_ids
+    dates = []
+    ndvi_values = []
+    # Iterate over the image IDs
+    for image_id in image_ids:
+        # Get the image by ID
+        image = NDVI_plot.filter(ee.Filter.eq('system:index', image_id)).first()   
         
-#         # Get the image date and NDVI value
-#         date = image.date().format('yyyy-MM-dd')
-#         # print(date)
-#         # ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi, scale=10).get('NDVI').getInfo()
-#         try:
-#             st.session_state["ndvi_value"] = ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi, scale=10).get('NDVI').getInfo()
-#         except Exception as e:
-#             st.error("Please select smaller polygon!")
-#             st.error(e)
+        # Get the image date and NDVI value
+        date = image.date().format('yyyy-MM-dd')
+        # print(date)
+        # ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi, scale=10).get('NDVI').getInfo()
+        try:
+            st.session_state["ndvi_value"] = ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi, scale=10).get('NDVI').getInfo()
+        except Exception as e:
+            st.error("Please select smaller polygon!")
+            st.error(e)
             
 
-#         # Add the date and NDVI value to the lists
-#         dates.append(date.getInfo())
-#         ndvi_values.append(ndvi_value)
+        # Add the date and NDVI value to the lists
+        dates.append(date.getInfo())
+        ndvi_values.append(ndvi_value)
 
-#     # # Create a pandas DataFrame from the lists
-#     df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
-#     st.line_chart(df, y="NDVI", x="Date")
+    # # Create a pandas DataFrame from the lists
+    df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
+    st.line_chart(df, y="NDVI", x="Date")
 
-# map1.centerObject(aoi)
-# try:
-#     st.session_state["ndvi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
-# except Exception as e:
-#     # st.error(e)
-#     st.error("Cloud is greater than 90% on this day.")
-#     st.error("Please select additional dates!")
+map1.centerObject(aoi)
+try:
+    st.session_state["ndvi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
+except Exception as e:
+    # st.error(e)
+    st.error("Too much cloud on this day.")
+    st.error("Please select additional dates!")
 
 
 map1.addLayerControl()
 
-# map1.to_streamlit(height=700)
+map1.to_streamlit(height=700)

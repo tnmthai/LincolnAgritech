@@ -122,14 +122,14 @@ roi_options = ["Uploaded GeoJSON"] + list(landsat_rois.keys())
 crs = "epsg:4326"
 cols1,_ = st.columns((1,2)) 
 row1_col1, row1_col2 = st.columns([2, 1])
-start_date = '2022-01-01'
-end_date = '2022-12-31'
+start_date = '2023-01-01'
+end_date = '2023-05-31'
 
 with row1_col2:
     today = date.today()
     default_date_yesterday = today - timedelta(days=1)
     sd = st.date_input(
-        "Start date", date(2022, 1, 1), min_value= date(2015, 6, 23),
+        "Start date", date(2023, 1, 1), min_value= date(2015, 6, 23),
         max_value= today,
         )
 

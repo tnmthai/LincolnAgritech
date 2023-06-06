@@ -57,13 +57,11 @@ def getNDVI(image):
     # Normalized difference vegetation index (NDVI)
     ndvi = image.normalizedDifference(['B8','B4']).rename("NDVI")
     image = image.addBands(ndvi)
-
     return(image)
+
 def calculate_ndvi(image):
     ndvi = image.normalizedDifference(['B8', 'B4'])
     return ndvi.rename('NDVI').copyProperties(image, ['system:time_start'])
-
-
 
 def addDate(image):
     img_date = ee.Date(image.date())
@@ -167,7 +165,13 @@ with row1_col1:
             st.session_state["aoi"] = aoi= geemap.gdf_to_ee(gdf, geodesic=False)    
             # map1.add_gdf(gdf, "ROI")
         else:
-            aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
+            # aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
+            if map1.user_roi is not None:
+                bbox = map1.user_roi_bounds()
+                bbox
+            # else:
+                # bbox = [-122.1497, 37.6311, -122.1203, 37.6458]
+
     
     agree = st.checkbox('Select a month between ' + str(sd) + ' and '+ str(ed))
     if agree:

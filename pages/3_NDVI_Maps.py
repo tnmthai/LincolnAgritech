@@ -155,6 +155,11 @@ with row1_col1:
         # map1.add_gdf(gdf, "ROI")
         aoi = geemap.gdf_to_ee(gdf, geodesic=False)
     elif sample_roi == "Uploaded GeoJSON":
+        if map1.user_roi is not None:
+            aoi = map1.user_roi_bounds()
+            aoi
+            st.write(aoi)
+
         data = st.file_uploader(
             "Upload a GeoJSON file to use as an ROI. Customize timelapse parameters and then click the Submit button.",
             type=["geojson", "kml", "zip"],
@@ -163,12 +168,12 @@ with row1_col1:
             gdf = uploaded_file_to_gdf(data)
             st.session_state["aoi"] = aoi= geemap.gdf_to_ee(gdf, geodesic=False)    
             # map1.add_gdf(gdf, "ROI")
-        else:
-            # aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
-            if map1.user_roi is not None:
-                aoi = map1.user_roi_bounds()
-                aoi
-                st.write(aoi)
+        # else:
+        #     # aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
+        #     if map1.user_roi is not None:
+        #         aoi = map1.user_roi_bounds()
+        #         aoi
+        #         st.write(aoi)
             # else:
                 # bbox = [-122.1497, 37.6311, -122.1203, 37.6458]
 

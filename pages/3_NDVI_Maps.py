@@ -290,7 +290,7 @@ else:
 #     st.error("Cloud is greater than 90% on this day.")
 #     st.error("Please select additional dates!")
 
-m.addLayerControl()
+# m.addLayerControl()
 
 m.to_streamlit(height=700)
 

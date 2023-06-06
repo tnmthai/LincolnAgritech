@@ -220,8 +220,8 @@ map1.add_gdf(gdf, "ROI")
 aoi = geemap.gdf_to_ee(gdf, geodesic=False)
 
 
-NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",100)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
-NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",100)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
+NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
+NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
 st.write(start_date, end_date)
 areas = geemap.ee_to_gdf(aoi)
 # Calculate the area of the polygon
@@ -264,7 +264,7 @@ try:
     st.session_state["ndvi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
 except Exception as e:
     # st.error(e)
-    st.error("Too much cloud on this day.")
+    st.error("Cloud is greater than \90% on this day.")
     st.error("Please select additional dates!")
 
 

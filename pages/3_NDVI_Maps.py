@@ -167,8 +167,9 @@ with row1_col1:
         else:
             # aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
             if map1.user_roi is not None:
-                bbox = map1.user_roi_bounds()
-                bbox
+                aoi = map1.user_roi_bounds()
+                aoi
+                st.write(aoi)
             # else:
                 # bbox = [-122.1497, 37.6311, -122.1203, 37.6458]
 

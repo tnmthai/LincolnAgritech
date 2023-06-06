@@ -227,7 +227,7 @@ if st.button('Say hello'):
         aoi = map1.user_roi_bounds()
         aoi
     st.write(aoi)
-    map1.add_gdf(aoi, "ROI")
+    # map1.add_gdf(aoi, "ROI")
     # aoi = geemap.gdf_to_ee(gdf, geodesic=False)
 
 else:

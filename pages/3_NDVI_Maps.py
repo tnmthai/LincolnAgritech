@@ -237,7 +237,7 @@ if graph_ndvi:
     # Iterate over the image IDs
     for image_id in image_ids:
         # Get the image by ID
-        print("Image ID: ",image_id)
+        st.write("Image ID: ",image_id)
         image = NDVI_plot.filter(ee.Filter.eq('system:index', image_id)).first()   
         
         # Get the image date and NDVI value

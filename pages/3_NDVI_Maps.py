@@ -288,4 +288,4 @@ else:
 
 # map1.addLayerControl()
 
-# map1.to_streamlit(height=700)
+Map.to_streamlit(height=700)

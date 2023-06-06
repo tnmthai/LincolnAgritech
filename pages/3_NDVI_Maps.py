@@ -143,7 +143,6 @@ end_date = ed.strftime("%Y-%m-%d") + "T"
 months = [dt.strftime("%m-%Y") for dt in rrule(MONTHLY, dtstart=sd, until=ed)]
 
 with row1_col1:
-
     sample_roi = st.selectbox(
         "Select a existing ROI or upload a GeoJSON file:",
         roi_options,
@@ -221,6 +220,12 @@ with row1_col1:
     # else:
     #     NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
         # NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
+
+if st.button('Say hello'):
+    st.write('Why hello there')
+else:
+    st.write('Goodbye')
+
 map1.add_gdf(gdf, "ROI")
 aoi = geemap.gdf_to_ee(gdf, geodesic=False)
 

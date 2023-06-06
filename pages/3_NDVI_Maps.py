@@ -84,7 +84,9 @@ map1 = geemap.Map(
     plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
 )
 map1.to_streamlit(height=600)
-
+map1.draw_features
+roi = ee.FeatureCollection(map1.draw_features)
+roi
 # m = leafmap.Map(plugin_Draw=True, Draw_export=True,locate_control=True, center=(-43.525650, 172.639847), zoom=6.25, height="800px")
 # m.add_basemap("SATELLITE")
 # m

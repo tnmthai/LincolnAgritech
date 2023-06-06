@@ -155,11 +155,6 @@ with row1_col1:
         # map1.add_gdf(gdf, "ROI")
         aoi = geemap.gdf_to_ee(gdf, geodesic=False)
     elif sample_roi == "Uploaded GeoJSON":
-        if map1.user_roi is not None:
-            aoi = map1.user_roi_bounds()
-            aoi
-            st.write(aoi)
-
         data = st.file_uploader(
             "Upload a GeoJSON file to use as an ROI. Customize timelapse parameters and then click the Submit button.",
             type=["geojson", "kml", "zip"],
@@ -228,6 +223,10 @@ with row1_col1:
 
 if st.button('Say hello'):
     st.write('Why hello there')
+    if map1.user_roi is not None:
+        aoi = map1.user_roi_bounds()
+        aoi
+        st.write(aoi)
     map1.add_gdf(aoi, "ROI")
     # aoi = geemap.gdf_to_ee(gdf, geodesic=False)
 

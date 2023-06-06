@@ -84,9 +84,9 @@ map1 = geemap.Map(
     plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
 )
 
-m = leafmap.Map(plugin_Draw=True, Draw_export=True,locate_control=True, center=(-43.525650, 172.639847), zoom=6.25, height="800px")
-m.add_basemap("SATELLITE")
-m
+# m = leafmap.Map(plugin_Draw=True, Draw_export=True,locate_control=True, center=(-43.525650, 172.639847), zoom=6.25, height="800px")
+# m.add_basemap("SATELLITE")
+# m
 
 shp = gpd.read_file("data/nzshp/Canterbury.shp")
 gdf = shp.to_crs({'init': 'epsg:4326'}) 
@@ -290,10 +290,7 @@ else:
 #     st.error("Cloud is greater than 90% on this day.")
 #     st.error("Please select additional dates!")
 
-# m.addLayerControl()
 
-m.to_streamlit(height=700)
+map1.addLayerControl()
 
-# map1.addLayerControl()
-
-# map1.to_streamlit(height=700)
+map1.to_streamlit(height=700)

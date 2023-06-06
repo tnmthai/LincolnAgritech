@@ -76,14 +76,21 @@ pallete = {"min":0, "max":1, 'palette':color}
 st.title("NDVI Map")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")
 ee.Initialize()
+# map1 = geemap.Map(
+#     basemap="HYBRID",
+#     plugin_Draw=True,
+#     Draw_export=True,
+#     locate_control=True,
+#     plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
+# )
+
 map1 = geemap.Map(
-    basemap="HYBRID",
-    plugin_Draw=True,
-    Draw_export=True,
-    locate_control=True,
+    basemap="SATELLITE",
+    # plugin_Draw=True,
+    # Draw_export=True,
+    # locate_control=True,
     plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
 )
-
 # m = leafmap.Map(plugin_Draw=True, Draw_export=True,locate_control=True, center=(-43.525650, 172.639847), zoom=6.25, height="800px")
 # m.add_basemap("SATELLITE")
 # m

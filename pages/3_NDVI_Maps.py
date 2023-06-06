@@ -84,13 +84,7 @@ ee.Initialize()
 #     plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
 # )
 
-map1 = geemap.Map(
-    basemap="SATELLITE",
-    # plugin_Draw=True,
-    # Draw_export=True,
-    # locate_control=True,
-    plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
-)
+map1 = geemap.Map()
 # m = leafmap.Map(plugin_Draw=True, Draw_export=True,locate_control=True, center=(-43.525650, 172.639847), zoom=6.25, height="800px")
 # m.add_basemap("SATELLITE")
 # m

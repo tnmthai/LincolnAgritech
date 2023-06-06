@@ -13,6 +13,7 @@ from dateutil.rrule import rrule, MONTHLY
 from dateutil.relativedelta import relativedelta # to add days or years
 import pandas as pd
 import calendar
+import leafmap
 # st.set_page_config(layout="wide")
 st.set_page_config(layout="wide")
 warnings.filterwarnings("ignore")
@@ -82,6 +83,10 @@ map1 = geemap.Map(
     locate_control=True,
     plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
 )
+
+m = leafmap.Map(center=[37.6412, -122.1353], zoom=15, height="800px")
+m.add_basemap("SATELLITE")
+m
 
 shp = gpd.read_file("data/nzshp/Canterbury.shp")
 gdf = shp.to_crs({'init': 'epsg:4326'}) 
@@ -223,10 +228,11 @@ with row1_col1:
 
 if st.button('Say hello'):
     st.write('Why hello there')
-    if map1.user_roi is not None:
-        aoi = map1.user_roi_bounds()
-        aoi
-    st.write(aoi)
+    if m.user_roi is not None:
+        bbox = m.user_roi_bounds()
+    else:
+        bbox = [-122.1497, 37.6311, -122.1203, 37.6458]
+    st.write(bbox)
     # map1.add_gdf(aoi, "ROI")
     # aoi = geemap.gdf_to_ee(gdf, geodesic=False)
 

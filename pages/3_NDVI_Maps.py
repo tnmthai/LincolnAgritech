@@ -1,6 +1,6 @@
 import streamlit as st
-import geemap
-# import geemap.foliumap as geemap
+# import geemap
+import geemap.foliumap as geemap
 import ee
 import geopandas as gpd
 from shapely.geometry import Polygon
@@ -76,16 +76,18 @@ pallete = {"min":0, "max":1, 'palette':color}
 st.title("NDVI Map")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")
 ee.Initialize()
-# map1 = geemap.Map(
-#     basemap="HYBRID",
-#     plugin_Draw=True,
-#     Draw_export=True,
-#     locate_control=True,
-#     plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
-# )
+map1 = geemap.Map(
+    basemap="HYBRID",
+    plugin_Draw=True,
+    Draw_export=True,
+    locate_control=True,
+    plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
+)
 
-Map = geemap.Map()
-Map
+
+# m = leafmap.Map(plugin_Draw=True, Draw_export=True,locate_control=True, center=(-43.525650, 172.639847), zoom=6.25, height="800px")
+# m.add_basemap("SATELLITE")
+# m
 
 shp = gpd.read_file("data/nzshp/Canterbury.shp")
 gdf = shp.to_crs({'init': 'epsg:4326'}) 
@@ -227,7 +229,7 @@ with row1_col1:
 
 if st.button('Say hello'):
     st.write('Why hello there')
-
+    map1.draw_features
     # map1.add_gdf(aoi, "ROI")
     # aoi = geemap.gdf_to_ee(gdf, geodesic=False)
 
@@ -286,6 +288,6 @@ else:
 #     st.error("Please select additional dates!")
 
 
-# map1.addLayerControl()
+map1.addLayerControl()
 
-Map.to_streamlit(height=700)
+map1.to_streamlit(height=700)

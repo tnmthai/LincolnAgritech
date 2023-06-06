@@ -84,7 +84,7 @@ map1 = geemap.Map(
     plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
 )
 
-m = leafmap.Map(center=[37.6412, -122.1353], zoom=15, height="800px")
+m = leafmap.Map(plugin_Draw=True, Draw_export=True,locate_control=True, center=(-43.525650, 172.639847), zoom=6.25, height="800px")
 m.add_basemap("SATELLITE")
 m
 

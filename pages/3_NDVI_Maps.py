@@ -145,7 +145,6 @@ end_date = ed.strftime("%Y-%m-%d") + "T"
 months = [dt.strftime("%m-%Y") for dt in rrule(MONTHLY, dtstart=sd, until=ed)]
 
 with row1_col1:
-
     sample_roi = st.selectbox(
         "Select a existing ROI or upload a GeoJSON file:",
         roi_options,
@@ -155,7 +154,7 @@ with row1_col1:
         gdf = gpd.GeoDataFrame(
             index=[0], crs=crs, geometry=[landsat_rois[sample_roi]]
         )
-        # map1.add_gdf(gdf, "ROI")
+        map1.add_gdf(gdf, "ROI")
         aoi = geemap.gdf_to_ee(gdf, geodesic=False)
     elif sample_roi == "Uploaded GeoJSON":
         data = st.file_uploader(
@@ -165,9 +164,9 @@ with row1_col1:
         if data:
             gdf = uploaded_file_to_gdf(data)
             st.session_state["aoi"] = aoi= geemap.gdf_to_ee(gdf, geodesic=False)    
-            # map1.add_gdf(gdf, "ROI")
-        else:
-            aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
+            map1.add_gdf(gdf, "ROI")
+        # else:
+        #     aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
     
     agree = st.checkbox('Select a month between ' + str(sd) + ' and '+ str(ed))
     if agree:
@@ -216,7 +215,7 @@ with row1_col1:
     # else:
     #     NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
         # NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
-map1.add_gdf(aoi, "ROI")
+# map1.add_gdf(aoi, "ROI")
 # aoi = geemap.gdf_to_ee(gdf, geodesic=False)
 
 

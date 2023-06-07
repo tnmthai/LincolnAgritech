@@ -223,9 +223,9 @@ if aoi != []:
     NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
     # st.write(start_date, end_date)
     areas = geemap.ee_to_gdf(aoi)
-
+    aoi = geemap.geopandas_to_ee(areas, geodesic=False)
     # Calculate the area of the polygon
-    area = areas.geometry().area()
+    area = aoi.geometry().area()
     area_value = area.getInfo()
 
     st.write('Area: ',area_value )# round(area*10**4,1),' Square Kilometers.')

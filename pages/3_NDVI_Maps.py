@@ -86,7 +86,9 @@ map1 = geemap.Map(
     locate_control=True,
     plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6,
 )
+
 stc = st_folium(map1)
+
 shp = gpd.read_file("data/nzshp/Canterbury.shp")
 gdf = shp.to_crs({'init': 'epsg:4326'}) 
 
@@ -279,6 +281,6 @@ if aoi != []:
         st.error("Please select additional dates!")
 
 
-map1.addLayerControl()
+# map1.addLayerControl()
 
-map1.to_streamlit(height=700)
+# map1.to_streamlit(height=700)

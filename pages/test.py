@@ -1,41 +1,30 @@
-import ee
-import geemap
 import streamlit as st
+import pandas as pd
+import numpy as np
 
-# Initialize Earth Engine
-ee.Initialize()
+chart_data = pd.DataFrame(
+    np.random.randn(20, 3),
+    columns=['a', 'b', 'c'])
 
-# Set geemap configuration
-geemap.set_plotting_options(image_thumb_width=400, dataFrameSerialization='arrow')
+st.line_chart(chart_data)
 
-# Create a Streamlit app
-st.title("Draw Polygon with geemap and Streamlit")
-
-# Create a map using geemap
-Map = geemap.Map(center=[40, -100], zoom=4)
-
-# Enable drawing control
-Map.add_draw_control()
-
-# Display the map in Streamlit
-st.write(Map.to_streamlit())
-
-# Get the drawn features
-drawn_features = Map.user_roi
-
-# Check if any features are drawn
-if drawn_features is not None:
-    # Convert the drawn features to an Earth Engine Geometry object
-    aoi = geemap.geopandas_to_ee(drawn_features, geodesic=False)
-
-    # Calculate the area of the drawn polygons
-    area = aoi.geometry().area()
-
-    # Get the area value
-    area_value = area.getInfo()
-
-    # Display the area
-    st.write("Total area:", area_value, "square meters")
-
-# Display the map with the drawn polygon
-st.write(Map.to_streamlit())
+# Add JavaScript code to capture click events on the chart
+st.components.v1.html(
+    """
+    <script>
+    const chart = document.getElementsByTagName('canvas')[0].getContext('2d');
+    chart.canvas.addEventListener('click', function(e) {
+        const points = chart.getElementsAtEventForMode(e, 'point', { intersect: true });
+        if (points.length > 0) {
+            const point = points[0];
+            const datasetIndex = point.datasetIndex;
+            const index = point.index;
+            const value = chart.data.datasets[datasetIndex].data[index];
+            console.log('Clicked value:', value);
+            // You can further process the value as per your requirement
+        }
+    });
+    </script>
+    """,
+    height=1,
+)

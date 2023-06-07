@@ -101,7 +101,7 @@ map1 = geemap.Map(
     locate_control=True,
     plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
 )
-
+map2 = geemap.Map(basemap="HYBRID")
 
 
 
@@ -302,7 +302,7 @@ if aoi != []:
                 map1.add_legend(title="NDVI", legend_dict=legend_dict)
                 
                 
-                map2 = geemap.Map(basemap="HYBRID")
+                
                 map2.centerObject(aoi)
                 s2original = geemap.ee_tile_layer(NDVI_data, pallete, 'NDVI dates') #, opacity=0.75)
                 s2nocloudb = geemap.ee_tile_layer(NDVI_aday, pallete, "NDVI on "+str(clickdate))#, opacity=0.75)

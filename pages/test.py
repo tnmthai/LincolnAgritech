@@ -19,7 +19,7 @@ Map.to_streamlit()
 
 # Get the drawn features
 drawn_features = Map.user_roi
-
+drawn_features
 # Check if any features are drawn
 if drawn_features is not None:
     # Convert the drawn features to an Earth Engine Geometry object

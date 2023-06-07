@@ -129,7 +129,7 @@ with row1_col2:
     today = date.today()
     default_date_yesterday = today - timedelta(days=1)
     sd = st.date_input(
-        "Start date", date(2022, 1, 1), min_value= date(2015, 6, 23),
+        "Start date", date(2023, 1, 1), min_value= date(2015, 6, 23),
         max_value= today,
         )
 

@@ -234,6 +234,7 @@ with row1_col1:
 if aoi != []:
 
     map1.add_gdf(gdf, "ROI")
+    map2.centerObject(gdf)
     aoi = geemap.gdf_to_ee(gdf, geodesic=False)
     st.write('Selected dates between:', start_date[:-1] ,' and ', end_date[:-1])
     NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
@@ -299,7 +300,7 @@ if aoi != []:
                 st.session_state["ndviaday"] = map1.addLayer(NDVI_aday.clip(aoi).select('NDVI'), pallete, "NDVI on "+str(clickdate))
                 map1.add_legend(title="NDVI", legend_dict=legend_dict)                               
                 
-                map2.centerObject(aoi)
+               
                 s2original = geemap.ee_tile_layer(NDVI_data.clip(aoi), rgbViza, 'NDVI dates') #, opacity=0.75)
                 s2nocloudb = geemap.ee_tile_layer(NDVI_aday.clip(aoi), rgbViza, "NDVI on "+str(clickdate))#, opacity=0.75)
 

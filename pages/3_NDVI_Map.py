@@ -1,5 +1,5 @@
 import streamlit as st
-# import geemap
+import geemap as gm
 import geemap.foliumap as geemap
 import ee
 import geopandas as gpd
@@ -101,9 +101,7 @@ map1 = geemap.Map(
     locate_control=True,
     plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
 )
-map2 = geemap.Map(basemap="HYBRID")
-
-
+map2 = gm.Map(basemap="HYBRID")
 
 shp = gpd.read_file("data/nzshp/Canterbury.shp")
 gdf = shp.to_crs({'init': 'epsg:4326'}) 
@@ -299,9 +297,7 @@ if aoi != []:
                 st.write('Clicked date:', start_date )
                 NDVI_aday = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
                 st.session_state["ndviaday"] = map1.addLayer(NDVI_aday.clip(aoi).select('NDVI'), pallete, "NDVI on "+str(clickdate))
-                map1.add_legend(title="NDVI", legend_dict=legend_dict)
-                
-                
+                map1.add_legend(title="NDVI", legend_dict=legend_dict)                               
                 
                 map2.centerObject(aoi)
                 s2original = geemap.ee_tile_layer(NDVI_data, pallete, 'NDVI dates') #, opacity=0.75)

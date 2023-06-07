@@ -90,7 +90,7 @@ labels = ['One', 'Two', 'Three', 'Four', 'Five']
 colors = ['#8DD3C7', '#FFFFB3', '#BEBADA', '#FB8072', '#80B1D3']
 # colors = [(255, 0, 0), (127, 255, 0), (127, 18, 25), (36, 70, 180), (96, 68, 123)]
 
-map1.add_legend(title='Legend', labels=labels, colors=colors)
+
 
 shp = gpd.read_file("data/nzshp/Canterbury.shp")
 gdf = shp.to_crs({'init': 'epsg:4326'}) 
@@ -276,7 +276,8 @@ if aoi != []:
         st.error("Please select additional dates!")
 
 # map1.add_legend(builtin_legend='NLCD')
-map1.add_legend(position='bottomright')
+map1.add_legend(title='Legend', labels=labels, colors=colors, position='bottomright')
+# map1.add_legend()
 map1.addLayerControl()
 
 map1.to_streamlit(height=700)

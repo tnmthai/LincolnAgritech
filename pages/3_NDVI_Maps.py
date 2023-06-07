@@ -152,7 +152,7 @@ with row1_col1:
         roi_options,
         index=0,
     )
-    if sample_roi != "Uploaded GeoJSON":
+    if sample_roi != "Uploaded GeoJSON" and sample_roi != "Draw a polygon":
         gdf = gpd.GeoDataFrame(
             index=[0], crs=crs, geometry=[landsat_rois[sample_roi]]
         )

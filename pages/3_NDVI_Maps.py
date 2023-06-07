@@ -167,7 +167,7 @@ with row1_col1:
             map1.add_gdf(gdf, "ROI")
             
         else:
-            st.write("No AOI")
+            st.write("No Region of Interest (ROI) has been selected yet.")
             aoi= []
 
         #     aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()

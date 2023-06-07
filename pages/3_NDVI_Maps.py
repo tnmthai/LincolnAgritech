@@ -86,9 +86,9 @@ map1 = geemap.Map(
     plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
 )
 
-legend_keys = ['One', 'Two', 'Three', 'Four', 'ect']
+# legend_keys = ['One', 'Two', 'Three', 'Four', 'ect']
 # colorS can be defined using either hex code or RGB (0-255, 0-255, 0-255)
-legend_colors = ['#8DD3C7', '#FFFFB3', '#BEBADA', '#FB8072', '#80B1D3']
+# legend_colors = ['#8DD3C7', '#FFFFB3', '#BEBADA', '#FB8072', '#80B1D3']
 # legend_colors = [(255, 0, 0), (127, 255, 0), (127, 18, 25), (36, 70, 180), (96, 68 123)]
 
 

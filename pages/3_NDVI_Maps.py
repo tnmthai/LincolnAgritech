@@ -91,7 +91,7 @@ legend_keys = ['One', 'Two', 'Three', 'Four', 'ect']
 legend_colors = ['#8DD3C7', '#FFFFB3', '#BEBADA', '#FB8072', '#80B1D3']
 # legend_colors = [(255, 0, 0), (127, 255, 0), (127, 18, 25), (36, 70, 180), (96, 68 123)]
 
-map1.add_legend(legend_dict = legend_keys)
+
 
 
 
@@ -278,7 +278,8 @@ if aoi != []:
         st.error("Too much cloud on this day.")
         st.error("Please select additional dates!")
 
-map1.add_legend(builtin_legend='NLCD')
+# map1.add_legend(builtin_legend='NLCD')
+map1.add_legend(position='bottomright')
 map1.addLayerControl()
 
 map1.to_streamlit(height=700)

@@ -257,14 +257,11 @@ if aoi != []:
             
             # Get the image date and NDVI value
             date = image.date().format('yyyy-MM-dd')
-            # print(date)
-            # ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi, scale=10).get('NDVI').getInfo()
+
             try:
                 st.session_state["ndvi_value"] = ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi, scale=10).get('NDVI').getInfo()
             except Exception as e:
-                st.error("Please select smaller polygon!")
-                st.error(e)
-                
+                st.error("Please select smaller polygon!")                               
 
             # Add the date and NDVI value to the lists
             dates.append(date.getInfo())
@@ -282,8 +279,8 @@ if aoi != []:
         map1.add_legend(title="NDVI", legend_dict=legend_dict)
     except Exception as e:
         # st.error(e)
-        st.error("Too much cloud on this day.")
-        st.error("Please select additional dates!")
+        st.error("Cloud is greater than 90% on selected day. Please select additional dates!")
+        
 
 
 

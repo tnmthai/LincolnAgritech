@@ -299,26 +299,23 @@ if aoi != []:
                 st.write('Clicked date:', start_date )
                 NDVI_aday = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
                 st.session_state["ndviaday"] = map1.addLayer(NDVI_aday.clip(aoi).select('NDVI'), pallete, "NDVI on "+str(clickdate))
-
                 map1.add_legend(title="NDVI", legend_dict=legend_dict)
+                
+                
+                map2 = geemap.Map(basemap="HYBRID")
+                map2.centerObject(aoi)
+                s2original = geemap.ee_tile_layer(NDVI_data, pallete, 'NDVI dates') #, opacity=0.75)
+                s2nocloudb = geemap.ee_tile_layer(NDVI_aday, pallete, "NDVI on "+str(clickdate))#, opacity=0.75)
+
+                map2.split_map(left_layer=s2original, right_layer=s2nocloudb)
+
         except Exception as e:
             st.error("Please select a day from the graph to view the corresponding NDVI value for that day.")
 
 
 
 map1.addLayerControl()
-
 map1.to_streamlit(height=700)
 
-map2 = geemap.Map(basemap="HYBRID", center=(-43.525650, 172.639847), zoom=6.25,)
-s2original = geemap.ee_tile_layer(NDVI_data, pallete, 'NDVI dates') #, opacity=0.75)
-s2nocloudb = geemap.ee_tile_layer(NDVI_aday, pallete, "NDVI on "+str(clickdate))#, opacity=0.75)
-
-
-map2.split_map(left_layer=s2original, right_layer=s2nocloudb)
 map2.addLayerControl()
-
-
-map2.addLayerControl()
-
 map2.to_streamlit(height=700)

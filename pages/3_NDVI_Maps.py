@@ -257,6 +257,7 @@ if aoi != []:
         df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
         df
         st.bar_chart(df, y="NDVI", x="Date")
+        
 
     map1.centerObject(aoi)
     try:

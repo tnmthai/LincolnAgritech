@@ -228,6 +228,8 @@ with row1_col1:
 
 if st.button('Say hello'):
     st.write(map.st_draw_features(map1))
+    aoi = ee.FeatureCollection(map.st_draw_features(map1))
+
 else:
     st.write('Goodbye')
 

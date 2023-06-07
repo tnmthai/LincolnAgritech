@@ -255,8 +255,26 @@ if aoi != []:
 
         # # Create a pandas DataFrame from the lists
         df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
-        df
+        
         st.bar_chart(df, y="NDVI", x="Date", use_container_width=True)
+        chart = {
+    "mark": "point",
+    "encoding": {
+        "x": {
+            "field": "Horsepower",
+            "type": "quantitative",
+        },
+        "y": {
+            "field": "Miles_per_Gallon",
+            "type": "quantitative",
+        },
+        "color": {"field": "Origin", "type": "nominal"},
+        "shape": {"field": "Origin", "type": "nominal"},
+    },
+}   
+        st.vega_lite_chart(
+        df, chart, theme="streamlit", use_container_width=True
+    )
         
 
     map1.centerObject(aoi)

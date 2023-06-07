@@ -76,7 +76,7 @@ def addDate(image):
 color = ['#000000', '#a50026', '#d73027', '#f46d43', '#fdae61', '#fee08b',
         '#ffffbf', '#d9ef8b', '#a6d96a', '#66bd63', '#1a9850', '#006837']
 
-pallete = {"min":-0.3, "max":1, 'palette':color}
+pallete = {"min":-0.3, "max":1, 'palette':'gray'}
 st.title("NDVI Map")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")
 ee.Initialize()

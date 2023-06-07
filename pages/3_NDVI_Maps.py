@@ -219,10 +219,6 @@ with row1_col1:
  
             next_date = start_date + timedelta(days=1)
             end_date = next_date.strftime("%Y-%m-%d")+"T"
-legend_keys = ["Low Vegetation", "Medium Vegetation", "High Vegetation"]
-legend_colors = ['#8DD3C7', '#FB8072', '#80B1D3']
-
-map1.add_legend(legend_keys=legend_keys, legend_colors=legend_colors, position='bottomright')
            
 if aoi != []:
 
@@ -273,7 +269,6 @@ if aoi != []:
     map1.centerObject(aoi)
     try:
         st.session_state["ndvi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
-
 
     except Exception as e:
         # st.error(e)

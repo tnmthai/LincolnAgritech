@@ -212,7 +212,11 @@ with row1_col1:
  
             next_date = start_date + timedelta(days=1)
             end_date = next_date.strftime("%Y-%m-%d")+"T"
-            
+legend_keys = ["Low Vegetation", "Medium Vegetation", "High Vegetation"]
+legend_colors = ['#8DD3C7', '#FB8072', '#80B1D3']
+
+map1.add_legend(legend_keys=legend_keys, legend_colors=legend_colors, position='bottomright')
+           
 if aoi != []:
 
     map1.add_gdf(gdf, "ROI")
@@ -269,10 +273,7 @@ if aoi != []:
         st.error("Too much cloud on this day.")
         st.error("Please select additional dates!")
 
-legend_keys = ["Low Vegetation", "Medium Vegetation", "High Vegetation"]
 
-legend_colors = ['#8DD3C7', '#FB8072', '#80B1D3']
-map1.add_legend(legend_keys=legend_keys, legend_colors=legend_colors, position='bottomright')
 map1.addLayerControl()
 
 map1.to_streamlit(height=700)

@@ -15,7 +15,7 @@ Map = geemap.Map(center=[40, -100], zoom=4)
 Map.add_draw_control()
 
 # Display the map in Streamlit
-st.write(Map.to_streamlit())
+Map.to_streamlit()
 
 # Get the drawn features
 drawn_features = Map.user_roi
@@ -29,4 +29,4 @@ if drawn_features is not None:
     Map.addLayer(aoi, {}, "Drawn Polygon")
 
 # Display the map with the drawn polygon
-st.write(Map.to_streamlit())
+Map.to_streamlit()

@@ -261,7 +261,7 @@ if aoi != []:
 
     map1.centerObject(aoi)
     try:
-        st.session_state["ndvi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
+        # st.session_state["ndvi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
         legend_keys = ["Low Vegetation", "Medium Vegetation", "High Vegetation"]
         
         legend_colors = ['#8DD3C7', '#FB8072', '#80B1D3']

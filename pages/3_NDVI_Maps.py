@@ -222,13 +222,11 @@ if aoi != []:
     NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
     NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
     # st.write(start_date, end_date)
-    areas = geemap.ee_to_gdf(aoi)
-    aoi = geemap.geopandas_to_ee(areas, geodesic=False)
-    # Calculate the area of the polygon
-    area = aoi.geometry().area()
-    area_value = area.getInfo()
+    # areas = geemap.ee_to_gdf(aoi)
 
-    st.write('Area: ',area_value )# round(area*10**4,1),' Square Kilometers.')
+    # # Calculate the area of the polygon
+    # area = areas.geometry.area.item()
+    # st.write('Area: ', round(area*10**4,1),' Square Kilometers.')
 
     graph_ndvi = st.checkbox('Show NDVI graph')
     if graph_ndvi:    

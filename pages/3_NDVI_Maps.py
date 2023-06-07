@@ -87,8 +87,6 @@ map1 = geemap.Map(
     plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6,
 )
 
-map = st_folium(map1)
-
 shp = gpd.read_file("data/nzshp/Canterbury.shp")
 gdf = shp.to_crs({'init': 'epsg:4326'}) 
 
@@ -122,7 +120,7 @@ landsat_rois = {
 
 }
 
-roi_options = ["Uploaded GeoJSON"] + list(landsat_rois.keys())
+roi_options = ["Uploaded GeoJSON"] + ["Draw a polygon"] + list(landsat_rois.keys())
 crs = "epsg:4326"
 cols1,_ = st.columns((1,2)) 
 row1_col1, row1_col2 = st.columns([2, 1])
@@ -160,6 +158,10 @@ with row1_col1:
         )
         map1.add_gdf(gdf, "ROI")
         aoi = geemap.gdf_to_ee(gdf, geodesic=False)
+    elif sample_roi == "Draw a polygon":
+        map = st_folium(map1)
+        aoi = ee.FeatureCollection(map1.st_draw_features(map))
+        aoi
     elif sample_roi == "Uploaded GeoJSON":
         data = st.file_uploader(
             "Upload a GeoJSON file to use as an ROI. Customize timelapse parameters and then click the Submit button.",
@@ -228,7 +230,7 @@ with row1_col1:
 
 if st.button('Say hello'):
     st.write("OK")
-    aoi = ee.FeatureCollection(map1.st_draw_features(map))
+    
 
 else:
     st.write('Goodbye')

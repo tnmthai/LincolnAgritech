@@ -98,7 +98,7 @@ legend_dict = {
 }
 
 # Add the legend to the map
-map1.add_legend(legend_title=legend_dict['title'], legend_dict=legend_dict)
+map1.add_legend(legend_dict=legend_dict)
 
 
 shp = gpd.read_file("data/nzshp/Canterbury.shp")

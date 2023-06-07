@@ -287,10 +287,10 @@ if aoi != []:
         
         fig = px.line(df, x="Date", y="NDVI", title='NDVI')
         try:
-            selected_points = plotly_events(fig)            
-            if selected_points is not None:
-
-                a=selected_points[0]
+            selected_points = plotly_events(fig)      
+            a=selected_points[0]      
+            if a is not None:
+                # a=selected_points[0]
                 a= pd.DataFrame.from_dict(a,orient='index')
                 clickdate = a[0][0]
 

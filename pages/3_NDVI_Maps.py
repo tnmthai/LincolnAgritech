@@ -275,7 +275,7 @@ if aoi != []:
         st.error("Too much cloud on this day.")
         st.error("Please select additional dates!")
 
-
+map1.add_legend(builtin_legend='NLCD')
 map1.addLayerControl()
 
 map1.to_streamlit(height=700)

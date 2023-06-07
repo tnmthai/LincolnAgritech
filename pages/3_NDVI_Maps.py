@@ -90,11 +90,11 @@ map1 = geemap.Map(
 colors = ['#8DD3C7', '#FFFFB3', '#BEBADA', '#FB8072', '#80B1D3']
 # # colors = [(255, 0, 0), (127, 255, 0), (127, 18, 25), (36, 70, 180), (96, 68, 123)]
 
-labels = ['-0.2', '-.2 - 0', '0 - .1', '.1 - .2', '.2 - .3', '.3 - .4', '.4 - .5'] #, '.5 - .6', '.6 - .7', '.7 - .8', '.8 - .9', '.9 - 1.0']
+# labels = ['-0.2', '-.2 - 0', '0 - .1', '.1 - .2', '.2 - .3', '.3 - .4', '.4 - .5'] #, '.5 - .6', '.6 - .7', '.7 - .8', '.8 - .9', '.9 - 1.0']
 # labels = ['NDVI < -0.2', '-.2 < NDVI ≤ 0', '0 < NDVI ≤ .1', '.1 < NDVI ≤ .2', '.2 < NDVI ≤ .3', '.3 < NDVI ≤ .4', '.4 < NDVI ≤ .5', '.5 < NDVI ≤ .6', '.6 < NDVI ≤ .7', '.7 < NDVI ≤ .8', '.8 < NDVI ≤ .9', '.9 < NDVI ≤ 1.0']
-# colors = ['	#000000', '#a50026', '#d73027', '#f46d43', '#fdae61', '#fee08b', '#ffffbf','#d9ef8b','#a6d96a', '#66bd63','#1a9850','#006837']
+colors = ['	#000000', '#a50026', '#d73027', '#f46d43', '#fdae61', '#fee08b', '#ffffbf','#d9ef8b','#a6d96a', '#66bd63','#1a9850','#006837']
 
-map1.add_legend(labels= labels,draggable=True)
+map1.add_legend(colors= colors,draggable=True)
 # labels=labels, colors=colors, position='bottomright'
 shp = gpd.read_file("data/nzshp/Canterbury.shp")
 gdf = shp.to_crs({'init': 'epsg:4326'}) 

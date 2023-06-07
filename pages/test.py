@@ -32,3 +32,4 @@ st.components.v1.html(
     """,
     height=1,
 )
+output

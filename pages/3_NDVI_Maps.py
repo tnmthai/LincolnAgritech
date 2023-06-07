@@ -255,6 +255,7 @@ if aoi != []:
 
         # # Create a pandas DataFrame from the lists
         df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
+        df
         st.line_chart(df, y="NDVI", x="Date")
 
     map1.centerObject(aoi)

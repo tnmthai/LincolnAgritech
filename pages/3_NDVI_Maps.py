@@ -222,7 +222,7 @@ with row1_col1:
 # map1.add_gdf(aoi, "ROI")
 # aoi = geemap.gdf_to_ee(gdf, geodesic=False)
 if st.button('Say hello'):
-    st.write(map1.st_draw_features)
+    st.write(map1.st_draw_features())
 else:
     st.write('Goodbye')
 

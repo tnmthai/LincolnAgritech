@@ -242,6 +242,7 @@ if aoi != []:
     NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
     NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
     
+    
     # Polygons in AOI
     areas = geemap.ee_to_gdf(aoi)    
     # # Calculate the area of the polygon
@@ -250,6 +251,15 @@ if aoi != []:
     st.write('Area: ', round(gdf['Area (sqKm)']*10**4,5))
 
     graph_ndvi = st.checkbox('Show NDVI graph')
+    
+        
+    try:
+        map1.centerObject(aoi)
+        st.session_state["ndvi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
+        map1.add_legend(title="NDVI", legend_dict=legend_dict)
+    except Exception as e:
+        # st.error(e)
+        st.error("Cloud is greater than 90% on selected day. Please select additional dates!")
     if graph_ndvi:    
         image_ids = NDVI_plot.aggregate_array('system:index').getInfo()
         # image_ids
@@ -294,13 +304,13 @@ if aoi != []:
                 map1.add_legend(title="NDVI", legend_dict=legend_dict)
         except Exception as e:
             st.error(e)
-    map1.centerObject(aoi)
-    try:
-        st.session_state["ndvi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
-        map1.add_legend(title="NDVI", legend_dict=legend_dict)
-    except Exception as e:
-        # st.error(e)
-        st.error("Cloud is greater than 90% on selected day. Please select additional dates!")
+    # map1.centerObject(aoi)
+    # try:
+    #     st.session_state["ndvi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
+    #     map1.add_legend(title="NDVI", legend_dict=legend_dict)
+    # except Exception as e:
+    #     # st.error(e)
+    #     st.error("Cloud is greater than 90% on selected day. Please select additional dates!")
         
 
 

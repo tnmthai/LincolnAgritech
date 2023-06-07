@@ -29,10 +29,10 @@ if drawn_features is not None:
     Map.addLayer(aoi, {}, "Drawn Polygon")
 
 # Display the map with the drawn polygon
-if st.button('Say hello'):
-    st.write('Why hello there')
-    aoi
-    Map.to_streamlit()
-else:
-    st.write('Goodbye')
+# if st.button('Say hello'):
+#     st.write('Why hello there')
+#     aoi
+#     Map.to_streamlit()
+# else:
+#     st.write('Goodbye')
 

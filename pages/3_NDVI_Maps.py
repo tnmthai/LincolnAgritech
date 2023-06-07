@@ -162,7 +162,7 @@ with row1_col1:
         stdata = st_folium(map1)
         draw = ee.FeatureCollection(map1.st_draw_features(stdata))
         aoi= geemap.geopandas_to_ee(draw, geodesic=False)  
-        map1.add_gdf(aoi, "ROI")
+        map1.add_gdf(draw, "ROI")
     elif sample_roi == "Uploaded GeoJSON":
         data = st.file_uploader(
             "Upload a GeoJSON file to use as an ROI. Customize timelapse parameters and then click the Submit button.",

@@ -276,22 +276,23 @@ if aoi != []:
         df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
         
         fig = px.line(df, x="Date", y="NDVI", title='NDVI')
+        try:
+            selected_points = plotly_events(fig)            
+            if selected_points is not None:
 
-        selected_points = plotly_events(fig)
-        if selected_points is not None:
+                a=selected_points[0]
+                a= pd.DataFrame.from_dict(a,orient='index')
+                clickdate = a[0][0]
 
-            a=selected_points[0]
-            a= pd.DataFrame.from_dict(a,orient='index')
-            clickdate = a[0][0]
+                start_date = datetime.strptime(clickdate, "%Y-%m-%d")
+                next_date = start_date + timedelta(days=1)
+                end_date = next_date.strftime("%Y-%m-%d")+"T"
 
-            start_date = datetime.strptime(clickdate, "%Y-%m-%d")
-            next_date = start_date + timedelta(days=1)
-            end_date = next_date.strftime("%Y-%m-%d")+"T"
-
-            NDVI_aday = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
-            st.session_state["ndviaday"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI on "+str(clickdate))
-            map1.add_legend(title="NDVI", legend_dict=legend_dict)
-
+                NDVI_aday = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
+                st.session_state["ndviaday"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI on "+str(clickdate))
+                map1.add_legend(title="NDVI", legend_dict=legend_dict)
+        except Exception as e:
+            st.error(e)
     map1.centerObject(aoi)
     try:
         st.session_state["ndvi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")

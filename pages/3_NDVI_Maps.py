@@ -160,7 +160,8 @@ with row1_col1:
         aoi = geemap.gdf_to_ee(gdf, geodesic=False)
     elif sample_roi == "Draw a polygon":
         stdata = st_folium(map1)
-        aoi = ee.FeatureCollection(map1.st_draw_features(stdata))
+        draw = ee.FeatureCollection(map1.st_draw_features(stdata))
+        aoi= geemap.gdf_to_ee(draw, geodesic=False)   
         map1.add_gdf(aoi, "ROI")
     elif sample_roi == "Uploaded GeoJSON":
         data = st.file_uploader(

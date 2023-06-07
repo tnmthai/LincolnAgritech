@@ -313,5 +313,5 @@ if aoi != []:
 map1.addLayerControl()
 map1.to_streamlit(height=700)
 
-map2.addLayerControl()
-map2.to_streamlit(height=500)
+# map2.addLayerControl()
+# map2.to_streamlit(height=500)

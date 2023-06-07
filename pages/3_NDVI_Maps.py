@@ -90,16 +90,6 @@ map1 = geemap.Map(
 # colors = ['#8DD3C7', '#FFFFB3', '#BEBADA', '#FB8072', '#80B1D3']
 # # colors = [(255, 0, 0), (127, 255, 0), (127, 18, 25), (36, 70, 180), (96, 68, 123)]
 
-legend_dict = {
-    'title': 'NDVI Legend',
-    'min': -1,
-    'max': 1,
-    'palette': ['red', 'yellow', 'green'],
-}
-
-# Add the legend to the map
-map1.add_legend(legend_dict=legend_dict)
-
 
 shp = gpd.read_file("data/nzshp/Canterbury.shp")
 gdf = shp.to_crs({'init': 'epsg:4326'}) 
@@ -283,10 +273,49 @@ if aoi != []:
         # st.error(e)
         st.error("Too much cloud on this day.")
         st.error("Please select additional dates!")
+title_text = 'NDVI Values'
+palette = ['red', 'yellow', 'green']
+minimum = 0
+maximum = 0.5
 
-# map1.add_legend(builtin_legend='NLCD')
-# map1.add_legend(title='Legend', labels=labels, colors=colors, position='bottomright')
-# map1.add_legend()
+# Legend Title
+title = geemap.ee_tile_layer(
+    ee.Image().paint(ee.Geometry.Point([0, 0]), 1).visualize(),
+    {'palette': 'black'},
+    title_text
+)
+
+# Colorbar
+legend = geemap.ee_tile_layer(
+    ee.Image.pixelLonLat().select([0], ['value']),
+    {
+        'min': minimum,
+        'max': maximum,
+        'palette': palette,
+        'dimensions': '200x20',
+        'format': 'png'
+    }
+)
+
+# Legend Labels
+labels = geemap.ui.Panel(
+    widgets=[
+        geemap.ui.Label(minimum, style={'margin': '4px 10px', 'textAlign': 'left'}),
+        geemap.ui.Label((minimum + maximum) / 2, style={'margin': '4px 20px', 'textAlign': 'center'}),
+        geemap.ui.Label(maximum, style={'margin': '4px 10px', 'textAlign': 'right'})
+    ],
+    layout=geemap.ui.Panel.Layout.flow('horizontal')
+)
+
+# Create a panel with all 3 widgets
+legend_panel = geemap.ui.Panel(
+    widgets=[title, legend, labels],
+    style={'position': 'bottom-center', 'padding': '8px 15px'}
+)
+
+# Add the legend panel to the map
+map1.add(legend_panel)
+
 map1.addLayerControl()
 
 map1.to_streamlit(height=700)

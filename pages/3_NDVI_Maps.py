@@ -91,8 +91,7 @@ legend_keys = ['One', 'Two', 'Three', 'Four', 'ect']
 legend_colors = ['#8DD3C7', '#FFFFB3', '#BEBADA', '#FB8072', '#80B1D3']
 # legend_colors = [(255, 0, 0), (127, 255, 0), (127, 18, 25), (36, 70, 180), (96, 68 123)]
 
-map1.add_legend(
-    legend_keys=legend_keys, legend_colors=legend_colors, position='bottomleft'
+map1.add_legend(legend_keys=legend_keys, legend_colors=legend_colors, position='bottomleft'
 )
 
 

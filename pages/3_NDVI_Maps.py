@@ -85,15 +85,12 @@ map1 = geemap.Map(
     locate_control=True,
     plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
 )
+labels = ['One', 'Two', 'Three', 'Four', 'Five']
+# color can be defined using either hex code or RGB (0-255, 0-255, 0-255)
+colors = ['#8DD3C7', '#FFFFB3', '#BEBADA', '#FB8072', '#80B1D3']
+# colors = [(255, 0, 0), (127, 255, 0), (127, 18, 25), (36, 70, 180), (96, 68, 123)]
 
-# legend_keys = ['One', 'Two', 'Three', 'Four', 'ect']
-# colorS can be defined using either hex code or RGB (0-255, 0-255, 0-255)
-# legend_colors = ['#8DD3C7', '#FFFFB3', '#BEBADA', '#FB8072', '#80B1D3']
-# legend_colors = [(255, 0, 0), (127, 255, 0), (127, 18, 25), (36, 70, 180), (96, 68 123)]
-
-
-
-
+map1.add_legend(title='Legend', labels=labels, colors=colors)
 
 shp = gpd.read_file("data/nzshp/Canterbury.shp")
 gdf = shp.to_crs({'init': 'epsg:4326'}) 

@@ -289,7 +289,8 @@ if aoi != []:
                 end_date = next_date.strftime("%Y-%m-%d")+"T"
                 st.write('Dates between (click):', start_date ,' and ', end_date)
                 NDVI_aday = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
-                st.session_state["ndviaday"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI on "+str(clickdate))
+                st.session_state["ndviaday"] = map1.addLayer(NDVI_aday.clip(aoi).select('NDVI'), pallete, "NDVI on "+str(clickdate))
+
                 map1.add_legend(title="NDVI", legend_dict=legend_dict)
         except Exception as e:
             st.error(e)

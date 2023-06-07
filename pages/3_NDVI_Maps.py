@@ -72,22 +72,6 @@ def addDate(image):
     img_date = ee.Date(image.date())
     img_date = ee.Number.parse(img_date.format('YYYYMMdd'))
     return image.addBands(ee.Image(img_date).rename('date').toInt())
-
-color = ['#000000', '#a50026', '#d73027', '#f46d43', '#fdae61', '#fee08b',
-        '#ffffbf', '#d9ef8b', '#a6d96a', '#66bd63', '#1a9850', '#006837']
-
-pallete = {"min":-0.3, "max":1, 'palette':'gray'}
-st.title("NDVI Map")
-ee_authenticate(token_name="EARTHENGINE_TOKEN")
-ee.Initialize()
-
-map1 = geemap.Map(
-    basemap="HYBRID",
-    plugin_Draw=True,
-    Draw_export=True,
-    locate_control=True,
-    plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
-)
 legend_dict = {
 'NDVI < -0.2':	'#000000',
 '-.2 < NDVI ≤ 0':	'#a50026',	
@@ -102,6 +86,23 @@ legend_dict = {
 '.8 < NDVI ≤ .9':	'#1a9850',	
 '.9 < NDVI ≤ 1.0':	'#006837',	
 }
+# color = ['#000000', '#a50026', '#d73027', '#f46d43', '#fdae61', '#fee08b',
+#         '#ffffbf', '#d9ef8b', '#a6d96a', '#66bd63', '#1a9850', '#006837']
+color = [legend_dict[key] for key in legend_dict]
+
+pallete = {"min":-1, "max":1, 'palette':color}
+st.title("NDVI Map")
+ee_authenticate(token_name="EARTHENGINE_TOKEN")
+ee.Initialize()
+
+map1 = geemap.Map(
+    basemap="HYBRID",
+    plugin_Draw=True,
+    Draw_export=True,
+    locate_control=True,
+    plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
+)
+
 
 
 

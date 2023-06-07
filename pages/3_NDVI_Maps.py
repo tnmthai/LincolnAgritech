@@ -257,29 +257,15 @@ if aoi != []:
         df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
         
         st.bar_chart(df, y="NDVI", x="Date", use_container_width=True)
-        chart = {
-    "mark": "point",
-    "encoding": {
-        "x": {
-            "field": "Horsepower",
-            "type": "quantitative",
-        },
-        "y": {
-            "field": "Miles_per_Gallon",
-            "type": "quantitative",
-        },
-        "color": {"field": "Origin", "type": "nominal"},
-        "shape": {"field": "Origin", "type": "nominal"},
-    },
-}   
-        st.vega_lite_chart(
-        df, chart, theme="streamlit", use_container_width=True
-    )
-        
+ 
 
     map1.centerObject(aoi)
     try:
         st.session_state["ndvi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
+        legend_keys = ["Low Vegetation", "Medium Vegetation", "High Vegetation"]
+        
+        map1.add_legend(legend_keys=legend_keys, position='bottomright')
+
     except Exception as e:
         # st.error(e)
         st.error("Too much cloud on this day.")

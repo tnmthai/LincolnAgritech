@@ -101,7 +101,7 @@ map1 = geemap.Map(
     locate_control=True,
     plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
 )
-map2 = gm.Map(basemap="HYBRID")
+map2 = gm.Map(basemap="HYBRID", center=(-43.525650, 172.639847), zoom=6.25)
 
 shp = gpd.read_file("data/nzshp/Canterbury.shp")
 gdf = shp.to_crs({'init': 'epsg:4326'}) 

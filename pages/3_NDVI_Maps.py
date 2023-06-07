@@ -77,6 +77,12 @@ pallete = {"min":0, "max":1, 'palette':color}
 st.title("NDVI Map")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")
 ee.Initialize()
+geemap.create_legend(
+    title='NDVI values',
+    builtin_legend='NLCD',
+    draggable=True,
+    output='NLCD_legend.html',
+)
 map1 = geemap.Map(
     basemap="HYBRID",
     plugin_Draw=True,
@@ -84,6 +90,7 @@ map1 = geemap.Map(
     locate_control=True,
     plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
 )
+
 
 shp = gpd.read_file("data/nzshp/Canterbury.shp")
 gdf = shp.to_crs({'init': 'epsg:4326'}) 

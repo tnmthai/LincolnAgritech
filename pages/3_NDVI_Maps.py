@@ -85,17 +85,32 @@ map1 = geemap.Map(
     locate_control=True,
     plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
 )
-labels = ['-0.2', '.3 - .4', '.5 - .6', '.7 - .8', '.8 - .9']
+labels = ['<-0.2', '.3 - .4', '.5 - .6', '.7 - .8', '.8 - .9']
 # color can be defined using either hex code or RGB (0-255, 0-255, 0-255)
 colors = ['#000000', '#fee08b', '#d9ef8b', '#a6d96a', '#66bd63']#, '#ffffbf','#d9ef8b','#a6d96a', '#66bd63','#1a9850','#006837']
 # # colors = [(255, 0, 0), (127, 255, 0), (127, 18, 25), (36, 70, 180), (96, 68, 123)]
-
+legend_dict = {
+'NDVI < -0.2':	'#000000',
+'-.2 < NDVI ≤ 0':	'#a50026',	
+'0 < NDVI ≤ .1':	'#d73027',	
+'.1 < NDVI ≤ .2':	'#f46d43',	
+'.2 < NDVI ≤ .3':	'#fdae61',	
+'.3 < NDVI ≤ .4':	'#fee08b',	
+'.4 < NDVI ≤ .5':	'#ffffbf',	
+'.5 < NDVI ≤ .6':	'#d9ef8b',	
+'.6 < NDVI ≤ .7':	'#a6d96a',	
+'.7 < NDVI ≤ .8':	'#66bd63',	
+'.8 < NDVI ≤ .9':	'#1a9850',	
+'.9 < NDVI ≤ 1.0':	'#006837',	
+}
 # labels = ['-0.2', '-.2 - 0', '0 - .1', '.1 - .2', '.2 - .3', '.3 - .4', '.4 - .5'] #, '.5 - .6', '.6 - .7', '.7 - .8', '.8 - .9', '.9 - 1.0']
 # labels = ['NDVI < -0.2', '-.2 < NDVI ≤ 0', '0 < NDVI ≤ .1', '.1 < NDVI ≤ .2', '.2 < NDVI ≤ .3', '.3 < NDVI ≤ .4', '.4 < NDVI ≤ .5', '.5 < NDVI ≤ .6', '.6 < NDVI ≤ .7', '.7 < NDVI ≤ .8', '.8 < NDVI ≤ .9', '.9 < NDVI ≤ 1.0']
 # colors = ['#000000', '#a50026', '#d73027', '#f46d43', '#fdae61', '#fee08b', '#ffffbf','#d9ef8b','#a6d96a', '#66bd63','#1a9850','#006837']
 
-map1.add_legend(labels=labels,colors= colors,draggable=True)
+map1.add_legend(title="NDVI", legend_dict=legend_dict)
+# add_legend(labels=labels,colors= colors,draggable=True)
 # labels=labels, colors=colors, position='bottomright'
+# add_legend(title="NLCD Land Cover Classification", legend_dict=legend_dict)
 shp = gpd.read_file("data/nzshp/Canterbury.shp")
 gdf = shp.to_crs({'init': 'epsg:4326'}) 
 

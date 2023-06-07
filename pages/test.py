@@ -12,7 +12,7 @@ st.title("Draw Polygon with geemap and Streamlit")
 Map = geemap.Map(center=[40, -100], zoom=4)
 
 # Enable drawing control
-Map.add_draw_control()
+# Map.add_draw_control()
 
 # Display the map in Streamlit
 Map.to_streamlit()

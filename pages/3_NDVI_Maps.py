@@ -13,6 +13,9 @@ from dateutil.rrule import rrule, MONTHLY
 from dateutil.relativedelta import relativedelta # to add days or years
 import pandas as pd
 import calendar
+import plotly.express as px
+from streamlit_plotly_events import plotly_events
+
 # st.set_page_config(layout="wide")
 st.set_page_config(layout="wide")
 warnings.filterwarnings("ignore")
@@ -271,7 +274,14 @@ if aoi != []:
         # # Create a pandas DataFrame from the lists
         df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
         
-        st.bar_chart(df, y="NDVI", x="Date", use_container_width=True)
+        fig = px.line(df, x="Date", y="NDVI", title='NDVI')
+
+        selected_points = plotly_events(fig)
+        a=selected_points[0]
+
+        a= pd.DataFrame.from_dict(a,orient='index')
+        a
+        # st.bar_chart(df, y="NDVI", x="Date", use_container_width=True)
  
 
     map1.centerObject(aoi)

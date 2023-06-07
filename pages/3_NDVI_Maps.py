@@ -168,7 +168,8 @@ with row1_col1:
             # map1.add_gdf(gdf, "ROI")
         else:
             st.write(":red[No Region of Interest (ROI) has been selected yet.]")
-            aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
+            aoi = []
+            # aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
     
     agree = st.checkbox('Select a month between ' + str(sd) + ' and '+ str(ed))
     if agree:
@@ -212,61 +213,58 @@ with row1_col1:
             next_date = start_date + timedelta(days=1)
             end_date = next_date.strftime("%Y-%m-%d")+"T"
             
-    #     NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
-    #     NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
-    # else:
-    #     NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
-        # NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
-map1.add_gdf(gdf, "ROI")
-aoi = geemap.gdf_to_ee(gdf, geodesic=False)
+if aoi != []:
+
+    map1.add_gdf(gdf, "ROI")
+    aoi = geemap.gdf_to_ee(gdf, geodesic=False)
 
 
-NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
-NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
-# st.write(start_date, end_date)
-# areas = geemap.ee_to_gdf(aoi)
+    NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
+    NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
+    # st.write(start_date, end_date)
+    # areas = geemap.ee_to_gdf(aoi)
 
-# # Calculate the area of the polygon
-# area = areas.geometry.area.item()
-# st.write('Area: ', round(area*10**4,1),' Square Kilometers.')
+    # # Calculate the area of the polygon
+    # area = areas.geometry.area.item()
+    # st.write('Area: ', round(area*10**4,1),' Square Kilometers.')
 
-graph_ndvi = st.checkbox('Show NDVI graph')
-if graph_ndvi:    
-    image_ids = NDVI_plot.aggregate_array('system:index').getInfo()
-    # image_ids
-    dates = []
-    ndvi_values = []
-    # Iterate over the image IDs
-    for image_id in image_ids:
-        # Get the image by ID
-        image = NDVI_plot.filter(ee.Filter.eq('system:index', image_id)).first()   
-        
-        # Get the image date and NDVI value
-        date = image.date().format('yyyy-MM-dd')
-        # print(date)
-        # ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi, scale=10).get('NDVI').getInfo()
-        try:
-            st.session_state["ndvi_value"] = ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi, scale=10).get('NDVI').getInfo()
-        except Exception as e:
-            st.error("Please select smaller polygon!")
-            st.error(e)
+    graph_ndvi = st.checkbox('Show NDVI graph')
+    if graph_ndvi:    
+        image_ids = NDVI_plot.aggregate_array('system:index').getInfo()
+        # image_ids
+        dates = []
+        ndvi_values = []
+        # Iterate over the image IDs
+        for image_id in image_ids:
+            # Get the image by ID
+            image = NDVI_plot.filter(ee.Filter.eq('system:index', image_id)).first()   
             
+            # Get the image date and NDVI value
+            date = image.date().format('yyyy-MM-dd')
+            # print(date)
+            # ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi, scale=10).get('NDVI').getInfo()
+            try:
+                st.session_state["ndvi_value"] = ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi, scale=10).get('NDVI').getInfo()
+            except Exception as e:
+                st.error("Please select smaller polygon!")
+                st.error(e)
+                
 
-        # Add the date and NDVI value to the lists
-        dates.append(date.getInfo())
-        ndvi_values.append(ndvi_value)
+            # Add the date and NDVI value to the lists
+            dates.append(date.getInfo())
+            ndvi_values.append(ndvi_value)
 
-    # # Create a pandas DataFrame from the lists
-    df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
-    st.line_chart(df, y="NDVI", x="Date")
+        # # Create a pandas DataFrame from the lists
+        df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
+        st.line_chart(df, y="NDVI", x="Date")
 
-map1.centerObject(aoi)
-try:
-    st.session_state["ndvi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
-except Exception as e:
-    # st.error(e)
-    st.error("Too much cloud on this day.")
-    st.error("Please select additional dates!")
+    map1.centerObject(aoi)
+    try:
+        st.session_state["ndvi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
+    except Exception as e:
+        # st.error(e)
+        st.error("Too much cloud on this day.")
+        st.error("Please select additional dates!")
 
 
 map1.addLayerControl()

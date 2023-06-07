@@ -286,8 +286,8 @@ if aoi != []:
         df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
         
         fig = px.line(df, x="Date", y="NDVI", title='NDVI')
-        try:
-            selected_points = plotly_events(fig)      
+        selected_points = plotly_events(fig)  
+        try:                
             a=selected_points[0]      
             if a is not None:
                 # a=selected_points[0]

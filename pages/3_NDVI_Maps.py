@@ -280,7 +280,7 @@ if aoi != []:
         a=selected_points[0]
 
         a= pd.DataFrame.from_dict(a,orient='index')
-        a[0]
+        a[0][0]
         # st.bar_chart(df, y="NDVI", x="Date", use_container_width=True)
  
 

@@ -264,7 +264,8 @@ if aoi != []:
         st.session_state["ndvi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
         legend_keys = ["Low Vegetation", "Medium Vegetation", "High Vegetation"]
         
-        map1.add_legend(legend_keys=legend_keys, position='bottomright')
+        legend_colors = ['#8DD3C7', '#FB8072', '#80B1D3']
+        map1.add_legend(legend_keys=legend_keys, legend_colors=legend_colors, position='bottomright')
 
     except Exception as e:
         # st.error(e)

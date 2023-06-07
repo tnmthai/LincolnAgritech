@@ -20,8 +20,12 @@ st.components.v1.html(
             const datasetIndex = point.datasetIndex;
             const index = point.index;
             const value = chart.data.datasets[datasetIndex].data[index];
-            console.log('Clicked value:', value);
-            // You can further process the value as per your requirement
+            const output = 'Clicked value: ' + value;
+            console.log(output);
+            // Send the output to Streamlit console
+            const streamlitOutput = document.createElement('div');
+            streamlitOutput.innerHTML = output;
+            document.body.appendChild(streamlitOutput);
         }
     });
     </script>

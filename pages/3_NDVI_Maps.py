@@ -159,7 +159,7 @@ with row1_col1:
         map1.add_gdf(gdf, "ROI")
         aoi = geemap.gdf_to_ee(gdf, geodesic=False)
     elif sample_roi == "Draw a polygon":
-        stdata = map1.st_folium()
+        stdata = st_folium(map1)
         draw = ee.FeatureCollection(map1.st_draw_features(stdata))
         aoi= geemap.geopandas_to_ee(draw, geodesic=False)  
         map1.add_gdf(aoi, "ROI")

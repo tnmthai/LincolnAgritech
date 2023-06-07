@@ -78,11 +78,11 @@ st.title("NDVI Map")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")
 ee.Initialize()
 map1 = geemap.Map(
-    basemap="HYBRID",
+    basemap="SATELLITE",
     plugin_Draw=True,
     Draw_export=True,
     locate_control=True,
-    plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
+    plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6,
 )
 
 shp = gpd.read_file("data/nzshp/Canterbury.shp")

@@ -80,7 +80,7 @@ st.title("NDVI Map")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")
 ee.Initialize()
 map1 = geemap.Map(
-    basemap="SATELLITE",
+    basemap="HYBRID",
     plugin_Draw=True,
     Draw_export=True,
     locate_control=True,

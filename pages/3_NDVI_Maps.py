@@ -241,8 +241,8 @@ if aoi != []:
     areas = geemap.ee_to_gdf(aoi)
 
     # # Calculate the area of the polygon
-    area = areas.geometry.area
-    st.write('Area: ', round(area*10**4,1),' Square Kilometers.')
+    gdf['area'] = areas.geometry.area
+    st.write('Area: ', round(gdf['area']*10**4,1),' Square Kilometers.')
 
     graph_ndvi = st.checkbox('Show NDVI graph')
     if graph_ndvi:    

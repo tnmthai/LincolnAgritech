@@ -73,9 +73,8 @@ def addDate(image):
     img_date = ee.Number.parse(img_date.format('YYYYMMdd'))
     return image.addBands(ee.Image(img_date).rename('date').toInt())
 
-color = ['FFFFFF', 'CE7E45', 'DF923D', 'F1B555', 'FCD163', '99B718',
-               '74A901', '66A000', '529400', '3E8601', '207401', '056201',
-               '004C00', '023B01', '012E01', '011D01', '011301']
+color = ['#000000', '#a50026', '#d73027', '#f46d43', '#fdae61', '#fee08b',
+               '#ffffbf', '#d9ef8b', '#a6d96a', '#66bd63', '#1a9850', '#006837']
 pallete = {"min":0, "max":1, 'palette':color}
 st.title("NDVI Map")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")

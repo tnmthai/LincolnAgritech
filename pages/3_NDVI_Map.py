@@ -305,6 +305,14 @@ if aoi != []:
         except Exception as e:
             st.error("Please select a day from the graph to view the corresponding NDVI value for that day.")
 
+
+
 map1.addLayerControl()
 
 map1.to_streamlit(height=700)
+
+map2 = geemap.Map()
+
+map2.addLayerControl()
+
+map2.to_streamlit(height=700)

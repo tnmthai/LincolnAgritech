@@ -88,7 +88,7 @@ legend_dict = {
 # color = ['#000000', '#a50026', '#d73027', '#f46d43', '#fdae61', '#fee08b',
 #         '#ffffbf', '#d9ef8b', '#a6d96a', '#66bd63', '#1a9850', '#006837']
 color = [legend_dict[key] for key in legend_dict]
-
+rgbViza = {"min":0.0, "max":0.3,"bands":rgb}
 pallete = {"min":0, "max":1, 'palette':color}
 st.title("NDVI Map")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")
@@ -300,8 +300,8 @@ if aoi != []:
                 map1.add_legend(title="NDVI", legend_dict=legend_dict)                               
                 
                 map2.centerObject(aoi)
-                s2original = geemap.ee_tile_layer(NDVI_data, pallete, 'NDVI dates') #, opacity=0.75)
-                s2nocloudb = geemap.ee_tile_layer(NDVI_aday, pallete, "NDVI on "+str(clickdate))#, opacity=0.75)
+                s2original = geemap.ee_tile_layer(NDVI_data.clip(aoi), rgbViza, 'NDVI dates') #, opacity=0.75)
+                s2nocloudb = geemap.ee_tile_layer(NDVI_aday.clip(aoi), rgbViza, "NDVI on "+str(clickdate))#, opacity=0.75)
 
                 map2.split_map(left_layer=s2original, right_layer=s2nocloudb)
 

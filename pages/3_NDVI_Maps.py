@@ -303,7 +303,7 @@ if aoi != []:
 
                 map1.add_legend(title="NDVI", legend_dict=legend_dict)
         except Exception as e:
-            st.error("Please select a day from the graph.")
+            st.error("Please select a day from the graph to view the corresponding NDVI value for that day.")
 
 map1.addLayerControl()
 

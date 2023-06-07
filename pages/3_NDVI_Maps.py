@@ -85,7 +85,7 @@ map1 = geemap.Map(
     locate_control=True,
     plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
 )
-labels = ['One', 'Two', 'Three', 'Four', 'Five','aa']
+labels = ['One', 'Two', 'Three', 'Four', 'Five','Six']
 # color can be defined using either hex code or RGB (0-255, 0-255, 0-255)
 colors = ['#000000', '#a50026', '#d73027', '#f46d43', '#fdae61', '#fee08b']#, '#ffffbf','#d9ef8b','#a6d96a', '#66bd63','#1a9850','#006837']
 # # colors = [(255, 0, 0), (127, 255, 0), (127, 18, 25), (36, 70, 180), (96, 68, 123)]

@@ -283,6 +283,6 @@ if aoi != []:
         st.error("Please select additional dates!")
 
 
-map.addLayerControl()
+map1.addLayerControl()
 
-map.to_streamlit(height=700)
+map1.to_streamlit(height=700)

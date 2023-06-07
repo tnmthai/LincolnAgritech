@@ -301,10 +301,10 @@ if aoi != []:
                 map1.add_legend(title="NDVI", legend_dict=legend_dict)                               
                 
                
-                s2original = geemap.ee_tile_layer(NDVI_data.clip(aoi), rgbViza, 'NDVI dates') #, opacity=0.75)
-                s2nocloudb = geemap.ee_tile_layer(NDVI_aday.clip(aoi), rgbViza, "NDVI on "+str(clickdate))#, opacity=0.75)
+                # s2original = geemap.ee_tile_layer(NDVI_data.clip(aoi), rgbViza, 'NDVI dates') #, opacity=0.75)
+                # s2nocloudb = geemap.ee_tile_layer(NDVI_aday.clip(aoi), rgbViza, "NDVI on "+str(clickdate))#, opacity=0.75)
 
-                map2.split_map(left_layer=s2original, right_layer=s2nocloudb)
+                # map2.split_map(left_layer=s2original, right_layer=s2nocloudb)
 
         except Exception as e:
             st.error("Please select a day from the graph to view the corresponding NDVI value for that day.")

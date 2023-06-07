@@ -227,7 +227,7 @@ with row1_col1:
 # aoi = geemap.gdf_to_ee(gdf, geodesic=False)
 
 if st.button('Say hello'):
-    st.write(map.st_draw_features(map1))
+    st.write("OK")
     aoi = ee.FeatureCollection(map.st_draw_features(map1))
 
 else:

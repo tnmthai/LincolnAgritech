@@ -86,6 +86,7 @@ map1 = geemap.Map(
     locate_control=True,
     plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6,
 )
+map1.add_draw_control()
 
 shp = gpd.read_file("data/nzshp/Canterbury.shp")
 gdf = shp.to_crs({'init': 'epsg:4326'}) 
@@ -159,10 +160,11 @@ with row1_col1:
         map1.add_gdf(gdf, "ROI")
         aoi = geemap.gdf_to_ee(gdf, geodesic=False)
     elif sample_roi == "Draw a polygon":
-        stdata = st_folium(map1)
-        draw = ee.FeatureCollection(map1.st_draw_features(stdata))
+        # stdata = st_folium(map1)
+        # draw = ee.FeatureCollection(map1.st_draw_features(stdata))
         # aoi= geemap.geopandas_to_ee(draw, geodesic=False)  
-        map1.add_gdf(draw, "ROI")
+        # map1.add_gdf(draw, "ROI")
+        pass
     elif sample_roi == "Uploaded GeoJSON":
         data = st.file_uploader(
             "Upload a GeoJSON file to use as an ROI. Customize timelapse parameters and then click the Submit button.",
@@ -284,8 +286,17 @@ if aoi != []:
         # st.error(e)
         st.error("Too much cloud on this day.")
         st.error("Please select additional dates!")
+drawn_features = map1.user_roi
+if drawn_features is not None:
+    # Convert the drawn features to an Earth Engine Geometry object
+    aoi = geemap.geopandas_to_ee(drawn_features, geodesic=False)
 
+    # Add the Earth Engine Geometry object as a layer to the map
+    map1.addLayer(aoi, {}, "Drawn Polygon")
 
-map1.addLayerControl()
+# Display the map with the drawn polygon
+st.write(map1.to_streamlit())
 
-map1.to_streamlit(height=700)
+# map1.addLayerControl()
+
+# map1.to_streamlit(height=700)

@@ -9,7 +9,8 @@ ee.Initialize()
 st.title("Draw Polygon with geemap and Streamlit")
 
 # Create a map using geemap
-Map = geemap.Map(center=[40, -100], zoom=4)
+Map = geemap.Map()
+# Map
 
 # Enable drawing control
 # Map.add_draw_control()

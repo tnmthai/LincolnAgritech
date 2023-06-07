@@ -85,13 +85,13 @@ map1 = geemap.Map(
     locate_control=True,
     plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
 )
-# labels = ['One', 'Two', 'Three', 'Four', 'Five']
-# # color can be defined using either hex code or RGB (0-255, 0-255, 0-255)
-# colors = ['#8DD3C7', '#FFFFB3', '#BEBADA', '#FB8072', '#80B1D3']
+labels = ['One', 'Two', 'Three', 'Four', 'Five']
+# color can be defined using either hex code or RGB (0-255, 0-255, 0-255)
+colors = ['#8DD3C7', '#FFFFB3', '#BEBADA', '#FB8072', '#80B1D3']
 # # colors = [(255, 0, 0), (127, 255, 0), (127, 18, 25), (36, 70, 180), (96, 68, 123)]
 
-labels = ['NDVI < -0.2', '-.2 < NDVI ≤ 0', '0 < NDVI ≤ .1', '.1 < NDVI ≤ .2', '.2 < NDVI ≤ .3', '.3 < NDVI ≤ .4', '.4 < NDVI ≤ .5', '.5 < NDVI ≤ .6', '.6 < NDVI ≤ .7', '.7 < NDVI ≤ .8', '.8 < NDVI ≤ .9', '.9 < NDVI ≤ 1.0']
-colors = ['	#000000', '#a50026', '#d73027', '#f46d43', '#fdae61', '#fee08b', '#ffffbf','#d9ef8b','#a6d96a', '#66bd63','#1a9850','#006837']
+# labels = ['NDVI < -0.2', '-.2 < NDVI ≤ 0', '0 < NDVI ≤ .1', '.1 < NDVI ≤ .2', '.2 < NDVI ≤ .3', '.3 < NDVI ≤ .4', '.4 < NDVI ≤ .5', '.5 < NDVI ≤ .6', '.6 < NDVI ≤ .7', '.7 < NDVI ≤ .8', '.8 < NDVI ≤ .9', '.9 < NDVI ≤ 1.0']
+# colors = ['	#000000', '#a50026', '#d73027', '#f46d43', '#fdae61', '#fee08b', '#ffffbf','#d9ef8b','#a6d96a', '#66bd63','#1a9850','#006837']
 
 map1.add_legend(position='bottomright')
 # labels=labels, colors=colors, 

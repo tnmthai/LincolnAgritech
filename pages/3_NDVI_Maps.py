@@ -85,11 +85,20 @@ map1 = geemap.Map(
     locate_control=True,
     plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
 )
-labels = ['One', 'Two', 'Three', 'Four', 'Five']
-# color can be defined using either hex code or RGB (0-255, 0-255, 0-255)
-colors = ['#8DD3C7', '#FFFFB3', '#BEBADA', '#FB8072', '#80B1D3']
-# colors = [(255, 0, 0), (127, 255, 0), (127, 18, 25), (36, 70, 180), (96, 68, 123)]
+# labels = ['One', 'Two', 'Three', 'Four', 'Five']
+# # color can be defined using either hex code or RGB (0-255, 0-255, 0-255)
+# colors = ['#8DD3C7', '#FFFFB3', '#BEBADA', '#FB8072', '#80B1D3']
+# # colors = [(255, 0, 0), (127, 255, 0), (127, 18, 25), (36, 70, 180), (96, 68, 123)]
 
+legend_dict = {
+    'title': 'NDVI Legend',
+    'min': -1,
+    'max': 1,
+    'palette': ['red', 'yellow', 'green'],
+}
+
+# Add the legend to the map
+map1.add_legend(legend_title=legend_dict['title'], legend_dict=legend_dict)
 
 
 shp = gpd.read_file("data/nzshp/Canterbury.shp")
@@ -276,7 +285,7 @@ if aoi != []:
         st.error("Please select additional dates!")
 
 # map1.add_legend(builtin_legend='NLCD')
-map1.add_legend(title='Legend', labels=labels, colors=colors, position='bottomright')
+# map1.add_legend(title='Legend', labels=labels, colors=colors, position='bottomright')
 # map1.add_legend()
 map1.addLayerControl()
 

@@ -79,7 +79,7 @@ pallete = {"min":0, "max":1, 'palette':color}
 st.title("NDVI Map")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")
 ee.Initialize()
-map1 = geemap.Map(
+map = geemap.Map(
     basemap="SATELLITE",
     plugin_Draw=True,
     Draw_export=True,
@@ -87,7 +87,7 @@ map1 = geemap.Map(
     plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6,
 )
 
-stc = st_folium(map1)
+map1 = st_folium(map)
 
 shp = gpd.read_file("data/nzshp/Canterbury.shp")
 gdf = shp.to_crs({'init': 'epsg:4326'}) 
@@ -227,7 +227,7 @@ with row1_col1:
 # aoi = geemap.gdf_to_ee(gdf, geodesic=False)
 
 if st.button('Say hello'):
-    st.write(map1.st_draw_features(stc))
+    st.write(map1.st_draw_features(map1))
 else:
     st.write('Goodbye')
 

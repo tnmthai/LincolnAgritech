@@ -273,48 +273,11 @@ if aoi != []:
         # st.error(e)
         st.error("Too much cloud on this day.")
         st.error("Please select additional dates!")
-title_text = 'NDVI Values'
-palette = ['red', 'yellow', 'green']
-minimum = 0
-maximum = 0.5
 
-# Legend Title
-title = geemap.ee_tile_layer(
-    ee.Image().paint(ee.Geometry.Point([0, 0]), 1).visualize(),
-    {'palette': 'black'},
-    title_text
-)
+labels = ['NDVI < -0.2', '-.2 < NDVI ≤ 0', '0 < NDVI ≤ .1', '.1 < NDVI ≤ .2', '.2 < NDVI ≤ .3', '.3 < NDVI ≤ .4', '.4 < NDVI ≤ .5', '.5 < NDVI ≤ .6', '.6 < NDVI ≤ .7', '.7 < NDVI ≤ .8', '.8 < NDVI ≤ .9', '.9 < NDVI ≤ 1.0']
+colors = ['	#000000', '#a50026', '#d73027', '#f46d43', '#fdae61', '#fee08b', '#ffffbf','#d9ef8b','#a6d96a', '#66bd63','#1a9850','#006837']
 
-# Colorbar
-legend = geemap.ee_tile_layer(
-    ee.Image.pixelLonLat().select([0], ['value']),
-    {
-        'min': minimum,
-        'max': maximum,
-        'palette': palette,
-        'dimensions': '200x20',
-        'format': 'png'
-    }
-)
-
-# Legend Labels
-labels = geemap.ui.Panel(
-    widgets=[
-        geemap.ui.Label(minimum, style={'margin': '4px 10px', 'textAlign': 'left'}),
-        geemap.ui.Label((minimum + maximum) / 2, style={'margin': '4px 20px', 'textAlign': 'center'}),
-        geemap.ui.Label(maximum, style={'margin': '4px 10px', 'textAlign': 'right'})
-    ],
-    layout=geemap.ui.Panel.Layout.flow('horizontal')
-)
-
-# Create a panel with all 3 widgets
-legend_panel = geemap.ui.Panel(
-    widgets=[title, legend, labels],
-    style={'position': 'bottom-center', 'padding': '8px 15px'}
-)
-
-# Add the legend panel to the map
-map1.add(legend_panel)
+map1.add_legend(title='Legend', labels=labels, colors=colors)
 
 map1.addLayerControl()
 

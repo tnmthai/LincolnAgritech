@@ -1,48 +1,20 @@
 import streamlit as st
+import plotly.express as px
 import pandas as pd
-import numpy as np
-import altair as alt
+from streamlit_plotly_events import plotly_events
 
-chart_data = pd.DataFrame(
-    np.random.randn(20, 3),
-    columns=['a', 'b', 'c'])
+x = [1, 2, 3, 4, 5]
+y = [6, 7, 2, 4, 5]
 
-# Create an Altair line chart
-chart = alt.Chart(chart_data).mark_line().encode(
-    x='index',
-    y=alt.Y(alt.repeat('column'), type='quantitative'),
-    color='column'
-).properties(
-    width=600,
-    height=400
-)
+df=[]
+df= pd.DataFrame(df)
+df['year']= x
+df['lifeExp']= y
 
-# Use Streamlit to render the Altair chart
-st.altair_chart(chart, use_container_width=True)
+fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada')
 
-# Handle mouseover events to capture values
-values = []
+selected_points = plotly_events(fig)
+a=selected_points[0]
 
-@st.cache(allow_output_mutation=True)
-def handle_mouseover(value):
-    values.append(value)
-
-st.write("Values when dragging the mouse:")
-chart.add_selection(
-    alt.selection_single(on='mouseover', nearest=True, empty='none')
-).transform_filter(
-    alt.datum.column == alt.value('a')
-).add_mark(
-    alt.Rule().encode(
-        y='mean(value)',
-        size=alt.value(2),
-        color=alt.value('red')
-    )
-).transform_calculate(
-    value=alt.datum.a
-).interactive().add_listener(
-    "mouseover", handle_mouseover
-)
-
-# Display the captured values
-st.write(values)
+a= pd.DataFrame.from_dict(a,orient='index')
+a

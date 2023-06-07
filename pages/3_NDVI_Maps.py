@@ -242,9 +242,9 @@ if aoi != []:
     
     # # Calculate the area of the polygon
     gdf['Area'] = areas.geometry.area
-    gdf.index.name = 'Polygons'
     
-    st.write('Area: ', round(gdf['area']*10**4,1),' Square Kilometers.')
+    gdf = gdf.rename_axis('foo')
+    st.write('Area: ', round(gdf['Area']*10**4,1),' Square Kilometers.')
 
     graph_ndvi = st.checkbox('Show NDVI graph')
     if graph_ndvi:    

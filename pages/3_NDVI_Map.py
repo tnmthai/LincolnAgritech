@@ -16,7 +16,6 @@ import calendar
 import plotly.express as px
 from streamlit_plotly_events import plotly_events
 
-# st.set_page_config(layout="wide")
 st.set_page_config(layout="wide")
 warnings.filterwarnings("ignore")
 @st.cache_data
@@ -311,7 +310,14 @@ map1.addLayerControl()
 
 map1.to_streamlit(height=700)
 
-map2 = geemap.Map()
+map2 = geemap.Map(basemap="HYBRID", center=(-43.525650, 172.639847), zoom=6.25,)
+s2original = geemap.ee_tile_layer(NDVI_data, pallete, 'NDVI dates') #, opacity=0.75)
+s2nocloudb = geemap.ee_tile_layer(NDVI_aday, pallete, "NDVI on "+str(clickdate))#, opacity=0.75)
+
+
+map2.split_map(left_layer=s2original, right_layer=s2nocloudb)
+map2.addLayerControl()
+
 
 map2.addLayerControl()
 

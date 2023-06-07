@@ -13,8 +13,6 @@ from dateutil.rrule import rrule, MONTHLY
 from dateutil.relativedelta import relativedelta # to add days or years
 import pandas as pd
 import calendar
-from streamlit_folium import st_folium
-import folium
 # st.set_page_config(layout="wide")
 st.set_page_config(layout="wide")
 warnings.filterwarnings("ignore")
@@ -84,9 +82,8 @@ map1 = geemap.Map(
     plugin_Draw=True,
     Draw_export=True,
     locate_control=True,
-    plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6,
+    plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
 )
-map1.add_draw_control()
 
 shp = gpd.read_file("data/nzshp/Canterbury.shp")
 gdf = shp.to_crs({'init': 'epsg:4326'}) 
@@ -121,7 +118,7 @@ landsat_rois = {
 
 }
 
-roi_options = ["Uploaded GeoJSON"] + ["Draw a polygon"] + list(landsat_rois.keys())
+roi_options = ["Uploaded GeoJSON"] + list(landsat_rois.keys())
 crs = "epsg:4326"
 cols1,_ = st.columns((1,2)) 
 row1_col1, row1_col2 = st.columns([2, 1])
@@ -148,23 +145,18 @@ end_date = ed.strftime("%Y-%m-%d") + "T"
 months = [dt.strftime("%m-%Y") for dt in rrule(MONTHLY, dtstart=sd, until=ed)]
 
 with row1_col1:
+
     sample_roi = st.selectbox(
         "Select a existing ROI or upload a GeoJSON file:",
         roi_options,
         index=0,
     )
-    if sample_roi != "Uploaded GeoJSON" and sample_roi != "Draw a polygon":
+    if sample_roi != "Uploaded GeoJSON":
         gdf = gpd.GeoDataFrame(
             index=[0], crs=crs, geometry=[landsat_rois[sample_roi]]
         )
-        map1.add_gdf(gdf, "ROI")
+        # map1.add_gdf(gdf, "ROI")
         aoi = geemap.gdf_to_ee(gdf, geodesic=False)
-    elif sample_roi == "Draw a polygon":
-        # stdata = st_folium(map1)
-        # draw = ee.FeatureCollection(map1.st_draw_features(stdata))
-        # aoi= geemap.geopandas_to_ee(draw, geodesic=False)  
-        # map1.add_gdf(draw, "ROI")
-        pass
     elif sample_roi == "Uploaded GeoJSON":
         data = st.file_uploader(
             "Upload a GeoJSON file to use as an ROI. Customize timelapse parameters and then click the Submit button.",
@@ -173,13 +165,9 @@ with row1_col1:
         if data:
             gdf = uploaded_file_to_gdf(data)
             st.session_state["aoi"] = aoi= geemap.gdf_to_ee(gdf, geodesic=False)    
-            map1.add_gdf(gdf, "ROI")
-            
+            # map1.add_gdf(gdf, "ROI")
         else:
-            st.write(":red[No Region of Interest (ROI) has been selected yet.]")
-            aoi= []
-
-        #     aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
+            aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
     
     agree = st.checkbox('Select a month between ' + str(sd) + ' and '+ str(ed))
     if agree:
@@ -228,75 +216,58 @@ with row1_col1:
     # else:
     #     NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
         # NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
-# map1.add_gdf(aoi, "ROI")
-# aoi = geemap.gdf_to_ee(gdf, geodesic=False)
+map1.add_gdf(gdf, "ROI")
+aoi = geemap.gdf_to_ee(gdf, geodesic=False)
 
-if st.button('Say hello'):
-    st.write("OK")
-    
 
-else:
-    st.write('Goodbye')
+NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
+NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
+# st.write(start_date, end_date)
+areas = geemap.ee_to_gdf(aoi)
 
-if aoi != []:
+# Calculate the area of the polygon
+area = areas.geometry.area.item()
+st.write('Area: ', round(area*10**4,1),' Square Kilometers.')
+
+graph_ndvi = st.checkbox('Show NDVI graph')
+if graph_ndvi:    
+    image_ids = NDVI_plot.aggregate_array('system:index').getInfo()
+    # image_ids
+    dates = []
+    ndvi_values = []
+    # Iterate over the image IDs
+    for image_id in image_ids:
+        # Get the image by ID
+        image = NDVI_plot.filter(ee.Filter.eq('system:index', image_id)).first()   
         
-    NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
-    NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",20)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
-    # st.write(start_date, end_date)
-    areas = geemap.ee_to_gdf(aoi)
-
-    # Calculate the area of the polygon
-    # area = areas.geometry.area.item()
-    # st.write('Area: ', round(area*10**4,1),' Square Kilometers.')
-
-    graph_ndvi = st.checkbox('Show NDVI graph')
-    if graph_ndvi:    
-        image_ids = NDVI_plot.aggregate_array('system:index').getInfo()
-        # image_ids
-        dates = []
-        ndvi_values = []
-        # Iterate over the image IDs
-        for image_id in image_ids:
-            # Get the image by ID
-            image = NDVI_plot.filter(ee.Filter.eq('system:index', image_id)).first()   
+        # Get the image date and NDVI value
+        date = image.date().format('yyyy-MM-dd')
+        # print(date)
+        # ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi, scale=10).get('NDVI').getInfo()
+        try:
+            st.session_state["ndvi_value"] = ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi, scale=10).get('NDVI').getInfo()
+        except Exception as e:
+            st.error("Please select smaller polygon!")
+            st.error(e)
             
-            # Get the image date and NDVI value
-            date = image.date().format('yyyy-MM-dd')
-            # print(date)
-            # ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi, scale=10).get('NDVI').getInfo()
-            try:
-                st.session_state["ndvi_value"] = ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi, scale=10).get('NDVI').getInfo()
-            except Exception as e:
-                st.error("Please select smaller polygon!")
-                st.error(e)
-                
 
-            # Add the date and NDVI value to the lists
-            dates.append(date.getInfo())
-            ndvi_values.append(ndvi_value)
+        # Add the date and NDVI value to the lists
+        dates.append(date.getInfo())
+        ndvi_values.append(ndvi_value)
 
-        # # Create a pandas DataFrame from the lists
-        df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
-        st.line_chart(df, y="NDVI", x="Date")
+    # # Create a pandas DataFrame from the lists
+    df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
+    st.line_chart(df, y="NDVI", x="Date")
 
-    map1.centerObject(aoi)
-    try:
-        st.session_state["ndvi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
-    except Exception as e:
-        # st.error(e)
-        st.error("Too much cloud on this day.")
-        st.error("Please select additional dates!")
-drawn_features = map1.user_roi
-if drawn_features is not None:
-    # Convert the drawn features to an Earth Engine Geometry object
-    aoi = geemap.geopandas_to_ee(drawn_features, geodesic=False)
+map1.centerObject(aoi)
+try:
+    st.session_state["ndvi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
+except Exception as e:
+    # st.error(e)
+    st.error("Too much cloud on this day.")
+    st.error("Please select additional dates!")
 
-    # Add the Earth Engine Geometry object as a layer to the map
-    map1.addLayer(aoi, {}, "Drawn Polygon")
 
-# Display the map with the drawn polygon
-st.write(map1.to_streamlit())
+map1.addLayerControl()
 
-# map1.addLayerControl()
-
-# map1.to_streamlit(height=700)
+map1.to_streamlit(height=700)

@@ -285,31 +285,18 @@ if aoi != []:
 
 
 
-            for index, row in areas.iterrows():
-                polygon_id = row['PolygonID']
-                row
-                aoi2 = geemap.gdf_to_ee(row)
+            for i in range(2):
+                polygon_id = i
+                geometry = areas.loc[i, 'geometry']
+                # aoi2 = geemap.gdf_to_ee(row)
                 # polygon_id
                 # Calculate NDVI for each polygon
-                ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi2, scale=10).get('NDVI').getInfo()
+                ndvi_va = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=geometry, scale=10).get('NDVI').getInfo()
                 
                 datei.append(date.getInfo())
-                ndviv.append(ndvi_value)
+                ndviv.append(ndvi_va)
                 polyids.append(polygon_id)
-                # ndvi_collection = NDVI_plot.map(lambda image: image.reduceRegion(reducer=ee.Reducer.mean(), geometry=row.geometry, scale=10).get('NDVI'))
-        #         dates = ndvi_collection.aggregate_array('system:index').map(lambda image_id: ee.String(image_id).slice(0, 10))
-        #         ndvi_values = ndvi_collection.aggregate_array('NDVI')
 
-        #         # Convert dates and ndvi_values to lists
-        #         dates = dates.getInfo()
-        #         ndvi_values = ndvi_values.getInfo()
-
-        #         # Add polygon ID, dates, and NDVI values to the DataFrame
-        #         dfz = dfz.append(pd.DataFrame({'PolygonID': polygon_id, 'Date': dates, 'NDVI': ndvi_values}))
-
-        #     # Reset the index of the DataFrame
-        #     dfz = dfz.reset_index(drop=True)
-        # dfz
 
         # # Create a pandas DataFrame from the lists
         df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})

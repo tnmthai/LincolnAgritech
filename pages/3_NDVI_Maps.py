@@ -308,11 +308,11 @@ if aoi != []:
         col1, col2 = st.columns((3, 5))
         
         dfz = pd.DataFrame({'PolygonID': polyids, 'Date': datei, 'NDVI': ndviv})
-        col1.subheader("NDVI chart")
-        col1.write(areas)  
+        col2.subheader("NDVI chart")
+        col2.write(areas)  
 
-        col2.subheader("NDVI values")
-        col2.write(dfz)
+        col1.subheader("NDVI values")
+        col1.write(dfz)
         fig = px.line(dfz, x="Date", y="NDVI",color_discrete_sequence=color_sequence,title='NDVI')  #, color_discrete_sequence=color_sequence
 
         try:

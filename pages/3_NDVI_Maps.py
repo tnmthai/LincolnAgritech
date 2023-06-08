@@ -305,7 +305,7 @@ if aoi != []:
         # # Create a pandas DataFrame from the lists
         # df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
         dfz = pd.DataFrame({'PolygonID': polyids, 'Date': datei, 'NDVI': ndviv})
-        # dfz
+        dfz
         fig = px.line(dfz, x="Date", y="NDVI", color="PolygonID", color_discrete_sequence=color_sequence, title='NDVI')
         try:
             selected_points = plotly_events(fig)            

@@ -291,21 +291,21 @@ if aoi != []:
             # dates.append(date.getInfo())
             # ndvi_values.append(ndvi_value)
 
-
             i = 0
-            for feature in features:
-                polygon = ee.Geometry.Polygon(feature['geometry']['coordinates'])
+            try:
+                for feature in features:
+                    polygon = ee.Geometry.Polygon(feature['geometry']['coordinates'])               
+                    polygon_id = i
+                    i +=1                
+                    # Calculate NDVI for each polygon
+                    ndvi_va = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=polygon, scale=10).get('NDVI').getInfo()
+                    
+                    datei.append(date.getInfo())
+                    ndviv.append(ndvi_va)
+                    polyids.append(polygon_id)
+            except Exception as e:
+                st.error("Please select smaller polygon!") 
                 
-                polygon_id = i
-                i +=1
-                # polygon_id
-                # Calculate NDVI for each polygon
-                ndvi_va = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=polygon, scale=10).get('NDVI').getInfo()
-                
-                datei.append(date.getInfo())
-                ndviv.append(ndvi_va)
-                polyids.append(polygon_id)
-
         color_sequence = ['#ff0000', '#00ff00']
         # # Create a pandas DataFrame from the lists
         # df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})

@@ -297,7 +297,7 @@ if aoi != []:
         # # Create a pandas DataFrame from the lists
         # df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
         df = pd.DataFrame({'Polygon ID': polygon_ids, 'Date': dates, 'NDVI': ndvi_values})
-
+        df
         
         fig = px.line(df, x="Date", y="NDVI", title='NDVI')
         try:

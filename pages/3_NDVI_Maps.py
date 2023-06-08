@@ -313,17 +313,14 @@ if aoi != []:
         # with col1:
 
         # col1.line_chart(dfz, x="Date", y="NDVI",color_discrete_sequence=color_sequence,title='NDVI')
-        fig = px.line(dfz, x="Date", y="NDVI",color_discrete_sequence=color_sequence,title='NDVI')  #, color_discrete_sequence=color_sequence
-        col1.plotly_chart(fig)
+        # fig = px.line(dfz, x="Date", y="NDVI",color_discrete_sequence=color_sequence,title='NDVI')  #, color_discrete_sequence=color_sequence
+        # col1.plotly_chart(fig)
         # col1.plotly_chart(dfz, x="Date", y="NDVI")
         # dfz
         col2.subheader("NDVI values")
         col2.write(dfz)
         # fig = px.line(dfz, x="Date", y="NDVI",color_discrete_sequence=color_sequence,title='NDVI')  #, color_discrete_sequence=color_sequence
-        plot_html = plot(fig, include_plotlyjs=False, output_type='div')
-        col1.write(plot_html, unsafe_allow_html=True)
-        selected_points = col1.selectbox('Select a point', options=dfz['Date'])
-        selected_points
+
         try:
             selected_points = plotly_events(fig)            
             if selected_points is not None:

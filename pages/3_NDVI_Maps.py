@@ -234,7 +234,7 @@ if aoi != []:
     map1.add_gdf(gdf, "ROI")
     
     aoi = geemap.gdf_to_ee(gdf, geodesic=False)
-    aoi.get(i)
+    aoi
     st.write('Selected dates between:', start_date[:-1] ,' and ', end_date[:-1])
     NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
     NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)

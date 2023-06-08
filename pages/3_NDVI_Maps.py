@@ -306,7 +306,7 @@ if aoi != []:
         # df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
         dfz = pd.DataFrame({'PolygonID': polyids, 'Date': datei, 'NDVI': ndviv})
         dfz
-        fig = px.scatter(dfz, x="Date", y="NDVI", color="PolygonID", title='NDVI')  #, color_discrete_sequence=color_sequence
+        fig = px.scatter(dfz, x="Date", y="NDVI", color_discrete_sequence=color_sequence, title='NDVI')  #, color_discrete_sequence=color_sequence
         try:
             selected_points = plotly_events(fig)            
             if selected_points is not None:

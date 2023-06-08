@@ -249,7 +249,7 @@ if aoi != []:
     
     
     # Create an empty DataFrame
-    dfz = pd.DataFrame(columns=['PolygonID', 'Date', 'NDVI'])
+    
     try:
         map1.centerObject(aoi)
         st.session_state["ndvi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
@@ -263,6 +263,9 @@ if aoi != []:
         polygon_ids = []
         dates = []
         ndvi_values = []
+        polyids = []
+        datei = []
+        ndviv = []
         # Iterate over the image IDs
         for image_id in image_ids:
             # Get the image by ID
@@ -280,11 +283,18 @@ if aoi != []:
             dates.append(date.getInfo())
             ndvi_values.append(ndvi_value)
 
+
+
             for index, row in areas.iterrows():
                 polygon_id = row['PolygonID']
                 polygon_id
-        #         # Calculate NDVI for each polygon
-        #         ndvi_collection = NDVI_plot.map(lambda image: image.reduceRegion(reducer=ee.Reducer.mean(), geometry=row.geometry, scale=10).get('NDVI'))
+                # Calculate NDVI for each polygon
+                ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=row.geometry, scale=10).get('NDVI').getInfo()
+                
+                datei.append(date.getInfo())
+                ndviv.append(ndvi_value)
+                polyids.append(polygon_id)
+                # ndvi_collection = NDVI_plot.map(lambda image: image.reduceRegion(reducer=ee.Reducer.mean(), geometry=row.geometry, scale=10).get('NDVI'))
         #         dates = ndvi_collection.aggregate_array('system:index').map(lambda image_id: ee.String(image_id).slice(0, 10))
         #         ndvi_values = ndvi_collection.aggregate_array('NDVI')
 
@@ -301,7 +311,7 @@ if aoi != []:
 
         # # Create a pandas DataFrame from the lists
         df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
-        
+        dfz = pd.DataFrame({'PolygonID': polyids, 'Date': datei, 'NDVI': ndviv})
         fig = px.line(df, x="Date", y="NDVI", title='NDVI')
         try:
             selected_points = plotly_events(fig)            

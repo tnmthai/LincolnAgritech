@@ -234,7 +234,6 @@ if aoi != []:
     map1.add_gdf(gdf, "ROI")
     
     aoi = geemap.gdf_to_ee(gdf, geodesic=False)
-    # aoi
     st.write('Selected dates between:', start_date[:-1] ,' and ', end_date[:-1])
     NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
     NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
@@ -248,7 +247,10 @@ if aoi != []:
     st.write('Area: ', round(gdf['Area (sqKm)']*10**4,5))
 
     graph_ndvi = st.checkbox('Show NDVI graph')   
-        
+    areas['PolygonID'] = areas.index.astype(str)
+    
+    # Create an empty DataFrame
+    df = pd.DataFrame(columns=['PolygonID', 'Date', 'NDVI'])
     try:
         map1.centerObject(aoi)
         st.session_state["ndvi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
@@ -269,36 +271,34 @@ if aoi != []:
             
             # Get the image date and NDVI value
             date = image.date().format('yyyy-MM-dd')
-            try:
-                # Get the NDVI value within each polygon in the AOI
-                features = aoi.getInfo()['features']
-                for feature in features:
-                    polygon = ee.Geometry.Polygon(feature['geometry']['coordinates'])
-                    ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=polygon, scale=10).get('NDVI').getInfo()
-                    st.session_state["ndvi_value"] = ndvi_value
-                    polygon_id = feature['Feature']['id']
 
-                    # Append the polygon ID, date, and NDVI value to the lists
-                    polygon_ids.append(polygon_id)
-                    dates.append(date)
-                    ndvi_values.append(ndvi_value)
-            except ee.ee_exception.EEException:
-                # Handle large polygon exception
-                st.error("Please select a smaller polygon!")
-                continue
             # try:
             #     st.session_state["ndvi_value"] = ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi, scale=10).get('NDVI').getInfo()
             # except Exception as e:
             #     st.error("Please select smaller polygon!")                               
+            for index, row in areas.iterrows():
+                    polygon_id = row['PolygonID']
 
-            # # Add the date and NDVI value to the lists
+                    # Calculate NDVI for each polygon
+                    ndvi_collection = NDVI_plot.map(lambda image: image.reduceRegion(reducer=ee.Reducer.mean(), geometry=row.geometry, scale=10).get('NDVI'))
+                    dates = ndvi_collection.aggregate_array('system:index').map(lambda image_id: ee.String(image_id).slice(0, 10))
+                    ndvi_values = ndvi_collection.aggregate_array('NDVI')
+
+                    # Convert dates and ndvi_values to lists
+                    dates = dates.getInfo()
+                    ndvi_values = ndvi_values.getInfo()
+
+                    # Add polygon ID, dates, and NDVI values to the DataFrame
+                    df = df.append(pd.DataFrame({'PolygonID': polygon_id, 'Date': dates, 'NDVI': ndvi_values}))
+
+                # Reset the index of the DataFrame
+            df = df.reset_index(drop=True)
+            # Add the date and NDVI value to the lists
             # dates.append(date.getInfo())
             # ndvi_values.append(ndvi_value)
 
         # # Create a pandas DataFrame from the lists
         # df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
-        df = pd.DataFrame({'Polygon ID': polygon_ids, 'Date': dates, 'NDVI': ndvi_values})
-        df
         
         fig = px.line(df, x="Date", y="NDVI", title='NDVI')
         try:

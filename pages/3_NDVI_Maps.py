@@ -236,12 +236,6 @@ if aoi != []:
     
     aoi = geemap.gdf_to_ee(gdf, geodesic=False)
     features = aoi.getInfo()['features']
-    # for feature in features:
-    #     polygon = ee.Geometry.Polygon(feature['geometry']['coordinates'])
-    #     polygon
-        # ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=polygon, scale=10).get('NDVI').getInfo()
-        # st.session_state["ndvi_value"] = ndvi_value
-        # polygon_id = feature['properties']['id']
         
     st.write('Selected dates between:', start_date ,' and ', end_date)
     NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()

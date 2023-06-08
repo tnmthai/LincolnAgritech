@@ -268,9 +268,9 @@ if aoi != []:
     if graph_ndvi:    
         image_ids = NDVI_plot.aggregate_array('system:index').getInfo()
         # image_ids
-        polygon_ids = []
-        dates = []
-        ndvi_values = []
+        # polygon_ids = []
+        # dates = []
+        # ndvi_values = []
         polyids = []
         datei = []
         ndviv = []
@@ -282,14 +282,14 @@ if aoi != []:
             # Get the image date and NDVI value
             date = image.date().format('yyyy-MM-dd')
 
-            try:
-                st.session_state["ndvi_value"] = ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi, scale=10).get('NDVI').getInfo()
-            except Exception as e:
-                st.error("Please select smaller polygon!")                               
+            # try:
+            #     st.session_state["ndvi_value"] = ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi, scale=10).get('NDVI').getInfo()
+            # except Exception as e:
+            #     st.error("Please select smaller polygon!")                               
 
-            # Add the date and NDVI value to the lists
-            dates.append(date.getInfo())
-            ndvi_values.append(ndvi_value)
+            # # Add the date and NDVI value to the lists
+            # dates.append(date.getInfo())
+            # ndvi_values.append(ndvi_value)
 
 
             i = 0
@@ -308,9 +308,9 @@ if aoi != []:
 
         color_sequence = ['#ff0000', '#00ff00']
         # # Create a pandas DataFrame from the lists
-        df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
+        # df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
         dfz = pd.DataFrame({'PolygonID': polyids, 'Date': datei, 'NDVI': ndviv})
-        dfz
+        # dfz
         fig = px.line(dfz, x="Date", y="NDVI", color="PolygonID", color_discrete_sequence=color_sequence, title='NDVI')
         try:
             selected_points = plotly_events(fig)            

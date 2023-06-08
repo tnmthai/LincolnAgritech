@@ -101,7 +101,7 @@ map1 = geemap.Map(
     locate_control=True,
     plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
 )
-map2 = gm.Map(basemap="HYBRID", center=(-43.525650, 172.639847), zoom=6.25)
+# map2 = gm.Map(basemap="HYBRID", center=(-43.525650, 172.639847), zoom=6.25)
 
 shp = gpd.read_file("data/nzshp/Canterbury.shp")
 gdf = shp.to_crs({'init': 'epsg:4326'}) 
@@ -234,7 +234,7 @@ with row1_col1:
 if aoi != []:
 
     map1.add_gdf(gdf, "ROI")
-    map2.centerObject(gdf)
+    # map2.centerObject(gdf)
     aoi = geemap.gdf_to_ee(gdf, geodesic=False)
     st.write('Selected dates between:', start_date[:-1] ,' and ', end_date[:-1])
     NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()

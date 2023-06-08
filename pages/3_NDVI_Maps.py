@@ -15,7 +15,7 @@ import pandas as pd
 import calendar
 import plotly.express as px
 from streamlit_plotly_events import plotly_events
-
+from plotly.offline import plot
 st.set_page_config(layout="wide")
 warnings.filterwarnings("ignore")
 @st.cache_data
@@ -320,7 +320,10 @@ if aoi != []:
         col2.subheader("NDVI values")
         col2.write(dfz)
         # fig = px.line(dfz, x="Date", y="NDVI",color_discrete_sequence=color_sequence,title='NDVI')  #, color_discrete_sequence=color_sequence
-        
+        plot_html = plot(fig, include_plotlyjs=False, output_type='div')
+        col1.write(plot_html, unsafe_allow_html=True)
+        selected_points = col1.selectbox('Select a point', options=dfz['Date'])
+        selected_points
         try:
             selected_points = plotly_events(fig)            
             if selected_points is not None:

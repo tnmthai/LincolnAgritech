@@ -246,7 +246,7 @@ if aoi != []:
     areas = geemap.ee_to_gdf(aoi) 
     areas['PolygonID'] = areas.index.astype(str)   
     areas['Area (sqKm)'] = areas.geometry.area*10**4
-    areas
+    
 
     graph_ndvi = st.checkbox('Show NDVI graph')   
     
@@ -305,21 +305,19 @@ if aoi != []:
         # # Create a pandas DataFrame from the lists
         # df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
         
-        col1, col2 = st.columns([3, 1])
+        col1, col2 = st.columns([1, 2])
         
         dfz = pd.DataFrame({'PolygonID': polyids, 'Date': datei, 'NDVI': ndviv})
         col1.subheader("NDVI chart")
-        
-        with col1:
+        col1.write(areas)
+   
+            
 
-        # col1.line_chart(dfz, x="Date", y="NDVI",color_discrete_sequence=color_sequence,title='NDVI')
-            fig = px.line(dfz, x="Date", y="NDVI",color_discrete_sequence=color_sequence,title='NDVI')  #, color_discrete_sequence=color_sequence
         # col1.plotly_chart(fig)
-        # col1.plotly_chart(dfz, x="Date", y="NDVI")
-        # dfz
+
         col2.subheader("NDVI values")
         col2.write(dfz)
-        # fig = px.line(dfz, x="Date", y="NDVI",color_discrete_sequence=color_sequence,title='NDVI')  #, color_discrete_sequence=color_sequence
+        fig = px.line(dfz, x="Date", y="NDVI",color_discrete_sequence=color_sequence,title='NDVI')  #, color_discrete_sequence=color_sequence
 
         try:
             selected_points = plotly_events(fig)            

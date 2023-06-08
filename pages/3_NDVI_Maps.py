@@ -311,7 +311,7 @@ if aoi != []:
         df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
         dfz = pd.DataFrame({'PolygonID': polyids, 'Date': datei, 'NDVI': ndviv})
         dfz
-        fig = px.line(dfz, x="Date", y="NDVI", title='NDVI')
+        fig = px.line(dfz, x="Date", y="NDVI", color="PolygonID", title='NDVI')
         try:
             selected_points = plotly_events(fig)            
             if selected_points is not None:

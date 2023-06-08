@@ -246,8 +246,7 @@ if aoi != []:
     gdf = gdf.rename_axis('Polygons')
     st.write('Area: ', round(gdf['Area (sqKm)']*10**4,5))
 
-    graph_ndvi = st.checkbox('Show NDVI graph')
-    
+    graph_ndvi = st.checkbox('Show NDVI graph')   
         
     try:
         map1.centerObject(aoi)
@@ -259,6 +258,7 @@ if aoi != []:
     if graph_ndvi:    
         image_ids = NDVI_plot.aggregate_array('system:index').getInfo()
         # image_ids
+        polygon_ids = []
         dates = []
         ndvi_values = []
         # Iterate over the image IDs
@@ -268,18 +268,36 @@ if aoi != []:
             
             # Get the image date and NDVI value
             date = image.date().format('yyyy-MM-dd')
-
             try:
-                st.session_state["ndvi_value"] = ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi, scale=10).get('NDVI').getInfo()
-            except Exception as e:
-                st.error("Please select smaller polygon!")                               
+                # Get the NDVI value within each polygon in the AOI
+                features = aoi.getInfo()['features']
+                for feature in features:
+                    polygon = ee.Geometry.Polygon(feature['geometry']['coordinates'])
+                    ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=polygon, scale=10).get('NDVI').getInfo()
+                    st.session_state["ndvi_value"] = ndvi_value
+                    polygon_id = feature['properties']['id']
 
-            # Add the date and NDVI value to the lists
-            dates.append(date.getInfo())
-            ndvi_values.append(ndvi_value)
+                    # Append the polygon ID, date, and NDVI value to the lists
+                    polygon_ids.append(polygon_id)
+                    dates.append(date)
+                    ndvi_values.append(ndvi_value)
+            except ee.ee_exception.EEException:
+                # Handle large polygon exception
+                st.error("Please select a smaller polygon!")
+                continue
+            # try:
+            #     st.session_state["ndvi_value"] = ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi, scale=10).get('NDVI').getInfo()
+            # except Exception as e:
+            #     st.error("Please select smaller polygon!")                               
+
+            # # Add the date and NDVI value to the lists
+            # dates.append(date.getInfo())
+            # ndvi_values.append(ndvi_value)
 
         # # Create a pandas DataFrame from the lists
-        df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
+        # df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
+        df = pd.DataFrame({'Polygon ID': polygon_ids, 'Date': dates, 'NDVI': ndvi_values})
+
         
         fig = px.line(df, x="Date", y="NDVI", title='NDVI')
         try:

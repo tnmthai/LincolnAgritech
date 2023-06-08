@@ -287,6 +287,7 @@ if aoi != []:
 
             for index, row in areas.iterrows():
                 polygon_id = row['PolygonID']
+                row
                 aoi2 = geemap.gdf_to_ee(row.geometry)
                 # polygon_id
                 # Calculate NDVI for each polygon

@@ -308,7 +308,7 @@ if aoi != []:
         col1, col2 = st.columns([3, 1])
         
         dfz = pd.DataFrame({'PolygonID': polyids, 'Date': datei, 'NDVI': ndviv})
-        col1.subheader("A wide column with a chart")
+        col1.subheader("NDVI chart")
         
         # with col1:
 
@@ -317,7 +317,7 @@ if aoi != []:
         col1.plotly_chart(fig)
         # col1.plotly_chart(dfz, x="Date", y="NDVI")
         # dfz
-        col2.subheader("A narrow column with the data")
+        col2.subheader("NDVI values")
         col2.write(dfz)
         # fig = px.line(dfz, x="Date", y="NDVI",color_discrete_sequence=color_sequence,title='NDVI')  #, color_discrete_sequence=color_sequence
         

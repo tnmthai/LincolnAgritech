@@ -310,8 +310,8 @@ if aoi != []:
         dfz = pd.DataFrame({'PolygonID': polyids, 'Date': datei, 'NDVI': ndviv})
         col1.subheader("A wide column with a chart")
         # col1.line_chart(dfz, x="Date", y="NDVI",color_discrete_sequence=color_sequence,title='NDVI')
-        fig = px.line(dfz, x="Date", y="NDVI",color_discrete_sequence=color_sequence,title='NDVI')  #, color_discrete_sequence=color_sequence
-        col1.pyplot(fig)
+        # fig = px.line(dfz, x="Date", y="NDVI",color_discrete_sequence=color_sequence,title='NDVI')  #, color_discrete_sequence=color_sequence
+        col1.plotly_chart(dfz, x="Date", y="NDVI",color_discrete_sequence=color_sequence,title='NDVI')
         # dfz
         col2.subheader("A narrow column with the data")
         col2.write(dfz)

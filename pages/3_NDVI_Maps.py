@@ -240,14 +240,16 @@ if aoi != []:
     
     
     # Polygons in AOI
-    areas = geemap.ee_to_gdf(aoi)    
+    areas = geemap.ee_to_gdf(aoi) 
+    areas['PolygonID'] = areas.index.astype(str)   
+    areas
     # # Calculate the area of the polygon
     gdf['Area (sqKm)'] = areas.geometry.area    
     gdf = gdf.rename_axis('Polygons')
     st.write('Area: ', round(gdf['Area (sqKm)']*10**4,5))
 
     graph_ndvi = st.checkbox('Show NDVI graph')   
-    areas['PolygonID'] = areas.index.astype(str)
+    
     
     # Create an empty DataFrame
     df = pd.DataFrame(columns=['PolygonID', 'Date', 'NDVI'])
@@ -272,33 +274,17 @@ if aoi != []:
             # Get the image date and NDVI value
             date = image.date().format('yyyy-MM-dd')
 
-            # try:
-            #     st.session_state["ndvi_value"] = ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi, scale=10).get('NDVI').getInfo()
-            # except Exception as e:
-            #     st.error("Please select smaller polygon!")                               
-            for index, row in areas.iterrows():
-                    polygon_id = row['PolygonID']
+            try:
+                st.session_state["ndvi_value"] = ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi, scale=10).get('NDVI').getInfo()
+            except Exception as e:
+                st.error("Please select smaller polygon!")                               
 
-                    # Calculate NDVI for each polygon
-                    ndvi_collection = NDVI_plot.map(lambda image: image.reduceRegion(reducer=ee.Reducer.mean(), geometry=row.geometry, scale=10).get('NDVI'))
-                    dates = ndvi_collection.aggregate_array('system:index').map(lambda image_id: ee.String(image_id).slice(0, 10))
-                    ndvi_values = ndvi_collection.aggregate_array('NDVI')
-
-                    # Convert dates and ndvi_values to lists
-                    dates = dates.getInfo()
-                    ndvi_values = ndvi_values.getInfo()
-
-                    # Add polygon ID, dates, and NDVI values to the DataFrame
-                    df = df.append(pd.DataFrame({'PolygonID': polygon_id, 'Date': dates, 'NDVI': ndvi_values}))
-
-                # Reset the index of the DataFrame
-            df = df.reset_index(drop=True)
             # Add the date and NDVI value to the lists
-            # dates.append(date.getInfo())
-            # ndvi_values.append(ndvi_value)
+            dates.append(date.getInfo())
+            ndvi_values.append(ndvi_value)
 
         # # Create a pandas DataFrame from the lists
-        # df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
+        df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
         
         fig = px.line(df, x="Date", y="NDVI", title='NDVI')
         try:

@@ -288,10 +288,10 @@ if aoi != []:
             for i in range(2):
                 polygon_id = i
                 geometry = areas.loc[i, 'geometry']
-                # aoi2 = geemap.gdf_to_ee(row)
+                aoi2 = geemap.gdf_to_ee(areas)
                 # polygon_id
                 # Calculate NDVI for each polygon
-                ndvi_va = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=geometry, scale=10).get('NDVI').getInfo()
+                ndvi_va = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi2.get(i), scale=10).get('NDVI').getInfo()
                 
                 datei.append(date.getInfo())
                 ndviv.append(ndvi_va)

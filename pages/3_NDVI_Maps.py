@@ -306,12 +306,12 @@ if aoi != []:
                 ndviv.append(ndvi_va)
                 polyids.append(polygon_id)
 
-
+        color_sequence = ['#ff0000', '#00ff00']
         # # Create a pandas DataFrame from the lists
         df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
         dfz = pd.DataFrame({'PolygonID': polyids, 'Date': datei, 'NDVI': ndviv})
         dfz
-        fig = px.line(dfz, x="Date", y="NDVI", color="PolygonID", title='NDVI')
+        fig = px.line(dfz, x="Date", y="NDVI", color="PolygonID", color_discrete_sequence=color_sequence, title='NDVI')
         try:
             selected_points = plotly_events(fig)            
             if selected_points is not None:

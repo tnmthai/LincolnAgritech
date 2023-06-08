@@ -65,8 +65,6 @@ def calculate_ndvi(image):
     ndvi = image.normalizedDifference(['B8', 'B4'])
     return ndvi.rename('NDVI').copyProperties(image, ['system:time_start'])
 
-
-
 def addDate(image):
     img_date = ee.Date(image.date())
     img_date = ee.Number.parse(img_date.format('YYYYMMdd'))
@@ -234,7 +232,7 @@ with row1_col1:
 if aoi != []:
 
     map1.add_gdf(gdf, "ROI")
-    # map2.centerObject(gdf)
+    
     aoi = geemap.gdf_to_ee(gdf, geodesic=False)
     st.write('Selected dates between:', start_date[:-1] ,' and ', end_date[:-1])
     NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
@@ -302,8 +300,6 @@ if aoi != []:
                              
         except Exception as e:
             st.error("Please select a day from the graph to view the corresponding NDVI value for that day.")
-
-
 
 map1.addLayerControl()
 map1.to_streamlit(height=700)

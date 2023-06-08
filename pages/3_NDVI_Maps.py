@@ -305,15 +305,11 @@ if aoi != []:
         # # Create a pandas DataFrame from the lists
         # df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
         
-        col1, col2 = st.columns([1, 2])
+        col1, col2 = st.columns([1, 3])
         
         dfz = pd.DataFrame({'PolygonID': polyids, 'Date': datei, 'NDVI': ndviv})
         col1.subheader("NDVI chart")
-        col1.write(areas)
-   
-            
-
-        # col1.plotly_chart(fig)
+        col1.write(areas)  
 
         col2.subheader("NDVI values")
         col2.write(dfz)

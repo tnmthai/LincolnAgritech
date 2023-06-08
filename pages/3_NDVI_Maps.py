@@ -305,7 +305,7 @@ if aoi != []:
         # # Create a pandas DataFrame from the lists
         # df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
         
-        col1, col2 = st.columns((3, 5))
+        col1, col2 = st.columns((2, 1))
         
         dfz = pd.DataFrame({'PolygonID': polyids, 'Date': datei, 'NDVI': ndviv})
         col2.subheader("NDVI chart")

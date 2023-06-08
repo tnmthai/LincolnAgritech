@@ -88,7 +88,7 @@ legend_dict = {
 color = [legend_dict[key] for key in legend_dict]
 
 pallete = {"min":0, "max":1, 'palette':color}
-st.title("NDVI Map")
+st.title("NDVI Maps")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")
 ee.Initialize()
 

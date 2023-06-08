@@ -235,9 +235,9 @@ if aoi != []:
     
     aoi = geemap.gdf_to_ee(gdf, geodesic=False)
     features = aoi.getInfo()['features']
-    for feature in features:
-        polygon = ee.Geometry.Polygon(feature['geometry']['coordinates'])
-        polygon
+    # for feature in features:
+    #     polygon = ee.Geometry.Polygon(feature['geometry']['coordinates'])
+    #     polygon
         # ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=polygon, scale=10).get('NDVI').getInfo()
         # st.session_state["ndvi_value"] = ndvi_value
         # polygon_id = feature['properties']['id']
@@ -292,13 +292,15 @@ if aoi != []:
             ndvi_values.append(ndvi_value)
 
 
-
-            for i in range(2):
-                polygon_id = i
+            i = 0
+            for feature in features:
+                polygon = ee.Geometry.Polygon(feature['geometry']['coordinates'])
                 
+                polygon_id = i
+                i +=1
                 # polygon_id
                 # Calculate NDVI for each polygon
-                ndvi_va = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi.get(i), scale=10).get('NDVI').getInfo()
+                ndvi_va = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=polygon, scale=10).get('NDVI').getInfo()
                 
                 datei.append(date.getInfo())
                 ndviv.append(ndvi_va)

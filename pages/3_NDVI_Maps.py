@@ -189,7 +189,7 @@ with row1_col1:
     
     agree = st.checkbox('Select a month between ' + str(sd) + ' and '+ str(ed))
     if agree:
-        # st.write('Great!')
+        
         mo = st.select_slider(
             'Select a month',
             options=months
@@ -211,13 +211,14 @@ with row1_col1:
         ####
         
         adate = st.checkbox('Select a date between ' + str(start_date) + ' and '+ str(end_date))
+
         collect_date = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi)
         image_ids = collect_date.aggregate_array('system:index').getInfo()
         dates = [image_id.split('_')[0][:8] for image_id in image_ids]
         listdates = [date[:4] + '-' + date[4:6] + '-' + date[6:] for date in dates]
 
         if adate:
-            # st.write('Great!')
+            
             ad = st.select_slider(
                 'Select a date',
                 options=listdates
@@ -242,7 +243,7 @@ if aoi != []:
         # st.session_state["ndvi_value"] = ndvi_value
         # polygon_id = feature['properties']['id']
         
-    st.write('Selected dates between:', start_date[:-1] ,' and ', end_date[:-1])
+    st.write('Selected dates between:', start_date ,' and ', end_date)
     NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
     NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
     
@@ -260,7 +261,7 @@ if aoi != []:
     
     try:
         map1.centerObject(aoi)
-        st.session_state["ndvi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
+        st.session_state["ndvi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "Median of NDVI for all selected dates")
         map1.add_legend(title="NDVI", legend_dict=legend_dict)
     except Exception as e:
         # st.error(e)
@@ -325,7 +326,7 @@ if aoi != []:
                 end_date = next_date.strftime("%Y-%m-%d")+"T"
                 st.write('Clicked date:', start_date )
                 NDVI_aday = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
-                st.session_state["ndviaday"] = map1.addLayer(NDVI_aday.clip(aoi).select('NDVI'), pallete, "NDVI on "+str(clickdate))
+                st.session_state["ndviaday"] = map1.addLayer(NDVI_aday.clip(aoi).select('NDVI'), pallete, "NDVI for "+str(clickdate))
                 map1.add_legend(title="NDVI", legend_dict=legend_dict)                              
                              
         except Exception as e:

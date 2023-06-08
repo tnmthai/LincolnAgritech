@@ -275,7 +275,7 @@ if aoi != []:
                     polygon = ee.Geometry.Polygon(feature['geometry']['coordinates'])
                     ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=polygon, scale=10).get('NDVI').getInfo()
                     st.session_state["ndvi_value"] = ndvi_value
-                    polygon_id = feature['properties']['id']
+                    polygon_id = feature['properties']['Id']
 
                     # Append the polygon ID, date, and NDVI value to the lists
                     polygon_ids.append(polygon_id)

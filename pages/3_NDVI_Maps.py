@@ -244,16 +244,12 @@ if aoi != []:
     areas['PolygonID'] = areas.index.astype(str)   
     areas['Area (sqKm)'] = areas.geometry.area*10**4
     areas
-    # # Calculate the area of the polygon
-    # gdf['Area (sqKm)'] = areas.geometry.area    
-    # gdf = gdf.rename_axis('Polygons')
-    # st.write('Area: ', round(gdf['Area (sqKm)']*10**4,5))
 
     graph_ndvi = st.checkbox('Show NDVI graph')   
     
     
     # Create an empty DataFrame
-    df = pd.DataFrame(columns=['PolygonID', 'Date', 'NDVI'])
+    dfz = pd.DataFrame(columns=['PolygonID', 'Date', 'NDVI'])
     try:
         map1.centerObject(aoi)
         st.session_state["ndvi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "NDVI")
@@ -283,6 +279,25 @@ if aoi != []:
             # Add the date and NDVI value to the lists
             dates.append(date.getInfo())
             ndvi_values.append(ndvi_value)
+
+            for index, row in areas.iterrows():
+                polygon_id = row['PolygonID']
+                polygon_id
+                # Calculate NDVI for each polygon
+                ndvi_collection = NDVI_plot.map(lambda image: image.reduceRegion(reducer=ee.Reducer.mean(), geometry=row.geometry, scale=10).get('NDVI'))
+                dates = ndvi_collection.aggregate_array('system:index').map(lambda image_id: ee.String(image_id).slice(0, 10))
+                ndvi_values = ndvi_collection.aggregate_array('NDVI')
+
+                # Convert dates and ndvi_values to lists
+                dates = dates.getInfo()
+                ndvi_values = ndvi_values.getInfo()
+
+                # Add polygon ID, dates, and NDVI values to the DataFrame
+                dfz = dfz.append(pd.DataFrame({'PolygonID': polygon_id, 'Date': dates, 'NDVI': ndvi_values}))
+
+            # Reset the index of the DataFrame
+            dfz = dfz.reset_index(drop=True)
+        dfz
 
         # # Create a pandas DataFrame from the lists
         df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})

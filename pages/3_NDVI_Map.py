@@ -1,5 +1,5 @@
 import streamlit as st
-import geemap as gm
+# import geemap as gm
 import geemap.foliumap as geemap
 import ee
 import geopandas as gpd
@@ -88,7 +88,7 @@ legend_dict = {
 # color = ['#000000', '#a50026', '#d73027', '#f46d43', '#fdae61', '#fee08b',
 #         '#ffffbf', '#d9ef8b', '#a6d96a', '#66bd63', '#1a9850', '#006837']
 color = [legend_dict[key] for key in legend_dict]
-rgbViza = {"min":0.0, "max":0.3,"bands":rgb}
+
 pallete = {"min":0, "max":1, 'palette':color}
 st.title("NDVI Map")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")
@@ -101,7 +101,7 @@ map1 = geemap.Map(
     locate_control=True,
     plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
 )
-# map2 = gm.Map(basemap="HYBRID", center=(-43.525650, 172.639847), zoom=6.25)
+
 
 shp = gpd.read_file("data/nzshp/Canterbury.shp")
 gdf = shp.to_crs({'init': 'epsg:4326'}) 
@@ -298,19 +298,12 @@ if aoi != []:
                 st.write('Clicked date:', start_date )
                 NDVI_aday = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
                 st.session_state["ndviaday"] = map1.addLayer(NDVI_aday.clip(aoi).select('NDVI'), pallete, "NDVI on "+str(clickdate))
-                map1.add_legend(title="NDVI", legend_dict=legend_dict)                               
-                
-               
-                s2original = geemap.ee_tile_layer(NDVI_data.clip(aoi), rgbViza, 'NDVI dates') #, opacity=0.75)
-                s2nocloudb = geemap.ee_tile_layer(NDVI_aday.clip(aoi), rgbViza, "NDVI on "+str(clickdate))#, opacity=0.75)
-
-                map1.split_map(left_layer=s2original, right_layer=s2nocloudb)
-
+                map1.add_legend(title="NDVI", legend_dict=legend_dict)                              
+                             
         except Exception as e:
             st.error("Please select a day from the graph to view the corresponding NDVI value for that day.")
 
 
-# map2.addLayerControl()
-# map2.to_streamlit(height=500)
+
 map1.addLayerControl()
 map1.to_streamlit(height=700)

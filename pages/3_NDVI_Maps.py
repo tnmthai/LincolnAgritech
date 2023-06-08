@@ -242,11 +242,12 @@ if aoi != []:
     # Polygons in AOI
     areas = geemap.ee_to_gdf(aoi) 
     areas['PolygonID'] = areas.index.astype(str)   
+    areas['Area (sqKm)'] = areas.geometry.area*10**4
     areas
     # # Calculate the area of the polygon
-    gdf['Area (sqKm)'] = areas.geometry.area    
-    gdf = gdf.rename_axis('Polygons')
-    st.write('Area: ', round(gdf['Area (sqKm)']*10**4,5))
+    # gdf['Area (sqKm)'] = areas.geometry.area    
+    # gdf = gdf.rename_axis('Polygons')
+    # st.write('Area: ', round(gdf['Area (sqKm)']*10**4,5))
 
     graph_ndvi = st.checkbox('Show NDVI graph')   
     

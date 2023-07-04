@@ -16,6 +16,7 @@ import calendar
 import plotly.express as px
 from streamlit_plotly_events import plotly_events
 from plotly.offline import plot
+import geemap.colormaps as cm
 st.set_page_config(layout="wide")
 warnings.filterwarnings("ignore")
 @st.cache_data
@@ -69,25 +70,32 @@ def addDate(image):
     img_date = ee.Date(image.date())
     img_date = ee.Number.parse(img_date.format('YYYYMMdd'))
     return image.addBands(ee.Image(img_date).rename('date').toInt())
-legend_dict = {
-'NDVI < -0.2':	'#000000',
-'-0.2 < NDVI ≤ 0.0':	'#a50026',	
-'0.0 < NDVI ≤ 0.1':	'#d73027',	
-'0.1 < NDVI ≤ 0.2':	'#f46d43',	
-'0.2 < NDVI ≤ 0.3':	'#fdae61',	
-'0.3 < NDVI ≤ 0.4':	'#fee08b',	
-'0.4 < NDVI ≤ 0.5':	'#ffffbf',	
-'0.5 < NDVI ≤ 0.6':	'#d9ef8b',	
-'0.6 < NDVI ≤ 0.7':	'#a6d96a',	
-'0.7 < NDVI ≤ 0.8':	'#66bd63',	
-'0.8 < NDVI ≤ 0.9':	'#1a9850',	
-'0.9 < NDVI ≤ 1.0':	'#006837',	
-}
+# legend_dict = {
+# 'NDVI < -0.2':	'#000000',
+# '-0.2 < NDVI ≤ 0.0':	'#a50026',	
+# '0.0 < NDVI ≤ 0.1':	'#d73027',	
+# '0.1 < NDVI ≤ 0.2':	'#f46d43',	
+# '0.2 < NDVI ≤ 0.3':	'#fdae61',	
+# '0.3 < NDVI ≤ 0.4':	'#fee08b',	
+# '0.4 < NDVI ≤ 0.5':	'#ffffbf',	
+# '0.5 < NDVI ≤ 0.6':	'#d9ef8b',	
+# '0.6 < NDVI ≤ 0.7':	'#a6d96a',	
+# '0.7 < NDVI ≤ 0.8':	'#66bd63',	
+# '0.8 < NDVI ≤ 0.9':	'#1a9850',	
+# '0.9 < NDVI ≤ 1.0':	'#006837',	
+# }
 # color = ['#000000', '#a50026', '#d73027', '#f46d43', '#fdae61', '#fee08b',
 #         '#ffffbf', '#d9ef8b', '#a6d96a', '#66bd63', '#1a9850', '#006837']
-color = [legend_dict[key] for key in legend_dict]
+# color = [legend_dict[key] for key in legend_dict]
 
-pallete = {"min":0, "max":1, 'palette':color}
+# pallete = {"min":0, "max":1, 'palette':color}
+
+palette = cm.palettes.dem
+vis_params = {
+  'min': 0,
+  'max': 1,
+  'palette': palette}
+
 st.title("NDVI Maps")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")
 ee.Initialize()
@@ -255,8 +263,9 @@ if aoi != []:
     
     try:
         map1.centerObject(aoi)
-        st.session_state["ndvi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), pallete, "Median of NDVI for all selected dates")
-        map1.add_legend(title="NDVI", legend_dict=legend_dict)
+        st.session_state["ndvi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), vis_params, "Median of NDVI for all selected dates")
+        # map1.add_legend(title="NDVI", legend_dict=vis_params)
+        map1.add_colorbar(vis_params, label="NDVI", layer_name="Median of NDVI for all selected dates")                          
     except Exception as e:
         # st.error(e)
         st.error("Cloud is greater than 90% on selected day. Please select additional dates!")
@@ -328,8 +337,9 @@ if aoi != []:
                 end_date = next_date.strftime("%Y-%m-%d")+"T"
                 st.write('Clicked date:', start_date )
                 NDVI_aday = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
-                st.session_state["ndviaday"] = map1.addLayer(NDVI_aday.clip(aoi).select('NDVI'), pallete, "NDVI for "+str(clickdate))
-                map1.add_legend(title="NDVI", legend_dict=legend_dict)                              
+                st.session_state["ndviaday"] = map1.addLayer(NDVI_aday.clip(aoi).select('NDVI'), vis_params, "NDVI for "+str(clickdate))
+                # map1.add_legend(title="NDVI", legend_dict=legend_dict)    
+                map1.add_colorbar(vis_params, label="NDVI", layer_name="Median of NDVI for all selected dates")                          
                              
         except Exception as e:
             st.error("Please select a day from the graph to view the corresponding NDVI value for that day.")

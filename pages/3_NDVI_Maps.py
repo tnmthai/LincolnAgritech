@@ -230,15 +230,17 @@ with row1_col1:
  
             next_date = start_date + timedelta(days=1)
             end_date = next_date#.strftime("%Y-%m-%d")+"T"
-           
-if aoi != []:
 
     NDVI_option = st.selectbox(
-    "Select an index:",
-    NDVI_options,
-    index=0,
-    )
-    
+        "Select an index:",
+        NDVI_options,
+        index=0,
+        )
+               
+if aoi != []:
+
+
+
     
     map1.add_gdf(gdf, "ROI")
     

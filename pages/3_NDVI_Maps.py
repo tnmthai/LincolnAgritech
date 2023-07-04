@@ -246,7 +246,7 @@ if aoi != []:
         map1.centerObject(aoi)
         st.session_state["ndvi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), vis_params, "Median of NDVI for all selected dates")
         
-        map1.add_colorbar(vis_params,width=12, height=0.7, label="NDVI", orientation='horizontal') #, layer_name="Median of NDVI for all selected dates", orientation="horizontal", transparent_bg=True)                              
+        map1.add_colorbar(vis_params,width=12, height=0.7, label="NDVI", orientation='horizontal', layer_name="Median of NDVI for all selected dates", transparent_bg= False)                              
     except Exception as e:
         # st.error(e)
         st.error("Cloud is greater than 90% on selected day. Please select additional dates!")
@@ -266,15 +266,6 @@ if aoi != []:
             
             # Get the image date and NDVI value
             date = image.date().format('yyyy-MM-dd')
-
-            # try:
-            #     st.session_state["ndvi_value"] = ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi, scale=10).get('NDVI').getInfo()
-            # except Exception as e:
-            #     st.error("Please select smaller polygon!")                               
-
-            # # Add the date and NDVI value to the lists
-            # dates.append(date.getInfo())
-            # ndvi_values.append(ndvi_value)
 
             i = 0
             try:
@@ -320,7 +311,7 @@ if aoi != []:
                 NDVI_aday = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
                 st.session_state["ndviaday"] = map1.addLayer(NDVI_aday.clip(aoi).select('NDVI'), vis_params, "NDVI for "+str(clickdate))
                   
-                map1.add_colorbar(vis_params, label="NDVI")#, layer_name="NDVI for "+str(clickdate), orientation="horizontal", transparent_bg=False)                       
+                map1.add_colorbar(vis_params, label="NDVI", layer_name="NDVI for "+str(clickdate), orientation="horizontal", transparent_bg= False)                       
                              
         except Exception as e:
             st.error("Please select a day from the graph to view the corresponding NDVI value for that day.")

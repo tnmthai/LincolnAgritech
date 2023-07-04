@@ -36,8 +36,7 @@ RGB = st.selectbox(
         "Healthy Vegetation (B8, B11, B2)",
         "Land/Water (B8, B11, B4)",
         "Natural Colors with Atmospheric Removal (B12, B8, B3)",
-        "Vegetation Analysis (B11, B8, B4)"
-
+        "Vegetation Analysis (B11, B8, B4)",
     ],
     index=0,
     )

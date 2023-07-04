@@ -23,8 +23,8 @@ ee_authenticate(token_name="EARTHENGINE_TOKEN")
 # geemap.ee_initialize()
 Map = geemap.Map(center=(-43.525650, 172.639847), zoom=6.25)
 startDate = '2022-01-01'
-endDate = '2022-12-31'
-rgb = ['B4','B3','B2']
+endDate = '2022-03-31'
+rgb = ['B8','B4','B3']
 rgbViza = {"min":0.0, "max":0.7,"bands":rgb}
 aoi = ee.FeatureCollection("FAO/GAUL/2015/level0").filter(ee.Filter.eq('ADM0_NAME','New Zealand')).geometry()
 se2a = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(startDate,endDate).filterBounds(aoi).filter(

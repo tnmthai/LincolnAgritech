@@ -62,6 +62,14 @@ def getNDVI(image):
     image = image.addBands(ndvi)
 
     return(image)
+
+def getNDWI(image):
+    # Normalized difference water index (NDWI)
+    ndwi = image.normalizedDifference(['B3', 'B8']).rename("NDWI")
+    image = image.addBands(ndwi)
+    return(image)
+
+
 def calculate_ndvi(image):
     ndvi = image.normalizedDifference(['B8', 'B4'])
     return ndvi.rename('NDVI').copyProperties(image, ['system:time_start'])
@@ -174,7 +182,7 @@ with row1_col1:
         else:
             st.write(":red[No Region of Interest (ROI) has been selected yet.]")
             aoi = []
-            # aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
+            
     
     agree = st.checkbox('Select a month between ' + str(sd) + ' and '+ str(ed))
     if agree:
@@ -227,7 +235,7 @@ if aoi != []:
     features = aoi.getInfo()['features']
         
     st.write('Selected dates between:', start_date ,' and ', end_date)
-    NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
+    NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDWI).map(addDate).median()
     NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
     
     

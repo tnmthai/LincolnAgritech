@@ -255,7 +255,7 @@ if aoi != []:
 
     if NDVI_option == "NDVI":
         
-        map1.add_gdf(gdf, , zoom_to_layer=True, "ROI")
+        map1.add_gdf(gdf, zoom_to_layer=True, "ROI")
         
         aoi = geemap.gdf_to_ee(gdf, geodesic=False)
         features = aoi.getInfo()['features']

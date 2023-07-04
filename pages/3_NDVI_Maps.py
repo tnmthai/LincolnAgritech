@@ -248,7 +248,7 @@ if aoi != []:
         
         map1.add_colormap(vis_params,width=12, height=0.7, label="NDVI", orientation="vertical", layer_name="Median of NDVI for all selected dates", transparent_bg=True)                       
     except Exception as e:
-        # st.error(e)
+        st.error(e)
         st.error("Cloud is greater than 90% on selected day. Please select additional dates!")
     if graph_ndvi:    
         image_ids = NDVI_plot.aggregate_array('system:index').getInfo()

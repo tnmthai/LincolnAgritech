@@ -437,7 +437,7 @@ if aoi != []:
             except Exception as e:
                 st.error("Please select a day from the graph to view the corresponding NDWI value for that day.")
     else:
-        palette1 = cm.palettes.ndvi
+        palette1 = ['white', 'blue', 'green']
         vis_params1 = {
         'min': -0.8,
         'max': 0.8,

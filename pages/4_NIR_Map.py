@@ -40,7 +40,10 @@ RGB = st.selectbox(
     ],
     index=0,
     )
-values = [item[item.find("(") + 1: item.find(")")] for item in RGB]
+start_index = RGB.find("(") + 1
+end_index = RGB.find(")")
+
+values = RGB[start_index:end_index]
 print(values)
 # bands = values.split(",")
 # print(bands)

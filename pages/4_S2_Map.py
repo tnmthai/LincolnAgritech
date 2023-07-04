@@ -44,11 +44,11 @@ start_index = RGB.find("(") + 1
 end_index = RGB.find(")")
 
 values = RGB[start_index:end_index]
-rgb = values.split(",")
+bands = values.split(",")
 
 
 # rgb = ['B8','B4','B3']
-rgbViza = {"min":0.0, "max":0.7,"bands":rgb}
+rgbViza = {"min":0.0, "max":0.7,"bands":bands}
 aoi = ee.FeatureCollection("FAO/GAUL/2015/level0").filter(ee.Filter.eq('ADM0_NAME','New Zealand')).geometry()
 se2a = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(startDate,endDate).filterBounds(aoi).filter(
     ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",60)).median().divide(10000)#.clip(aoi)
@@ -56,5 +56,5 @@ se2c = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(
     startDate,endDate).filterBounds(aoi).filter(
     ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).median().clip(aoi)
 Map.centerObject(aoi,7)
-Map.addLayer(se2c, rgbViza, "Sentinel 2"+ rgb)
+Map.addLayer(se2c, rgbViza, "Sentinel 2"+ bands)
 Map.to_streamlit(height=700)

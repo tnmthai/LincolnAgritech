@@ -44,11 +44,10 @@ start_index = RGB.find("(") + 1
 end_index = RGB.find(")")
 
 values = RGB[start_index:end_index]
-print(values)
-# bands = values.split(",")
-# print(bands)
+rgb = values.split(",")
 
-rgb = ['B8','B4','B3']
+
+# rgb = ['B8','B4','B3']
 rgbViza = {"min":0.0, "max":0.7,"bands":rgb}
 aoi = ee.FeatureCollection("FAO/GAUL/2015/level0").filter(ee.Filter.eq('ADM0_NAME','New Zealand')).geometry()
 se2a = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(startDate,endDate).filterBounds(aoi).filter(

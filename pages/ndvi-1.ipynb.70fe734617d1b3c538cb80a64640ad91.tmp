@@ -1,6 +1,0 @@
-ee_authenticate(token_name="EARTHENGINE_TOKEN")
-
-aoi = ee.FeatureCollection("FAO/GAUL/2015/level1").filter(ee.Filter.eq('ADM1_NAME','Canterbury')).geometry()
-
-coordcan = aoi.coordinates().getInfo()
-# polygons = [Polygon(polygon_coords) for polygon_coords in coordcan]

@@ -56,5 +56,5 @@ se2c = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(
     startDate,endDate).filterBounds(aoi).filter(
     ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).median().clip(aoi)
 Map.centerObject(aoi,7)
-Map.addLayer(se2c, rgbViza, "Sentinel 2")
+Map.addLayer(se2c, rgbViza, "Sentinel 2"+ rgb)
 Map.to_streamlit(height=700)

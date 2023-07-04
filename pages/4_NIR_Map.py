@@ -25,22 +25,21 @@ Map = geemap.Map(center=(-43.525650, 172.639847), zoom=6.25)
 startDate = '2022-01-01'
 endDate = '2022-03-31'
 RGB = st.selectbox(
-                    "Select an RGB band combination:",
-                    [
-                        "Red/Green/Blue",
-                        "NIR/Red/Green",
-                        "SWIR2/SWIR1/NIR",
-                        "NIR/SWIR1/Red",
-                        "SWIR2/NIR/Red",
-                        "SWIR2/SWIR1/Red",
-                        "SWIR1/NIR/Blue",
-                        "NIR/SWIR1/Blue",
-                        "SWIR2/NIR/Green",
-                        "SWIR1/NIR/Red",
-                        "SWIR2/NIR/SWIR1",
-                        "SWIR1/NIR/SWIR2",
-                    ],
-                    index=9,
+    "Select an RGB band combination:",
+    [
+        "Natural Color (B4, B3, B2)",
+        "Color Infrared (B8, B4, B3)",
+        "Short-Wave Infrared (B12, B8, B4)",
+        "Agriculture (B11, B8, B2)",
+        "Geology (B12, B11, B2)",
+        "Bathymetric (B4, B3, B1)",
+        "Healthy Vegetation (B8, B11, B2)",
+        "Land/Water (B8, B11, B4)",
+        "Natural Colors with Atmospheric Removal (B12, B8, B3)",
+        "Vegetation Analysis (B11, B8, B4)"
+
+    ],
+    index=0,
                 )
 
 rgb = ['B8','B4','B3']

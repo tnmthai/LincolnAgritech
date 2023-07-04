@@ -264,8 +264,8 @@ if aoi != []:
     try:
         map1.centerObject(aoi)
         st.session_state["ndvi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), vis_params, "Median of NDVI for all selected dates")
-        # map1.add_legend(title="NDVI", legend_dict=vis_params)
-        map1.add_colorbar(vis_params,width=12, height=0.4, label="NDVI", layer_name="Median of NDVI for all selected dates", orientation="vertical", transparent_bg=False)                              
+        
+        map1.add_colorbar(vis_params,width=12, height=0.4, label="NDVI", layer_name="Median of NDVI for all selected dates", orientation="horizontal", transparent_bg=True)                              
     except Exception as e:
         # st.error(e)
         st.error("Cloud is greater than 90% on selected day. Please select additional dates!")
@@ -338,8 +338,8 @@ if aoi != []:
                 st.write('Clicked date:', start_date )
                 NDVI_aday = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
                 st.session_state["ndviaday"] = map1.addLayer(NDVI_aday.clip(aoi).select('NDVI'), vis_params, "NDVI for "+str(clickdate))
-                # map1.add_legend(title="NDVI", legend_dict=legend_dict)    
-                map1.add_colorbar(vis_params, label="NDVI", layer_name="NDVI for "+str(clickdate), orientation="vertical", transparent_bg=False)                       
+                  
+                map1.add_colorbar(vis_params, label="NDVI", layer_name="NDVI for "+str(clickdate), orientation="horizontal", transparent_bg=False)                       
                              
         except Exception as e:
             st.error("Please select a day from the graph to view the corresponding NDVI value for that day.")

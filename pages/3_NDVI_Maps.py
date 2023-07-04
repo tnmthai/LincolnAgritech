@@ -338,7 +338,7 @@ if aoi != []:
                 st.error("Please select a day from the graph to view the corresponding NDVI value for that day.")
 
     else:
-        palette1 = cm.palettes.ndvi
+        palette1 = cm.palettes.ndwi
         vis_params1 = {
         'min': 0,
         'max': 1,
@@ -349,8 +349,8 @@ if aoi != []:
         features = aoi.getInfo()['features']
             
         st.write('Selected dates between:', start_date ,' and ', end_date)
-        NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDWI).map(addDate).median()
-        NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(calculate_ndwi).map(addDate)
+        NDWI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDWI).map(addDate).median()
+        NDWI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(calculate_ndwi).map(addDate)
         
         
         # Polygons in AOI
@@ -363,13 +363,13 @@ if aoi != []:
         # Create an empty DataFrame        
         try:
             map1.centerObject(aoi)
-            st.session_state["ndwi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDWI'), vis_params1, "Median of NDWI for all selected dates")        
+            st.session_state["ndwi"] = map1.addLayer(NDWI_data.clip(aoi).select('NDWI'), vis_params1, "Median of NDWI for all selected dates")        
             map1.add_colormap(width=10, height=0.1, vmin=0, vmax=1,vis_params= vis_params1,label="NDWI", position=(0, 0))
         except Exception as e:
             st.error(e)
             st.error("Cloud is greater than 90% on selected day. Please select additional dates!")
         if graph_ndvi:    
-            image_ids = NDVI_plot.aggregate_array('system:index').getInfo()
+            image_ids = NDWI_plot.aggregate_array('system:index').getInfo()
 
             polyids = []
             datei = []
@@ -377,9 +377,9 @@ if aoi != []:
             # Iterate over the image IDs
             for image_id in image_ids:
                 # Get the image by ID
-                image = NDVI_plot.filter(ee.Filter.eq('system:index', image_id)).first()   
+                image = NDWI_plot.filter(ee.Filter.eq('system:index', image_id)).first()   
                 
-                # Get the image date and NDVI value
+                # Get the image date and NDWI value
                 date = image.date().format('yyyy-MM-dd')
 
                 i = 0
@@ -388,7 +388,7 @@ if aoi != []:
                         polygon = ee.Geometry.Polygon(feature['geometry']['coordinates'])               
                         polygon_id = i
                         i +=1                
-                        # Calculate NDVI for each polygon
+                        # Calculate NDWI for each polygon
                         ndvi_va = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=polygon, scale=10).get('NDWI').getInfo()
                         
                         datei.append(date.getInfo())
@@ -421,8 +421,8 @@ if aoi != []:
                     next_date = start_date + timedelta(days=1)
                     end_date = next_date.strftime("%Y-%m-%d")+"T"
                     st.write('Clicked date:', start_date )
-                    NDVI_aday = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDWI).map(addDate).median()
-                    st.session_state["ndviaday"] = map1.addLayer(NDVI_aday.clip(aoi).select('NDWI'), vis_params1, "NDWI for "+str(clickdate))
+                    NDWI_aday = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDWI).map(addDate).median()
+                    st.session_state["ndviaday"] = map1.addLayer(NDWI_aday.clip(aoi).select('NDWI'), vis_params1, "NDWI for "+str(clickdate))
                     map1.add_colormap(width=10, height=0.1, vmin=0, vmax=1,vis_params= vis_params1,label="NDWI", position=(0, 0))  
                     
                                 

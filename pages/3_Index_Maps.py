@@ -52,15 +52,14 @@ def maskCloudAndShadows(image):
   mask = (cloud.And(snow)).And(cirrus.neq(1)).And(shadow.neq(1))
   return image.updateMask(mask)
 
-
 def ee_authenticate(token_name="EARTHENGINE_TOKEN"):
     geemap.ee_initialize(token_name=token_name)
+
 def getNDVI(image):
     
     # Normalized difference vegetation index (NDVI)
     ndvi = image.normalizedDifference(['B8','B4']).rename("NDVI")
     image = image.addBands(ndvi)
-
     return(image)
 
 def getNDWI(image):
@@ -69,6 +68,11 @@ def getNDWI(image):
     image = image.addBands(ndwi)
     return(image)
 
+def getNDMI(image):
+    # Moisture Index (B8A-B11)/(B8A+B11)
+    ndmi = image.normalizedDifference(['B8', 'B11']).rename("NDMI")
+    image = image.addBands(ndmi)
+    return(image)
 
 def calculate_ndvi(image):
     ndvi = image.normalizedDifference(['B8', 'B4'])
@@ -78,6 +82,9 @@ def calculate_ndwi(image):
     ndvi = image.normalizedDifference(['B3', 'B8'])
     return ndvi.rename('NDWI').copyProperties(image, ['system:time_start'])
 
+def calculate_ndmi(image):
+    ndvi = image.normalizedDifference(['B8', 'B11'])
+    return ndvi.rename('NDMI').copyProperties(image, ['system:time_start'])
 
 def addDate(image):
     img_date = ee.Date(image.date())
@@ -164,7 +171,7 @@ start_date = sd.strftime("%Y-%m-%d") + "T"
 end_date = ed.strftime("%Y-%m-%d") + "T" 
 months = [dt.strftime("%m-%Y") for dt in rrule(MONTHLY, dtstart=sd, until=ed)]
 
-NDVI_options = ["NDVI","NDWI"] 
+NDVI_options = ["NDVI","NDWI","NDMI"] 
 
 
 
@@ -337,7 +344,7 @@ if aoi != []:
             except Exception as e:
                 st.error("Please select a day from the graph to view the corresponding NDVI value for that day.")
 
-    else:
+    elif NDVI_option == "NDWI":
         palette1 = cm.palettes.ndwi
         vis_params1 = {
         'min': -1,
@@ -427,6 +434,96 @@ if aoi != []:
                                                     
             except Exception as e:
                 st.error("Please select a day from the graph to view the corresponding NDWI value for that day.")
+    else:
+        palette1 = cm.palettes.ndwi
+        vis_params1 = {
+        'min': -1,
+        'max': 1,
+        'palette': palette1}
+        map1.add_gdf(gdf, "ROI")
+        
+        aoi = geemap.gdf_to_ee(gdf, geodesic=False)
+        features = aoi.getInfo()['features']
+            
+        st.write('Selected dates between:', start_date ,' and ', end_date)
+        NDMI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDMI).map(addDate).median()
+        NDMI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(calculate_ndmi).map(addDate)
+        
+        
+        # Polygons in AOI
+        areas = geemap.ee_to_gdf(aoi) 
+        areas['PolygonID'] = areas.index.astype(str)   
+        areas['Area (sqKm)'] = areas.geometry.area*10**4
+        
+        graph_ndvi = st.checkbox('Show graph')   
+               
+        # Create an empty DataFrame        
+        try:
+            map1.centerObject(aoi)
+            st.session_state["ndmi"] = map1.addLayer(NDMI_data.clip(aoi).select('NDMI'), vis_params1, "Median of NDMI for all selected dates")        
+            map1.add_colormap(width=10, height=0.1, vmin=0, vmax=1,vis_params= vis_params1,label="NDMI", position=(0, 0))
+        except Exception as e:
+            st.error(e)
+            st.error("Cloud is greater than 90% on selected day. Please select additional dates!")
+        if graph_ndvi:    
+            image_ids = NDMI_plot.aggregate_array('system:index').getInfo()
+
+            polyids = []
+            datei = []
+            ndviv = []
+            # Iterate over the image IDs
+            for image_id in image_ids:
+                # Get the image by ID
+                image = NDMI_plot.filter(ee.Filter.eq('system:index', image_id)).first()   
+                
+                # Get the image date and NDWI value
+                date = image.date().format('yyyy-MM-dd')
+
+                i = 0
+                try:
+                    for feature in features:
+                        polygon = ee.Geometry.Polygon(feature['geometry']['coordinates'])               
+                        polygon_id = i
+                        i +=1                
+                        # Calculate NDMI for each polygon
+                        ndvi_va = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=polygon, scale=10).get('NDMI').getInfo()
+                        
+                        datei.append(date.getInfo())
+                        ndviv.append(ndvi_va)
+                        polyids.append(polygon_id)
+                except Exception as e:
+                    st.error("Please select smaller polygon!") 
+            color = '#ff0000'        
+            color_sequence = ['#ff0000', '#00ff00']
+            # # Create a pandas DataFrame from the lists
+        
+            col1, col2 = st.columns((2, 1))        
+            dfz = pd.DataFrame({'PolygonID': polyids, 'Date': datei, 'NDMI': ndviv})
+            col2.subheader("NDMI chart")
+            col2.write(areas)  
+
+            col1.subheader("NDMI values")
+            col1.write(dfz)
+            fig = px.line(dfz, x="Date", y="NDMI",color_discrete_sequence=color_sequence,title='NDMI')  #, color_discrete_sequence=color_sequence
+
+            try:
+                selected_points = plotly_events(fig)            
+                if selected_points is not None:
+
+                    a=selected_points[0]
+                    a= pd.DataFrame.from_dict(a,orient='index')
+                    clickdate = a[0][0]
+
+                    start_date = datetime.strptime(clickdate, "%Y-%m-%d")
+                    next_date = start_date + timedelta(days=1)
+                    end_date = next_date.strftime("%Y-%m-%d")+"T"
+                    st.write('Clicked date:', start_date )
+                    NDMI_aday = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDWI).map(addDate).median()
+                    st.session_state["ndviaday"] = map1.addLayer(NDMI_aday.clip(aoi).select('NDMI'), vis_params1, "NDMI for "+str(clickdate))
+                    map1.add_colormap(width=10, height=0.1, vmin=0, vmax=1,vis_params= vis_params1,label="NDMI", position=(0, 0))  
+                                                    
+            except Exception as e:
+                st.error("Please select a day from the graph to view the corresponding NDMI value for that day.")
 
 map1.addLayerControl()
 map1.to_streamlit(height=700)

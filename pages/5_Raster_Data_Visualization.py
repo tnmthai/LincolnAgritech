@@ -5,8 +5,6 @@ import streamlit as st
 
 st.set_page_config(layout="wide")
 
-
-
 @st.cache_data
 def load_cog_list():
     print(os.getcwd())

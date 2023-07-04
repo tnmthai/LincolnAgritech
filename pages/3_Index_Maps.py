@@ -310,7 +310,7 @@ if aoi != []:
         
             col1, col2 = st.columns((2, 1))        
             dfz = pd.DataFrame({'PolygonID': polyids, 'Date': datei, 'NDVI': ndviv})
-            col2.subheader("NDVI chart")
+            col2.subheader("Area")
             col2.write(areas)  
 
             col1.subheader("NDVI values")
@@ -424,8 +424,7 @@ if aoi != []:
                     NDWI_aday = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDWI).map(addDate).median()
                     st.session_state["ndviaday"] = map1.addLayer(NDWI_aday.clip(aoi).select('NDWI'), vis_params1, "NDWI for "+str(clickdate))
                     map1.add_colormap(width=10, height=0.1, vmin=0, vmax=1,vis_params= vis_params1,label="NDWI", position=(0, 0))  
-                    
-                                
+                                                    
             except Exception as e:
                 st.error("Please select a day from the graph to view the corresponding NDWI value for that day.")
 

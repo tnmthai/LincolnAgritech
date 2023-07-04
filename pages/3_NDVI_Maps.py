@@ -74,6 +74,11 @@ def calculate_ndvi(image):
     ndvi = image.normalizedDifference(['B8', 'B4'])
     return ndvi.rename('NDVI').copyProperties(image, ['system:time_start'])
 
+def calculate_ndwi(image):
+    ndvi = image.normalizedDifference(['B3', 'B8'])
+    return ndvi.rename('NDWI').copyProperties(image, ['system:time_start'])
+
+
 def addDate(image):
     img_date = ee.Date(image.date())
     img_date = ee.Number.parse(img_date.format('YYYYMMdd'))
@@ -239,97 +244,183 @@ with row1_col1:
                
 if aoi != []:
 
-
-
-    
-    map1.add_gdf(gdf, "ROI")
-    
-    aoi = geemap.gdf_to_ee(gdf, geodesic=False)
-    features = aoi.getInfo()['features']
+    if NDVI_option == "NDVI":
         
-    st.write('Selected dates between:', start_date ,' and ', end_date)
-    NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
-    NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
-    
-    
-    # Polygons in AOI
-    areas = geemap.ee_to_gdf(aoi) 
-    areas['PolygonID'] = areas.index.astype(str)   
-    areas['Area (sqKm)'] = areas.geometry.area*10**4
-    
-
-    graph_ndvi = st.checkbox('Show NDVI graph')   
-    
-    
-    # Create an empty DataFrame
-    
-    try:
-        map1.centerObject(aoi)
-        st.session_state["ndvi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), vis_params, "Median of NDVI for all selected dates")        
-        map1.add_colormap(width=10, height=0.1, vmin=0, vmax=1,vis_params= vis_params,label="NDVI", position=(0, 0))
-    except Exception as e:
-        st.error(e)
-        st.error("Cloud is greater than 90% on selected day. Please select additional dates!")
-    if graph_ndvi:    
-        image_ids = NDVI_plot.aggregate_array('system:index').getInfo()
-
-        polyids = []
-        datei = []
-        ndviv = []
-        # Iterate over the image IDs
-        for image_id in image_ids:
-            # Get the image by ID
-            image = NDVI_plot.filter(ee.Filter.eq('system:index', image_id)).first()   
+        map1.add_gdf(gdf, "ROI")
+        
+        aoi = geemap.gdf_to_ee(gdf, geodesic=False)
+        features = aoi.getInfo()['features']
             
-            # Get the image date and NDVI value
-            date = image.date().format('yyyy-MM-dd')
+        st.write('Selected dates between:', start_date ,' and ', end_date)
+        NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
+        NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
+        
+        
+        # Polygons in AOI
+        areas = geemap.ee_to_gdf(aoi) 
+        areas['PolygonID'] = areas.index.astype(str)   
+        areas['Area (sqKm)'] = areas.geometry.area*10**4
+        
 
-            i = 0
-            try:
-                for feature in features:
-                    polygon = ee.Geometry.Polygon(feature['geometry']['coordinates'])               
-                    polygon_id = i
-                    i +=1                
-                    # Calculate NDVI for each polygon
-                    ndvi_va = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=polygon, scale=10).get('NDVI').getInfo()
-                    
-                    datei.append(date.getInfo())
-                    ndviv.append(ndvi_va)
-                    polyids.append(polygon_id)
-            except Exception as e:
-                st.error("Please select smaller polygon!") 
-        color = '#ff0000'        
-        color_sequence = ['#ff0000', '#00ff00']
-        # # Create a pandas DataFrame from the lists
-       
-        col1, col2 = st.columns((2, 1))        
-        dfz = pd.DataFrame({'PolygonID': polyids, 'Date': datei, 'NDVI': ndviv})
-        col2.subheader("NDVI chart")
-        col2.write(areas)  
-
-        col1.subheader("NDVI values")
-        col1.write(dfz)
-        fig = px.line(dfz, x="Date", y="NDVI",color_discrete_sequence=color_sequence,title='NDVI')  #, color_discrete_sequence=color_sequence
-
+        graph_ndvi = st.checkbox('Show graph')   
+        
+        
+        # Create an empty DataFrame
+        
         try:
-            selected_points = plotly_events(fig)            
-            if selected_points is not None:
-
-                a=selected_points[0]
-                a= pd.DataFrame.from_dict(a,orient='index')
-                clickdate = a[0][0]
-
-                start_date = datetime.strptime(clickdate, "%Y-%m-%d")
-                next_date = start_date + timedelta(days=1)
-                end_date = next_date.strftime("%Y-%m-%d")+"T"
-                st.write('Clicked date:', start_date )
-                NDVI_aday = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
-                st.session_state["ndviaday"] = map1.addLayer(NDVI_aday.clip(aoi).select('NDVI'), vis_params, "NDVI for "+str(clickdate))
-                map1.add_colormap(width=10, height=0.1, vmin=0, vmax=1,vis_params= vis_params,label="NDVI", position=(0, 0))  
-                
-                             
+            map1.centerObject(aoi)
+            st.session_state["ndvi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), vis_params, "Median of NDVI for all selected dates")        
+            map1.add_colormap(width=10, height=0.1, vmin=0, vmax=1,vis_params= vis_params,label="NDVI", position=(0, 0))
         except Exception as e:
-            st.error("Please select a day from the graph to view the corresponding NDVI value for that day.")
+            st.error(e)
+            st.error("Cloud is greater than 90% on selected day. Please select additional dates!")
+        if graph_ndvi:    
+            image_ids = NDVI_plot.aggregate_array('system:index').getInfo()
+
+            polyids = []
+            datei = []
+            ndviv = []
+            # Iterate over the image IDs
+            for image_id in image_ids:
+                # Get the image by ID
+                image = NDVI_plot.filter(ee.Filter.eq('system:index', image_id)).first()   
+                
+                # Get the image date and NDVI value
+                date = image.date().format('yyyy-MM-dd')
+
+                i = 0
+                try:
+                    for feature in features:
+                        polygon = ee.Geometry.Polygon(feature['geometry']['coordinates'])               
+                        polygon_id = i
+                        i +=1                
+                        # Calculate NDVI for each polygon
+                        ndvi_va = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=polygon, scale=10).get('NDVI').getInfo()
+                        
+                        datei.append(date.getInfo())
+                        ndviv.append(ndvi_va)
+                        polyids.append(polygon_id)
+                except Exception as e:
+                    st.error("Please select smaller polygon!") 
+            color = '#ff0000'        
+            color_sequence = ['#ff0000', '#00ff00']
+            # # Create a pandas DataFrame from the lists
+        
+            col1, col2 = st.columns((2, 1))        
+            dfz = pd.DataFrame({'PolygonID': polyids, 'Date': datei, 'NDVI': ndviv})
+            col2.subheader("NDVI chart")
+            col2.write(areas)  
+
+            col1.subheader("NDVI values")
+            col1.write(dfz)
+            fig = px.line(dfz, x="Date", y="NDVI",color_discrete_sequence=color_sequence,title='NDVI')  #, color_discrete_sequence=color_sequence
+
+            try:
+                selected_points = plotly_events(fig)            
+                if selected_points is not None:
+
+                    a=selected_points[0]
+                    a= pd.DataFrame.from_dict(a,orient='index')
+                    clickdate = a[0][0]
+
+                    start_date = datetime.strptime(clickdate, "%Y-%m-%d")
+                    next_date = start_date + timedelta(days=1)
+                    end_date = next_date.strftime("%Y-%m-%d")+"T"
+                    st.write('Clicked date:', start_date )
+                    NDVI_aday = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
+                    st.session_state["ndviaday"] = map1.addLayer(NDVI_aday.clip(aoi).select('NDVI'), vis_params, "NDVI for "+str(clickdate))
+                    map1.add_colormap(width=10, height=0.1, vmin=0, vmax=1,vis_params= vis_params,label="NDVI", position=(0, 0))  
+                    
+                                
+            except Exception as e:
+                st.error("Please select a day from the graph to view the corresponding NDVI value for that day.")
+
+    else:
+        map1.add_gdf(gdf, "ROI")
+        
+        aoi = geemap.gdf_to_ee(gdf, geodesic=False)
+        features = aoi.getInfo()['features']
+            
+        st.write('Selected dates between:', start_date ,' and ', end_date)
+        NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDWI).map(addDate).median()
+        NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(calculate_ndwi).map(addDate)
+        
+        
+        # Polygons in AOI
+        areas = geemap.ee_to_gdf(aoi) 
+        areas['PolygonID'] = areas.index.astype(str)   
+        areas['Area (sqKm)'] = areas.geometry.area*10**4
+        
+        graph_ndvi = st.checkbox('Show graph')   
+               
+        # Create an empty DataFrame        
+        try:
+            map1.centerObject(aoi)
+            st.session_state["ndwi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDWI'), vis_params, "Median of NDWI for all selected dates")        
+            map1.add_colormap(width=10, height=0.1, vmin=0, vmax=1,vis_params= vis_params,label="NDWI", position=(0, 0))
+        except Exception as e:
+            st.error(e)
+            st.error("Cloud is greater than 90% on selected day. Please select additional dates!")
+        if graph_ndvi:    
+            image_ids = NDVI_plot.aggregate_array('system:index').getInfo()
+
+            polyids = []
+            datei = []
+            ndviv = []
+            # Iterate over the image IDs
+            for image_id in image_ids:
+                # Get the image by ID
+                image = NDVI_plot.filter(ee.Filter.eq('system:index', image_id)).first()   
+                
+                # Get the image date and NDVI value
+                date = image.date().format('yyyy-MM-dd')
+
+                i = 0
+                try:
+                    for feature in features:
+                        polygon = ee.Geometry.Polygon(feature['geometry']['coordinates'])               
+                        polygon_id = i
+                        i +=1                
+                        # Calculate NDVI for each polygon
+                        ndvi_va = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=polygon, scale=10).get('NDWI').getInfo()
+                        
+                        datei.append(date.getInfo())
+                        ndviv.append(ndvi_va)
+                        polyids.append(polygon_id)
+                except Exception as e:
+                    st.error("Please select smaller polygon!") 
+            color = '#ff0000'        
+            color_sequence = ['#ff0000', '#00ff00']
+            # # Create a pandas DataFrame from the lists
+        
+            col1, col2 = st.columns((2, 1))        
+            dfz = pd.DataFrame({'PolygonID': polyids, 'Date': datei, 'NDWI': ndviv})
+            col2.subheader("NDWI chart")
+            col2.write(areas)  
+
+            col1.subheader("NDWI values")
+            col1.write(dfz)
+            fig = px.line(dfz, x="Date", y="NDWI",color_discrete_sequence=color_sequence,title='NDWI')  #, color_discrete_sequence=color_sequence
+
+            try:
+                selected_points = plotly_events(fig)            
+                if selected_points is not None:
+
+                    a=selected_points[0]
+                    a= pd.DataFrame.from_dict(a,orient='index')
+                    clickdate = a[0][0]
+
+                    start_date = datetime.strptime(clickdate, "%Y-%m-%d")
+                    next_date = start_date + timedelta(days=1)
+                    end_date = next_date.strftime("%Y-%m-%d")+"T"
+                    st.write('Clicked date:', start_date )
+                    NDVI_aday = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDWI).map(addDate).median()
+                    st.session_state["ndviaday"] = map1.addLayer(NDVI_aday.clip(aoi).select('NDWI'), vis_params, "NDWI for "+str(clickdate))
+                    map1.add_colormap(width=10, height=0.1, vmin=0, vmax=1,vis_params= vis_params,label="NDWI", position=(0, 0))  
+                    
+                                
+            except Exception as e:
+                st.error("Please select a day from the graph to view the corresponding NDWI value for that day.")
 
 map1.addLayerControl()
 map1.to_streamlit(height=700)

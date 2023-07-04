@@ -496,7 +496,7 @@ if aoi != []:
                 }
             }
             """
-        color_mapped_image = geemap.js_snippet(color_func)
+        
 
         palette1 = ['white', 'blue', 'green']
         vis_params1 = {
@@ -524,6 +524,11 @@ if aoi != []:
         try:
             map1.centerObject(aoi)
             st.session_state["ndmi"] = map1.addLayer(NDMI_data.clip(aoi).select('NDMI'), vis_params1, "Median of NDMI for all selected dates")        
+            color_mapped_image = NDMI_data.map(geemap.js_snippet(color_func))
+            vis_params1 = {
+            'min': -0.8,
+            'max': 0.8,
+            'palette': color_mapped_image}
             map1.add_colormap(width=10, height=0.1, vmin=0, vmax=1,vis_params= vis_params1,label="NDMI", position=(0, 0))
         except Exception as e:
             st.error(e)

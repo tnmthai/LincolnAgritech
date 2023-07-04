@@ -70,27 +70,8 @@ def addDate(image):
     img_date = ee.Date(image.date())
     img_date = ee.Number.parse(img_date.format('YYYYMMdd'))
     return image.addBands(ee.Image(img_date).rename('date').toInt())
-# legend_dict = {
-# 'NDVI < -0.2':	'#000000',
-# '-0.2 < NDVI ≤ 0.0':	'#a50026',	
-# '0.0 < NDVI ≤ 0.1':	'#d73027',	
-# '0.1 < NDVI ≤ 0.2':	'#f46d43',	
-# '0.2 < NDVI ≤ 0.3':	'#fdae61',	
-# '0.3 < NDVI ≤ 0.4':	'#fee08b',	
-# '0.4 < NDVI ≤ 0.5':	'#ffffbf',	
-# '0.5 < NDVI ≤ 0.6':	'#d9ef8b',	
-# '0.6 < NDVI ≤ 0.7':	'#a6d96a',	
-# '0.7 < NDVI ≤ 0.8':	'#66bd63',	
-# '0.8 < NDVI ≤ 0.9':	'#1a9850',	
-# '0.9 < NDVI ≤ 1.0':	'#006837',	
-# }
-# color = ['#000000', '#a50026', '#d73027', '#f46d43', '#fdae61', '#fee08b',
-#         '#ffffbf', '#d9ef8b', '#a6d96a', '#66bd63', '#1a9850', '#006837']
-# color = [legend_dict[key] for key in legend_dict]
 
-# pallete = {"min":0, "max":1, 'palette':color}
-
-palette = cm.palettes.dem
+palette = cm.palettes.ndvi
 vis_params = {
   'min': 0,
   'max': 1,

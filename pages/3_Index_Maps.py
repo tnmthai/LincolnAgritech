@@ -502,7 +502,7 @@ if aoi != []:
         vis_params1 = {
         'min': -0.8,
         'max': 0.8,
-        'palette': color_mapped_image}
+        'palette': palette1}
         map1.add_gdf(gdf, "ROI")
         
         aoi = geemap.gdf_to_ee(gdf, geodesic=False)

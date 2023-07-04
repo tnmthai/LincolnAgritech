@@ -339,7 +339,7 @@ if aoi != []:
                 NDVI_aday = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
                 st.session_state["ndviaday"] = map1.addLayer(NDVI_aday.clip(aoi).select('NDVI'), vis_params, "NDVI for "+str(clickdate))
                 # map1.add_legend(title="NDVI", legend_dict=legend_dict)    
-                map1.add_colorbar(vis_params, label="NDVI", layer_name="Median of NDVI for all selected dates")                          
+                map1.add_colorbar(vis_params, label="NDVI", layer_name="NDVI for "+str(clickdate))                          
                              
         except Exception as e:
             st.error("Please select a day from the graph to view the corresponding NDVI value for that day.")

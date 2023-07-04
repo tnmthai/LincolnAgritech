@@ -1,0 +1,8 @@
+
+start_index = data[0].find("(") + 1
+end_index = data[0].find(")")
+
+values = data[0][start_index:end_index]
+print(values)
+bands = values.split(",")
+print(bands.strip())

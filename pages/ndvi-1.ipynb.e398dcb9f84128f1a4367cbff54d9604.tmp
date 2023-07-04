@@ -1,0 +1,20 @@
+import ee
+import geemap
+import pandas as pd
+
+# Initialize the Earth Engine API
+ee.Initialize()
+
+# Define the region of interest (ROI)
+roi = ee.Geometry.Point(-122.084, 37.42)  # Example ROI coordinates
+
+# Load an image collection
+collection = ee.ImageCollection('COPERNICUS/S2_SR') \
+    .filterBounds(roi) \
+    .limit(10)
+
+# Convert image collection to pandas DataFrame
+df = geemap.ee_to_pandas(collection, properties=['system:index', 'system:time_start'])
+
+# Print the DataFrame
+print(df)

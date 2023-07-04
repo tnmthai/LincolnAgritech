@@ -1,0 +1,15 @@
+import math
+
+def deg2km2(area_deg2, latitude):
+    if latitude == 0:
+        return area_deg2 * 111**2
+    else:
+        conversion_factor = (111.0 * math.cos(math.radians(latitude)))
+        return area_deg2 * conversion_factor**2
+
+# Example usage
+area_deg2 = 0.00010373258450008217  # Area in square degrees
+latitude = -38.50820584900525  # Latitude in degrees
+
+area_km2 = deg2km2(area_deg2, latitude)
+print(area_km2) 

@@ -1,0 +1,4 @@
+geo_df['Area'] = geo_df['geometry'].area 
+
+# Print the area values
+print(geo_df['Area'])

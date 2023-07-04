@@ -1,0 +1,4 @@
+import geemap
+
+map = geemap.Map()
+map

@@ -1,0 +1,8 @@
+from dateutil.rrule import rrule, MONTHLY
+from datetime import datetime
+
+start_date = datetime.strptime("2022-01-01", "%Y-%m-%d")
+end_date = datetime.strptime("2023-12-31", "%Y-%m-%d")
+
+months = [dt.strftime("%m-%Y") for dt in rrule(MONTHLY, dtstart=start_date, until=end_date)]
+print(months)

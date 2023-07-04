@@ -1,0 +1,33 @@
+# Create a list to store the dates and NDVI values
+dates = []
+ndvi_values = []
+
+# Iterate over the image IDs
+for image_id in image_ids:
+    # Get the image by ID
+    image = collection.filter(ee.Filter.eq('system:index', image_id)).first()   
+    
+    # Get the image date and NDVI value
+    date = image.date().format('yyyy-MM-dd')
+    # print(date)
+    ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi, scale=10).get('NDVI').getInfo()
+    
+    # Add the date and NDVI value to the lists
+    dates.append(date.getInfo())
+    ndvi_values.append(ndvi_value)
+
+# # Create a pandas DataFrame from the lists
+df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
+
+# # Convert the 'Date' column to datetime format
+df['Date'] = pd.to_datetime(df['Date'])
+
+# Sort the DataFrame by date
+df.sort_values(by='Date', inplace=True)
+
+# Plot the NDVI values through the time series
+plt.plot(df['Date'], df['NDVI'])
+plt.xlabel('Date')
+plt.ylabel('NDVI')
+plt.title('NDVI Time Series')
+plt.show()

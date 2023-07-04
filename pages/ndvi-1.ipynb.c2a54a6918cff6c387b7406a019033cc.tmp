@@ -1,0 +1,8 @@
+import pandas as pd
+import geopandas as gpd
+import geemap
+import ee
+
+my_feature = ee.FeatureCollection("FAO/GAUL/2015/level0").filterMetadata('ADM0_NAME', 'equals', 'Viet Nam')
+df = geemap.ee_to_pandas(my_feature)
+geo_df = geemap.ee_to_geopandas(my_feature) 

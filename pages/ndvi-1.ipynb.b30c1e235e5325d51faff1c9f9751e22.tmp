@@ -1,0 +1,4 @@
+centroid = gdf.geometry.centroid
+
+# Get the latitude of the centroid
+latitude = centroid.y.item()

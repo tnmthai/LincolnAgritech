@@ -1,0 +1,3 @@
+stateArea = gdf.geometry().area()
+stateAreaSqKm = ee.Number(stateArea).divide(1e6).round()
+print(stateAreaSqKm)

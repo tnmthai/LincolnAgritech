@@ -1,0 +1,7 @@
+image_id = '20230102T065019_20230102T065050_T39MXN'
+image = collection.filter(ee.Filter.eq('system:index', image_id)).first()   
+image
+date = image.date().format('yyyy-MM-dd')
+date.getInfo()
+# ndvi_value = image.reduceRegion(reducer=ee.Reducer.mean(), geometry=aoi, scale=10).get('NDVI').getInfo()
+# ndvi_value

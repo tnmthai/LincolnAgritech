@@ -1,0 +1,3 @@
+NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate("2023-01-02","2023-01-03").filterBounds(aoi) 
+image_ids = NDVI_data.aggregate_array('system:index').getInfo()
+image_ids

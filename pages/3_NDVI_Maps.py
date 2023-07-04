@@ -157,6 +157,14 @@ start_date = sd.strftime("%Y-%m-%d") + "T"
 end_date = ed.strftime("%Y-%m-%d") + "T" 
 months = [dt.strftime("%m-%Y") for dt in rrule(MONTHLY, dtstart=sd, until=ed)]
 
+NDVI_options = ["NDVI","NDWI"] 
+
+NDVI_option = st.selectbox(
+    "Select an index:",
+    NDVI_options,
+    index=0,
+)
+
 with row1_col1:
 
     sample_roi = st.selectbox(
@@ -235,7 +243,7 @@ if aoi != []:
     features = aoi.getInfo()['features']
         
     st.write('Selected dates between:', start_date ,' and ', end_date)
-    NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDWI).map(addDate).median()
+    NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
     NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
     
     

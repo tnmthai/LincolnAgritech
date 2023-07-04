@@ -246,7 +246,7 @@ if aoi != []:
         map1.centerObject(aoi)
         st.session_state["ndvi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), vis_params, "Median of NDVI for all selected dates")
         
-        map1.add_colormap(vis_params,width=12, height=0.7, label="NDVI", orientation='vertical',  transparent_bg= None)                              
+        map1.add_colorbar(vis_params,width=12, height=0.7, label="NDVI", transparent_bg= None)                              
     except Exception as e:
         # st.error(e)
         st.error("Cloud is greater than 90% on selected day. Please select additional dates!")

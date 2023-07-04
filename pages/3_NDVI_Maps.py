@@ -159,11 +159,7 @@ months = [dt.strftime("%m-%Y") for dt in rrule(MONTHLY, dtstart=sd, until=ed)]
 
 NDVI_options = ["NDVI","NDWI"] 
 
-NDVI_option = st.selectbox(
-    "Select an index:",
-    NDVI_options,
-    index=0,
-)
+
 
 with row1_col1:
 
@@ -237,6 +233,13 @@ with row1_col1:
            
 if aoi != []:
 
+    NDVI_option = st.selectbox(
+    "Select an index:",
+    NDVI_options,
+    index=0,
+    )
+    
+    
     map1.add_gdf(gdf, "ROI")
     
     aoi = geemap.gdf_to_ee(gdf, geodesic=False)

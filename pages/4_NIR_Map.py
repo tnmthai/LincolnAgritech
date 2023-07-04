@@ -21,7 +21,7 @@ def maskCloudAndShadows(image):
 st.title("NIR Map")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")
 # geemap.ee_initialize()
-Map = geemap.Map(center=(-43.525650, 172.639847), zoom=6.25)
+Map = geemap.Map(center=(-43.525650, 172.639847))
 startDate = '2022-01-01'
 endDate = '2022-03-31'
 RGB = st.selectbox(

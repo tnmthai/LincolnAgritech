@@ -19,12 +19,12 @@ def maskCloudAndShadows(image):
   # Cloud probability less than 5% or cloud shadow classification
   mask = (cloud.And(snow)).And(cirrus.neq(1)).And(shadow.neq(1))
   return image.updateMask(mask).divide(10000)
+
 st.title("Sentinel 2 Bands and Combinations")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")
-# geemap.ee_initialize()
+
 Map = geemap.Map(center=(-43.525650, 172.639847))
-# startDate = '2022-01-01'
-# endDate = '2022-03-31'
+
 today = date.today()
 default_date_yesterday = today - timedelta(days=1)
 
@@ -64,7 +64,7 @@ end_index = RGB.find(")")
 
 values = RGB[start_index:end_index]
 band = values.split(",")
-
+values
 rgbViza = {"min":0.0, "max":0.7,"bands":band}
 aoi = ee.FeatureCollection("FAO/GAUL/2015/level0").filter(ee.Filter.eq('ADM0_NAME','New Zealand')).geometry()
 se2a = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(startDate,endDate).filterBounds(aoi).filter(

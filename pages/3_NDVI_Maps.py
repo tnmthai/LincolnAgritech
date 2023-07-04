@@ -90,6 +90,8 @@ vis_params = {
   'max': 1,
   'palette': palette}
 
+
+
 st.title("NDVI Maps")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")
 ee.Initialize()
@@ -336,6 +338,11 @@ if aoi != []:
                 st.error("Please select a day from the graph to view the corresponding NDVI value for that day.")
 
     else:
+        palette1 = cm.palettes.ndvi
+        vis_params1 = {
+        'min': 0,
+        'max': 1,
+        'palette': palette1}
         map1.add_gdf(gdf, "ROI")
         
         aoi = geemap.gdf_to_ee(gdf, geodesic=False)
@@ -356,8 +363,8 @@ if aoi != []:
         # Create an empty DataFrame        
         try:
             map1.centerObject(aoi)
-            st.session_state["ndwi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDWI'), vis_params, "Median of NDWI for all selected dates")        
-            map1.add_colormap(width=10, height=0.1, vmin=0, vmax=1,vis_params= vis_params,label="NDWI", position=(0, 0))
+            st.session_state["ndwi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDWI'), vis_params1, "Median of NDWI for all selected dates")        
+            map1.add_colormap(width=10, height=0.1, vmin=0, vmax=1,vis_params= vis_params1,label="NDWI", position=(0, 0))
         except Exception as e:
             st.error(e)
             st.error("Cloud is greater than 90% on selected day. Please select additional dates!")
@@ -415,8 +422,8 @@ if aoi != []:
                     end_date = next_date.strftime("%Y-%m-%d")+"T"
                     st.write('Clicked date:', start_date )
                     NDVI_aday = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDWI).map(addDate).median()
-                    st.session_state["ndviaday"] = map1.addLayer(NDVI_aday.clip(aoi).select('NDWI'), vis_params, "NDWI for "+str(clickdate))
-                    map1.add_colormap(width=10, height=0.1, vmin=0, vmax=1,vis_params= vis_params,label="NDWI", position=(0, 0))  
+                    st.session_state["ndviaday"] = map1.addLayer(NDVI_aday.clip(aoi).select('NDWI'), vis_params1, "NDWI for "+str(clickdate))
+                    map1.add_colormap(width=10, height=0.1, vmin=0, vmax=1,vis_params= vis_params1,label="NDWI", position=(0, 0))  
                     
                                 
             except Exception as e:

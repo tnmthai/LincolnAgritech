@@ -244,18 +244,14 @@ if aoi != []:
     
     try:
         map1.centerObject(aoi)
-        st.session_state["ndvi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), vis_params, "Median of NDVI for all selected dates")
-        
-        map1.add_colormap(width=10, height=0.1, vmin=0, vmax=1,vis_params= vis_params,label="NDVI", position=(0, 0))#,transparent=True, label_size=10,tick_size=8,bg_color="white",)  #, orientation="vertical", layer_name="Median of NDVI for all selected dates", transparent_bg=True)                       
+        st.session_state["ndvi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), vis_params, "Median of NDVI for all selected dates")        
+        map1.add_colormap(width=10, height=0.1, vmin=0, vmax=1,vis_params= vis_params,label="NDVI", position=(0, 0))
     except Exception as e:
         st.error(e)
         st.error("Cloud is greater than 90% on selected day. Please select additional dates!")
     if graph_ndvi:    
         image_ids = NDVI_plot.aggregate_array('system:index').getInfo()
-        # image_ids
-        # polygon_ids = []
-        # dates = []
-        # ndvi_values = []
+
         polyids = []
         datei = []
         ndviv = []
@@ -284,10 +280,8 @@ if aoi != []:
         color = '#ff0000'        
         color_sequence = ['#ff0000', '#00ff00']
         # # Create a pandas DataFrame from the lists
-        # df = pd.DataFrame({'Date': dates, 'NDVI': ndvi_values})
-        
-        col1, col2 = st.columns((2, 1))
-        
+       
+        col1, col2 = st.columns((2, 1))        
         dfz = pd.DataFrame({'PolygonID': polyids, 'Date': datei, 'NDVI': ndviv})
         col2.subheader("NDVI chart")
         col2.write(areas)  
@@ -310,8 +304,8 @@ if aoi != []:
                 st.write('Clicked date:', start_date )
                 NDVI_aday = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
                 st.session_state["ndviaday"] = map1.addLayer(NDVI_aday.clip(aoi).select('NDVI'), vis_params, "NDVI for "+str(clickdate))
-                  
-                map1.add_colormap(vis_params= vis_params, label="NDVI")#, layer_name="NDVI for "+str(clickdate), orientation="vertical", transparent_bg= False)                       
+                map1.add_colormap(width=10, height=0.1, vmin=0, vmax=1,vis_params= vis_params,label="NDVI", position=(0, 0))  
+                
                              
         except Exception as e:
             st.error("Please select a day from the graph to view the corresponding NDVI value for that day.")

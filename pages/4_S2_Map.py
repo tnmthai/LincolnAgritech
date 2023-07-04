@@ -23,7 +23,17 @@ def maskCloudAndShadows(image):
 st.title("Sentinel 2 Bands and Combinations")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")
 
-Map = geemap.Map(center=(-43.525650, 172.639847))
+# Map = geemap.Map(center=(-43.525650, 172.639847))
+
+Map = geemap.Map(
+    basemap="HYBRID",
+    plugin_Draw=True,
+    Draw_export=True,
+    # locate_control=True,
+    plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
+)
+
+
 
 today = date.today()
 default_date_yesterday = today - timedelta(days=1)

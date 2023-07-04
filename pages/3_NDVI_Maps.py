@@ -340,7 +340,7 @@ if aoi != []:
     else:
         palette1 = cm.palettes.ndwi
         vis_params1 = {
-        'min': 0,
+        'min': -1,
         'max': 1,
         'palette': palette1}
         map1.add_gdf(gdf, "ROI")

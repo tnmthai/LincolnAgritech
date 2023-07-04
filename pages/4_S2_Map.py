@@ -3,6 +3,7 @@ import streamlit as st
 import geemap.foliumap as geemap
 import ee
 import geopandas as gpd
+from datetime import date, timedelta, datetime
 # st.set_page_config(layout="wide")
 @st.cache_data
 def ee_authenticate(token_name="EARTHENGINE_TOKEN"):
@@ -22,8 +23,26 @@ st.title("Sentinel 2 Bands and Combinations")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")
 # geemap.ee_initialize()
 Map = geemap.Map(center=(-43.525650, 172.639847))
-startDate = '2022-01-01'
-endDate = '2022-03-31'
+# startDate = '2022-01-01'
+# endDate = '2022-03-31'
+today = date.today()
+default_date_yesterday = today - timedelta(days=1)
+
+sd = st.date_input(
+        "Start date", date(2023, 1, 1), min_value= date(2015, 6, 23),
+        max_value= today,
+        )
+
+ed = st.date_input(
+    "End date",
+    default_date_yesterday,
+    min_value= date(2015, 6, 23),max_value= today)       
+    
+st.write('Dates between', sd ,' and ', ed)
+
+startDate = sd.strftime("%Y-%m-%d") + "T" 
+endDate = ed.strftime("%Y-%m-%d") + "T" 
+
 RGB = st.selectbox(
     "Select an RGB band combination:",
     [

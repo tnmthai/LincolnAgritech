@@ -18,7 +18,7 @@ def maskCloudAndShadows(image):
   # Cloud probability less than 5% or cloud shadow classification
   mask = (cloud.And(snow)).And(cirrus.neq(1)).And(shadow.neq(1))
   return image.updateMask(mask).divide(10000)
-st.title("NIR Map")
+st.title("Sentinel 2 Bands and Combinations")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")
 # geemap.ee_initialize()
 Map = geemap.Map(center=(-43.525650, 172.639847))

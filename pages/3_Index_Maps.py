@@ -438,7 +438,7 @@ if aoi != []:
                 st.error("Please select a day from the graph to view the corresponding NDWI value for that day.")
     else:
         
-        palette1 = ['white', 'blue', 'green']
+        palette1 = ['white', '#C4A484', 'blue']
         vis_params1 = {
         'min': -0.8,
         'max': 0.8,

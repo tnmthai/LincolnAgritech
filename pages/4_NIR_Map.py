@@ -40,7 +40,10 @@ RGB = st.selectbox(
 
     ],
     index=0,
-                )
+    )
+values = [item[item.find("(") + 1: item.find(")")] for item in data]
+print(values)
+bands = values.split(",")
 
 rgb = ['B8','B4','B3']
 rgbViza = {"min":0.0, "max":0.7,"bands":rgb}

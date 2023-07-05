@@ -566,7 +566,7 @@ if aoi != []:
         try:
             map1.centerObject(aoi)
             st.session_state["gci"] = map1.addLayer(NDMI_data.clip(aoi).select('GCI'), vis_params1, "Median of GCI for all selected dates")        
-            map1.add_colormap(width=10, height=0.1, vmin=0, vmax=1,vis_params= vis_params1,label="GCI", position=(0, 0))
+            map1.add_colormap(width=10, height=0.1, vmin=0, vmax=8,vis_params= vis_params1,label="GCI", position=(0, 0))
         except Exception as e:
             st.error(e)
             st.error("Cloud is greater than 90% on selected day. Please select additional dates!")
@@ -625,7 +625,7 @@ if aoi != []:
                     st.write('Clicked date:', start_date )
                     NDMI_aday = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getGCI).map(addDate).median()
                     st.session_state["ndviaday"] = map1.addLayer(NDMI_aday.clip(aoi).select('GCI'), vis_params1, "GCI for "+str(clickdate))
-                    map1.add_colormap(width=10, height=0.1, vmin=0, vmax=1,vis_params= vis_params1,label="GCI", position=(0, 0))  
+                    map1.add_colormap(width=10, height=0.1, vmin=0, vmax=8,vis_params= vis_params1,label="GCI", position=(0, 0))  
                                                     
             except Exception as e:
                 st.error("Please select a day from the graph to view the corresponding NDMI value for that day.")

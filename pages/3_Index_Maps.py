@@ -542,8 +542,8 @@ if aoi != []:
         
         palette1 = ['red', '#C4A484', 'green']
         vis_params1 = {
-        'min': -0.8,
-        'max': 0.8,
+        'min': 0,
+        'max': 8,
         'palette': palette1}
         map1.add_gdf(gdf, "ROI")
         

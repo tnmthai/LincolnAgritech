@@ -173,7 +173,7 @@ start_date = sd.strftime("%Y-%m-%d") + "T"
 end_date = ed.strftime("%Y-%m-%d") + "T" 
 months = [dt.strftime("%m-%Y") for dt in rrule(MONTHLY, dtstart=sd, until=ed)]
 
-NDVI_options = ["NDVI","NDWI","NDMI"] 
+NDVI_options = ["Normalised Difference Vegetation Index","Normalised Difference Water Index","Normalised Difference Moisture Index"] 
 
 
 
@@ -255,7 +255,7 @@ with row1_col1:
                
 if aoi != []:
 
-    if NDVI_option == "NDVI":
+    if NDVI_option == "Normalised Difference Vegetation Index":
         
         map1.add_gdf(gdf, zoom_to_layer=True,layer_name= "ROI",info_mode='on_click')
         
@@ -346,7 +346,7 @@ if aoi != []:
             except Exception as e:
                 st.error("Please select a day from the graph to view the corresponding NDVI value for that day.")
 
-    elif NDVI_option == "NDWI":
+    elif NDVI_option == "Normalised Difference Water Index":
         palette1 = cm.palettes.ndwi
         vis_params1 = {
         'min': -1,

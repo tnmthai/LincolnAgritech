@@ -540,7 +540,7 @@ if aoi != []:
                 st.error("Please select a day from the graph to view the corresponding NDMI value for that day.")
     elif NDVI_option == "Green Chlorophyll Index":
         
-        palette1 = ['white', '#C4A484', 'green']
+        palette1 = ['red', '#C4A484', 'green']
         vis_params1 = {
         'min': -0.8,
         'max': 0.8,

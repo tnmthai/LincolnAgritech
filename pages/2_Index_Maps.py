@@ -153,7 +153,7 @@ cols1,_ = st.columns((1,2))
 row1_col1, row1_col2 = st.columns([2, 1])
 start_date = '2023-01-01'
 end_date = '2023-12-31'
-
+NDVI_options = ["Normalised Difference Vegetation Index","Normalised Difference Water Index","Normalised Difference Moisture Index","Green Chlorophyll Index"] 
 with row1_col2:
     today = date.today()
     default_date_yesterday = today - timedelta(days=1)
@@ -168,12 +168,17 @@ with row1_col2:
         min_value= date(2015, 6, 23),max_value= today)       
     
     st.write('Dates between', sd ,' and ', ed)
+    NDVI_option = st.selectbox(
+    "Select an index:",
+    NDVI_options,
+    index=0,
+    )
 
 start_date = sd.strftime("%Y-%m-%d") + "T" 
 end_date = ed.strftime("%Y-%m-%d") + "T" 
 months = [dt.strftime("%m-%Y") for dt in rrule(MONTHLY, dtstart=sd, until=ed)]
 
-NDVI_options = ["Normalised Difference Vegetation Index","Normalised Difference Water Index","Normalised Difference Moisture Index","Green Chlorophyll Index"] 
+
 
 with row1_col1:
 
@@ -244,11 +249,11 @@ with row1_col1:
             next_date = start_date + timedelta(days=1)
             end_date = next_date#.strftime("%Y-%m-%d")+"T"
 
-    NDVI_option = st.selectbox(
-        "Select an index:",
-        NDVI_options,
-        index=0,
-        )
+    # NDVI_option = st.selectbox(
+    #     "Select an index:",
+    #     NDVI_options,
+    #     index=0,
+    #     )
                
 if aoi != []:
 

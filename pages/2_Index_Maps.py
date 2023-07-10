@@ -199,8 +199,7 @@ with row1_col1:
             # map1.add_gdf(gdf, "ROI")
         else:
             st.write(":red[No Region of Interest (ROI) has been selected yet.]")
-            aoi = []
-            
+            aoi = []            
     
     agree = st.checkbox('Select a month between ' + str(sd) + ' and '+ str(ed))
     if agree:        
@@ -615,6 +614,8 @@ if aoi != []:
                                                     
             except Exception as e:
                 st.error("Please select a day from the graph to view the corresponding NDMI value for that day.")
-
+else:
+    st.warning("Please select a polygon!",icon="⚠️")
+    
 map1.addLayerControl()
 map1.to_streamlit(height=700)

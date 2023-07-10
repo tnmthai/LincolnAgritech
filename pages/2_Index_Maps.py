@@ -51,31 +51,30 @@ def maskCloudAndShadows(image):
   # Cloud probability less than 5% or cloud shadow classification
   mask = (cloud.And(snow)).And(cirrus.neq(1)).And(shadow.neq(1))
   return image.updateMask(mask)
-
+# Connect to GEE
 def ee_authenticate(token_name="EARTHENGINE_TOKEN"):
     geemap.ee_initialize(token_name=token_name)
 
-def getNDVI(image):
-    
-    # Normalized difference vegetation index (NDVI)
+# Normalized difference vegetation index (NDVI)
+def getNDVI(image): 
     ndvi = image.normalizedDifference(['B8','B4']).rename("NDVI")
     image = image.addBands(ndvi)
     return(image)
 
-def getNDWI(image):
-    # Normalized difference water index (NDWI)
+# Normalized difference water index (NDWI)
+def getNDWI(image):    
     ndwi = image.normalizedDifference(['B3', 'B8']).rename("NDWI")
     image = image.addBands(ndwi)
     return(image)
 
+# Moisture Index (B8A-B11)/(B8A+B11)
 def getNDMI(image):
-    # Moisture Index (B8A-B11)/(B8A+B11)
     ndmi = image.normalizedDifference(['B8', 'B11']).rename("NDMI")
     image = image.addBands(ndmi)
     return(image)
 
+# Green Chlorophyll Index (NIR / Green) - 1
 def getGCI(image):
-    # Green Chlorophyll Index (NIR / Green) - 1
     gci = image.select('B8').divide(image.select('B3')).subtract(1).rename("GCI")
     image = image.addBands(gci)
     return image
@@ -83,7 +82,6 @@ def getGCI(image):
 def calculate_gci(image):    
     gci = image.select('B8').divide(image.select('B3')).subtract(1)
     return gci.rename('GCI').copyProperties(image, ['system:time_start'])
-
 
 def calculate_ndvi(image):
     ndvi = image.normalizedDifference(['B8', 'B4'])
@@ -102,17 +100,13 @@ def addDate(image):
     img_date = ee.Number.parse(img_date.format('YYYYMMdd'))
     return image.addBands(ee.Image(img_date).rename('date').toInt())
 
-       
-
 palette = cm.palettes.ndvi
 vis_params = {
   'min': 0,
   'max': 1,
   'palette': palette}
 
-
-
-st.title("NDVI Maps")
+st.title("Index Maps")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")
 ee.Initialize()
 
@@ -124,19 +118,16 @@ map1 = geemap.Map(
     plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
 )
 
-
+# Load shp files
 shp = gpd.read_file("data/nzshp/Canterbury.shp")
 gdf = shp.to_crs({'init': 'epsg:4326'}) 
-
 can = []
 for index, row in gdf.iterrows():
     for pt in list(row['geometry'].exterior.coords): 
         can.append(list(pt))
 
-
 shp = gpd.read_file("data/nzshp/Mitimiti.shp")
 gdf = shp.to_crs({'init': 'epsg:4326'}) 
-
 Mitimiti = []
 for index, row in gdf.iterrows():
     for pt in list(row['geometry'].exterior.coords): 
@@ -144,12 +135,10 @@ for index, row in gdf.iterrows():
 
 shp = gpd.read_file("data/nzshp/Urewera.shp")
 gdf = shp.to_crs({'init': 'epsg:4326'}) 
-
 Urewera = []
 for index, row in gdf.iterrows():
     for pt in list(row['geometry'].exterior.coords): 
         Urewera.append(list(pt))
-
 
 landsat_rois = {
     "Canterbury":Polygon (can),
@@ -162,8 +151,8 @@ roi_options = ["Uploaded GeoJSON"] + list(landsat_rois.keys())
 crs = "epsg:4326"
 cols1,_ = st.columns((1,2)) 
 row1_col1, row1_col2 = st.columns([2, 1])
-start_date = '2022-01-01'
-end_date = '2022-12-31'
+start_date = '2023-01-01'
+end_date = '2023-12-31'
 
 with row1_col2:
     today = date.today()
@@ -185,8 +174,6 @@ end_date = ed.strftime("%Y-%m-%d") + "T"
 months = [dt.strftime("%m-%Y") for dt in rrule(MONTHLY, dtstart=sd, until=ed)]
 
 NDVI_options = ["Normalised Difference Vegetation Index","Normalised Difference Water Index","Normalised Difference Moisture Index","Green Chlorophyll Index"] 
-
-
 
 with row1_col1:
 
@@ -216,8 +203,7 @@ with row1_col1:
             
     
     agree = st.checkbox('Select a month between ' + str(sd) + ' and '+ str(ed))
-    if agree:
-        
+    if agree:        
         mo = st.select_slider(
             'Select a month',
             options=months

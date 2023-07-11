@@ -512,8 +512,8 @@ if aoi != []:
                     end_date = next_date.strftime("%Y-%m-%d")+"T"
                     cd = 'Clicked date: ' + str(start_date.strftime("%Y-%m-%d"))
                     st.success(cd, icon="✅")
-                    NDMI_aday = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDWI).map(addDate).median()
-                    st.session_state["ndviaday"] = map1.addLayer(NDMI_aday.clip(aoi).select('NDMI'), vis_params1, "NDMI for "+str(clickdate))
+                    NDMI_aday = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDMI).map(addDate).median()
+                    st.session_state["ndmiaday"] = map1.addLayer(NDMI_aday.clip(aoi).select('NDMI'), vis_params1, "NDMI for "+str(clickdate))
                     map1.add_colormap(width=10, height=0.1, vmin=0, vmax=1,vis_params= vis_params1,label="NDMI", position=(0, 0))  
                                                     
             except Exception as e:

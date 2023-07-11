@@ -41,8 +41,6 @@ def uploaded_file_to_gdf(data):
 st.title("Sentinel 2 Bands and Combinations")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")
 
-# Map = geemap.Map(center=(-43.525650, 172.639847))
-
 Map = geemap.Map(
     basemap="HYBRID",
     plugin_Draw=True,
@@ -125,7 +123,7 @@ se2a = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(startDate,endDate).filt
 se2c = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(
     startDate,endDate).filterBounds(aoi).filter(
     ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).median().clip(aoi)
-Map.centerObject(aoi,7)
+Map.centerObject(aoi)
 titlemap = "Sentinel 2: " + str(RGB[0:start_index-1])
 Map.addLayer(se2c, rgbViza, titlemap)
 Map.to_streamlit(height=700)

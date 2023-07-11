@@ -20,7 +20,9 @@ import geemap.colormaps as cm
 st.set_page_config(layout="wide")
 warnings.filterwarnings("ignore")
 @st.cache_data
-
+def convert_to_csv(df):
+    # IMPORTANT: Cache the conversion to prevent computation on every rerun
+    return df.to_csv(index=False).encode('utf-8')
 def uploaded_file_to_gdf(data):
     import tempfile
     import os
@@ -497,9 +499,10 @@ if aoi != []:
 
             col1.subheader("NDMI values")
             col1.write(dfz.transpose())
+            csv = convert_to_csv(dfz)
             download1 = st.download_button(
                 label="Download data as CSV",
-                data=dfz.transpose(),
+                data=csv,
                 file_name='NDMI.csv',
                 mime='text/csv'
             )

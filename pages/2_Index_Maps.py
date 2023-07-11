@@ -203,8 +203,8 @@ with row1_col1:
             st.session_state["aoi"] = aoi= geemap.gdf_to_ee(gdf, geodesic=False)    
             # map1.add_gdf(gdf, "ROI")
         else:
-            st.write(":red[No Region of Interest (ROI) has been selected yet.]")
-            st.warning("Please select a polygon!",icon="⚠️")
+            # st.write(":red[No Region of Interest (ROI) has been selected yet.]")
+            st.warning("No Region of Interest (ROI) has been selected yet!",icon="⚠️")
             aoi = []            
     if aoi != []:
         agree = st.checkbox('Select a MONTH between ' + str(months[0]) + ' and '+ str(months[-1]))
@@ -235,8 +235,7 @@ with row1_col1:
                 ad = st.select_slider(
                     'Select a date',
                     options=listdates
-                    )
-                st.write('Selected date:', ad)
+                    )               
             
                 start_date = datetime.strptime(ad, "%Y-%m-%d")    
                 next_date = start_date + timedelta(days=1)

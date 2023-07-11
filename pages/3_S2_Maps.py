@@ -128,7 +128,7 @@ with row1_col2:
 
     dt = 'Selected dates between '+ str(sd) +' and '+ str(ed)        
     st.success(dt, icon="✅")
-stats = gm.zonal_statistics(se2c, aoi, statistics_type='mean', scale=1000)
+stats = geemap.zonal_statistics(se2c, aoi, statistics_type='mean', scale=1000)
 
 st.write(stats)
 

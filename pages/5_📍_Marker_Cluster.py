@@ -4,7 +4,7 @@ import ee
 import geemap
 import os
 Map = leafmap.Map()
-Map
+
 st.set_page_config(layout="wide")
 
 st.title("Marker Cluster")
@@ -29,7 +29,6 @@ Map.addLayer(landsat, landsat_vis, "LE7_TOA_5YEAR/1999_2003")
 
 states = ee.FeatureCollection("TIGER/2018/States")
 Map.addLayer(states, {}, 'US States')
-
 
 out_dir = os.path.join(os.path.expanduser('~'), 'Downloads')
 out_dem_stats = os.path.join(out_dir, 'dem_stats.csv')

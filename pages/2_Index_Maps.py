@@ -169,7 +169,7 @@ with row1_col2:
     
     # st.write('Dates between', sd ,' and ', ed)
     NDVI_option = st.selectbox(
-    "Select an index:",
+    "Select an index",
     NDVI_options,
     index=0,
     )

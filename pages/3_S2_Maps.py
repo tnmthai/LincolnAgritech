@@ -51,79 +51,82 @@ Map = geemap.Map(
 
 roi_options = ["Uploaded GeoJSON"] + list(lal.nz_rois.keys())
 crs = "epsg:4326"
-sample_roi = st.selectbox(
-    "Select a existing ROI or upload a GeoJSON file:",
-    roi_options,
-    index=0,
-)
-if sample_roi != "Uploaded GeoJSON":
-        gdf = gpd.GeoDataFrame(
-            index=[0], crs=crs, geometry=[lal.nz_rois[sample_roi]]
-        )        
-        aoi = geemap.gdf_to_ee(gdf, geodesic=False)
-elif sample_roi == "Uploaded GeoJSON":
-    data = st.file_uploader(
-        "Upload a GeoJSON file to use as an ROI. Customize timelapse parameters and then click the Submit button.",
-        type=["geojson", "kml", "zip"],
+
+row1_col1, row1_col2 = st.columns([1, 2])
+with row1_col1:
+    sample_roi = st.selectbox(
+        "Select a existing ROI or upload a GeoJSON file:",
+        roi_options,
+        index=0,
     )
-    if data:
-        gdf = uploaded_file_to_gdf(data)
-        st.session_state["aoi"] = aoi= geemap.gdf_to_ee(gdf, geodesic=False)    
-        # map1.add_gdf(gdf, "ROI")
-    else:
-        # st.write(":red[No Region of Interest (ROI) has been selected yet.]")
-        st.warning("No Region of Interest (ROI) has been selected yet!",icon="⚠️")
-        aoi = [] 
-
-today = date.today()
-default_date_yesterday = today - timedelta(days=1)
-
-sd = st.date_input(
-        "Start date", date(2023, 1, 1), min_value= date(2015, 6, 23),
-        max_value= today,
+    if sample_roi != "Uploaded GeoJSON":
+            gdf = gpd.GeoDataFrame(
+                index=[0], crs=crs, geometry=[lal.nz_rois[sample_roi]]
+            )        
+            aoi = geemap.gdf_to_ee(gdf, geodesic=False)
+    elif sample_roi == "Uploaded GeoJSON":
+        data = st.file_uploader(
+            "Upload a GeoJSON file to use as an ROI. Customize timelapse parameters and then click the Submit button.",
+            type=["geojson", "kml", "zip"],
         )
+        if data:
+            gdf = uploaded_file_to_gdf(data)
+            st.session_state["aoi"] = aoi= geemap.gdf_to_ee(gdf, geodesic=False)    
+            # map1.add_gdf(gdf, "ROI")
+        else:
+            # st.write(":red[No Region of Interest (ROI) has been selected yet.]")
+            st.warning("No Region of Interest (ROI) has been selected yet!",icon="⚠️")
+            aoi = [] 
 
-ed = st.date_input(
-    "End date",
-    default_date_yesterday,
-    min_value= date(2015, 6, 23),max_value= today)       
-    
-st.write('Dates between', sd ,' and ', ed)
+    today = date.today()
+    default_date_yesterday = today - timedelta(days=1)
 
-startDate = sd.strftime("%Y-%m-%d") + "T" 
-endDate = ed.strftime("%Y-%m-%d") + "T" 
+    sd = st.date_input(
+            "Start date", date(2023, 1, 1), min_value= date(2015, 6, 23),
+            max_value= today,
+            )
 
-RGB = st.selectbox(
-    "Select an RGB band combination:",
-    [
-    "Natural Color (B4,B3,B2)",
-    "Color Infrared (B8,B4,B3)",
-    "Short-Wave Infrared (B12,B8,B4)",
-    "Agriculture (B11,B8,B2)",
-    "Geology (B12,B11,B2)",
-    "Bathymetric (B4,B3,B1)",
-    "Healthy Vegetation (B8,B11,B2)",
-    "Land/Water (B8,B11,B4)",
-    "Natural Colors with Atmospheric Removal (B12,B8,B3)",
-    "Vegetation Analysis (B11,B8,B4)"
-    ],
-    index=0,
-    )
-start_index = RGB.find("(") + 1
-end_index = RGB.find(")")
-values = RGB[start_index:end_index]
-band = values.split(",")
+    ed = st.date_input(
+        "End date",
+        default_date_yesterday,
+        min_value= date(2015, 6, 23),max_value= today)       
+        
+    st.write('Dates between', sd ,' and ', ed)
 
-rgbViza = {"min":0.0, "max":0.7,"bands":band}
-# aoi = ee.FeatureCollection("FAO/GAUL/2015/level0").filter(ee.Filter.eq('ADM0_NAME','New Zealand')).geometry()
-if aoi!=[]:
-    se2a = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(startDate,endDate).filterBounds(aoi).filter(
-        ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",60)).median().divide(10000).clip(aoi)
-    se2c = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(
-        startDate,endDate).filterBounds(aoi).filter(
-        ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).median().clip(aoi)
-    Map.centerObject(aoi)
-    titlemap = "Sentinel 2: " + str(RGB[0:start_index-1])
-    Map.addLayer(se2c, rgbViza, titlemap)
+    startDate = sd.strftime("%Y-%m-%d") + "T" 
+    endDate = ed.strftime("%Y-%m-%d") + "T" 
+
+    RGB = st.selectbox(
+        "Select an RGB band combination:",
+        [
+        "Natural Color (B4,B3,B2)",
+        "Color Infrared (B8,B4,B3)",
+        "Short-Wave Infrared (B12,B8,B4)",
+        "Agriculture (B11,B8,B2)",
+        "Geology (B12,B11,B2)",
+        "Bathymetric (B4,B3,B1)",
+        "Healthy Vegetation (B8,B11,B2)",
+        "Land/Water (B8,B11,B4)",
+        "Natural Colors with Atmospheric Removal (B12,B8,B3)",
+        "Vegetation Analysis (B11,B8,B4)"
+        ],
+        index=0,
+        )
+    start_index = RGB.find("(") + 1
+    end_index = RGB.find(")")
+    values = RGB[start_index:end_index]
+    band = values.split(",")
+
+    rgbViza = {"min":0.0, "max":0.7,"bands":band}
+    # aoi = ee.FeatureCollection("FAO/GAUL/2015/level0").filter(ee.Filter.eq('ADM0_NAME','New Zealand')).geometry()
+    if aoi!=[]:
+        se2a = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(startDate,endDate).filterBounds(aoi).filter(
+            ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",60)).median().divide(10000).clip(aoi)
+        se2c = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(
+            startDate,endDate).filterBounds(aoi).filter(
+            ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).median().clip(aoi)
+        Map.centerObject(aoi)
+        titlemap = "Sentinel 2: " + str(RGB[0:start_index-1])
+        Map.addLayer(se2c, rgbViza, titlemap)
 Map.addLayerControl()
 Map.to_streamlit(height=700)

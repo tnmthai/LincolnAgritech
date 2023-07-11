@@ -178,7 +178,7 @@ start_date = sd.strftime("%Y-%m-%d") + "T"
 end_date = ed.strftime("%Y-%m-%d") + "T" 
 months = [dt.strftime("%m-%Y") for dt in rrule(MONTHLY, dtstart=sd, until=ed)]
 
-
+tb = 'Selected dates between '+ str(start_date.strftime("%Y-%m-%d")) +' and '+ str(end_date.strftime("%Y-%m-%d"))   
 
 with row1_col1:
 
@@ -213,7 +213,7 @@ with row1_col1:
                 'Select a month',
                 options=months
                 )
-            st.write('Selected month:', mo)
+            # st.write('Selected month:', mo)
             
             month_date = datetime.strptime(mo, "%m-%Y")
             year = month_date.year
@@ -223,7 +223,7 @@ with row1_col1:
             last_day = calendar.monthrange(year, month)[1]
 
             end_date = datetime(year, month, last_day).strftime("%Y-%m-%d")
-            
+            tb = 'Selected dates between '+ str(start_date.strftime("%Y-%m-%d")) +' and '+ str(end_date.strftime("%Y-%m-%d"))   
             adate = st.checkbox('Select a date between ' + str(start_date) + ' and '+ str(end_date))
 
             collect_date = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi)
@@ -242,8 +242,7 @@ with row1_col1:
                 end_date = next_date #.strftime("%Y-%m-%d")+"T"
                 tb = 'Selected dates '+ str(start_date.strftime("%Y-%m-%d"))                
             else:
-                tb = 'Selected dates between '+ str(start_date.strftime("%Y-%m-%d")) +' and '+ str(end_date.strftime("%Y-%m-%d"))
-    # tb = 'Selected dates between '+ str(start_date.strftime("%Y-%m-%d")) +' and '+ str(end_date.strftime("%Y-%m-%d"))
+                tb = 'Selected dates between '+ str(start_date.strftime("%Y-%m-%d")) +' and '+ str(end_date.strftime("%Y-%m-%d"))   
     
         st.warning(tb,icon="ℹ️")
 

@@ -167,7 +167,7 @@ with row1_col2:
         default_date_yesterday,
         min_value= date(2015, 6, 23),max_value= today)       
     
-    st.write('Dates between', sd ,' and ', ed)
+    # st.write('Dates between', sd ,' and ', ed)
     NDVI_option = st.selectbox(
     "Select an index:",
     NDVI_options,
@@ -349,7 +349,7 @@ if aoi != []:
         aoi = geemap.gdf_to_ee(gdf, geodesic=False)
         features = aoi.getInfo()['features']
             
-        st.write('Selected dates between:', start_date ,' and ', end_date)
+        # st.write('Selected dates between:', start_date ,' and ', end_date)
         NDWI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDWI).map(addDate).median()
         NDWI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(calculate_ndwi).map(addDate)
         
@@ -440,7 +440,7 @@ if aoi != []:
         aoi = geemap.gdf_to_ee(gdf, geodesic=False)
         features = aoi.getInfo()['features']
             
-        st.write('Selected dates between:', start_date ,' and ', end_date)
+        # st.write('Selected dates between:', start_date ,' and ', end_date)
         NDMI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDMI).map(addDate).median()
         NDMI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(calculate_ndmi).map(addDate)
         
@@ -531,7 +531,7 @@ if aoi != []:
         aoi = geemap.gdf_to_ee(gdf, geodesic=False)
         features = aoi.getInfo()['features']
             
-        st.write('Selected dates between:', start_date ,' and ', end_date)
+        # st.write('Selected dates between:', start_date ,' and ', end_date)
         NDMI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getGCI).map(addDate).median()
         NDMI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(calculate_gci).map(addDate)
         

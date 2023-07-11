@@ -112,7 +112,7 @@ with row1_col2:
         default_date_yesterday,
         min_value= date(2015, 6, 23),max_value= today)       
         
-    st.write('Dates between', sd ,' and ', ed)
+    
 
     startDate = sd.strftime("%Y-%m-%d") + "T" 
     endDate = ed.strftime("%Y-%m-%d") + "T" 
@@ -128,5 +128,7 @@ with row1_col2:
         Map.centerObject(aoi)
         titlemap = "Sentinel 2: " + str(RGB[0:start_index-1])
         Map.addLayer(se2c, rgbViza, titlemap)
+dt = 'Dates between'+ str(sd) +' and '+ str(ed)        
+st.success(dt, icon="✅")
 Map.addLayerControl()
 Map.to_streamlit(height=700)

@@ -268,7 +268,7 @@ if aoi != []:
         areas['Area (sqKm)'] = areas.geometry.area*10**4
         
         graph_ndvi = st.checkbox('Show graph')   
-        palette
+        # palette
         # Create an empty DataFrame        
         try:
             map1.centerObject(aoi)
@@ -347,7 +347,8 @@ if aoi != []:
                 st.error("Please select a day from the graph to view the corresponding NDVI value for that day.")
 
     elif NDVI_option == "Normalised Difference Water Index":
-        palette1 = cm.palettes.ndwi
+        palette1 = ['#ece7f2', '#d0d1e6', '#a6bddb', '#74a9cf', '#3690c0', '#0570b0', '#045a8d', '#023858']
+        # cm.palettes.ndwi
         vis_params1 = {
         'min': -1,
         'max': 1,

@@ -245,7 +245,7 @@ with row1_col1:
                 tb = 'Selected dates between '+ str(start_date.strftime("%Y-%m-%d")) +' and '+ str(end_date.strftime("%Y-%m-%d"))
     # tb = 'Selected dates between '+ str(start_date.strftime("%Y-%m-%d")) +' and '+ str(end_date.strftime("%Y-%m-%d"))
     
-    st.warning(tb,icon="ℹ️")
+        st.warning(tb,icon="ℹ️")
 
                
 if aoi != []:

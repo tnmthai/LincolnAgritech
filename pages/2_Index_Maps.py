@@ -499,7 +499,7 @@ if aoi != []:
             col1.write(dfz.transpose())
             download1 = st.download_button(
                 label="Download data as CSV",
-                data=dfz,
+                data=dfz.transpose(),
                 file_name='NDMI.csv',
                 mime='text/csv'
             )

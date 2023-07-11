@@ -136,8 +136,7 @@ values = RGB[start_index:end_index]
 band = values.split(",")
 
 rgbViza = {"min":0.0, "max":0.7,"bands":band}
-add_layer(band, rgbViza)
-st.write(str(len(added_layers)))
+
 
 # aoi = ee.FeatureCollection("FAO/GAUL/2015/level0").filter(ee.Filter.eq('ADM0_NAME','New Zealand')).geometry()
 # if aoi!=[]:
@@ -150,6 +149,8 @@ st.write(str(len(added_layers)))
 #     titlemap = "Sentinel 2: " + str(RGB[0:start_index-1])
 #     Map.addLayer(se2c, rgbViza, titlemap)
 def main():
+    add_layer(band, rgbViza)
+    st.write(str(len(added_layers)))
     Map.to_streamlit(height=700)
 if __name__ == "__main__":
     main()

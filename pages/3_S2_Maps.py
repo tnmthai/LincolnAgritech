@@ -4,6 +4,7 @@ import uuid
 import streamlit as st
 import apps.lal as lal
 import geemap.foliumap as geemap
+import geemap as gm
 import ee
 import geopandas as gpd
 from datetime import date, timedelta, datetime
@@ -124,9 +125,9 @@ with row1_col2:
         Map.centerObject(aoi)
         titlemap = "Sentinel 2: " + str(RGB[0:start_index-1])
         Map.addLayer(se2c, rgbViza, titlemap)
-        # stats = geemap.zonal_statistics(se2c, aoi, statistics_type='MEAN', scale=1000)
+        stats = gm.zonal_statistics(se2c, aoi, statistics_type='MEAN', scale=1000)
         
-        # st.write(stats)
+        st.write(stats)
 
     dt = 'Selected dates between '+ str(sd) +' and '+ str(ed)        
     st.success(dt, icon="✅")

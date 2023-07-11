@@ -60,6 +60,7 @@ def add_layer(band_combination,rgbViza):
     Map.centerObject(aoi)
     # Store the added layer in the dictionary
     added_layers[layer_id] = rgb
+    st.write(str(len(added_layers)))
 
 Map = geemap.Map(
     basemap="HYBRID",
@@ -150,7 +151,7 @@ rgbViza = {"min":0.0, "max":0.7,"bands":band}
 #     Map.addLayer(se2c, rgbViza, titlemap)
 def main():
     add_layer(band, rgbViza)
-    st.write(str(len(added_layers)))
+    
     Map.to_streamlit(height=700)
 if __name__ == "__main__":
     main()

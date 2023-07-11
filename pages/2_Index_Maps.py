@@ -329,7 +329,7 @@ if aoi != []:
                     start_date = datetime.strptime(clickdate, "%Y-%m-%d")
                     next_date = start_date + timedelta(days=1)
                     end_date = next_date.strftime("%Y-%m-%d")+"T"
-                    st.write('Clicked date:', start_date )
+                    st.write('Clicked date:', start_date.strftime("%Y-%m-%d") )
                     NDVI_aday = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
                     st.session_state["ndviaday"] = map1.addLayer(NDVI_aday.clip(aoi).select('NDVI'), vis_params, "NDVI for "+str(clickdate))
                     map1.add_colormap(width=10, height=0.1, vmin=0, vmax=1,vis_params= vis_params,label="NDVI", position=(0, 0))  

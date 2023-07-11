@@ -244,7 +244,7 @@ with row1_col1:
                 tb = 'Selected dates '+ str(start_date.strftime("%Y-%m-%d"))                
             else:
                 tb = 'Selected dates between '+ str(start_date.strftime("%Y-%m-%d")) +' and '+ str(end_date.strftime("%Y-%m-%d"))
-    tb = 'Selected dates between '+ str(start_date.strftime("%Y-%m-%d")) +' and '+ str(end_date.strftime("%Y-%m-%d"))
+    # tb = 'Selected dates between '+ str(start_date.strftime("%Y-%m-%d")) +' and '+ str(end_date.strftime("%Y-%m-%d"))
     
     st.warning(tb,icon="ℹ️")
 

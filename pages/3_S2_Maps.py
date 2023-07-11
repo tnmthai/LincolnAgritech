@@ -118,12 +118,14 @@ band = values.split(",")
 
 rgbViza = {"min":0.0, "max":0.7,"bands":band}
 # aoi = ee.FeatureCollection("FAO/GAUL/2015/level0").filter(ee.Filter.eq('ADM0_NAME','New Zealand')).geometry()
-se2a = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(startDate,endDate).filterBounds(aoi).filter(
-    ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",60)).median().divide(10000).clip(aoi)
-se2c = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(
-    startDate,endDate).filterBounds(aoi).filter(
-    ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).median().clip(aoi)
-Map.centerObject(aoi)
-titlemap = "Sentinel 2: " + str(RGB[0:start_index-1])
-Map.addLayer(se2c, rgbViza, titlemap)
+if aoi!=[]:
+    se2a = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(startDate,endDate).filterBounds(aoi).filter(
+        ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",60)).median().divide(10000).clip(aoi)
+    se2c = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(
+        startDate,endDate).filterBounds(aoi).filter(
+        ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).median().clip(aoi)
+    Map.centerObject(aoi)
+    titlemap = "Sentinel 2: " + str(RGB[0:start_index-1])
+    Map.addLayer(se2c, rgbViza, titlemap)
+
 Map.to_streamlit(height=700)

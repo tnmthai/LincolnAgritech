@@ -40,28 +40,6 @@ def uploaded_file_to_gdf(data):
     return gdf
 st.title("Sentinel 2 Bands and Combinations")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")
-global added_layers
-added_layers = {}
-
-def add_layer(band_combination,rgbViza):
-    rgb = ee.ImageCollection("COPERNICUS/S2_SR") \
-        .filterDate(startDate, endDate) \
-        .filterBounds(aoi) \
-        .filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE", 60)) \
-        .median() \
-        .divide(10000) \
-        .clip(aoi) \
-        .select(band_combination)
-    
-    # Generate a unique ID for the layer
-    layer_id = str(len(added_layers))
-    
-    # Add the layer to the map
-    Map.addLayer(rgb, rgbViza, "Layer " + layer_id)
-    Map.centerObject(aoi)
-    # Store the added layer in the dictionary
-    added_layers[layer_id] = rgb
-    st.write(str(len(added_layers)))
 
 Map = geemap.Map(
     basemap="HYBRID",
@@ -139,20 +117,15 @@ band = values.split(",")
 
 rgbViza = {"min":0.0, "max":0.7,"bands":band}
 
-
 # aoi = ee.FeatureCollection("FAO/GAUL/2015/level0").filter(ee.Filter.eq('ADM0_NAME','New Zealand')).geometry()
-# if aoi!=[]:
-#     se2a = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(startDate,endDate).filterBounds(aoi).filter(
-#         ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",60)).median().divide(10000).clip(aoi)
-#     se2c = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(
-#         startDate,endDate).filterBounds(aoi).filter(
-#         ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).median().clip(aoi)
-#     Map.centerObject(aoi)
-#     titlemap = "Sentinel 2: " + str(RGB[0:start_index-1])
-#     Map.addLayer(se2c, rgbViza, titlemap)
-def main():
-    add_layer(band, rgbViza)
-    st.write(str(len(added_layers)))
-    Map.to_streamlit(height=700)
-if __name__ == "__main__":
-    main()
+if aoi!=[]:
+    se2a = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(startDate,endDate).filterBounds(aoi).filter(
+        ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",60)).median().divide(10000).clip(aoi)
+    se2c = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(
+        startDate,endDate).filterBounds(aoi).filter(
+        ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).median().clip(aoi)
+    Map.centerObject(aoi)
+    titlemap = "Sentinel 2: " + str(RGB[0:start_index-1])
+    Map.addLayer(se2c, rgbViza, titlemap)
+Map.addLayerControl()
+Map.to_streamlit(height=700)

@@ -4,7 +4,13 @@ import ee
 import geemap
 import os
 
-Map = leafmap.Map()
+Map = leafmap.Map(
+    basemap="HYBRID",
+    plugin_Draw=True,
+    Draw_export=True,
+    # locate_control=True,
+    plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
+)
 
 st.set_page_config(layout="wide")
 
@@ -20,7 +26,7 @@ dem_vis = {
 }
 
 # # Add Earth Engine DEM to map
-# Map.addLayer(dem, dem_vis, 'SRTM DEM')
+Map.addLayer(dem, dem_vis, 'SRTM DEM')
 
 # # Add Landsat data to map
 # landsat = ee.Image('LANDSAT/LE7_TOA_5YEAR/1999_2003')

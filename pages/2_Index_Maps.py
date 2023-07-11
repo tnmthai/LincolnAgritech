@@ -207,47 +207,42 @@ with row1_col1:
             st.warning("Please select a polygon!",icon="⚠️")
             aoi = []            
     if aoi != []:
-        agree = st.checkbox('Select a month between ' + str(sd) + ' and '+ str(ed))
-    if agree:        
-        mo = st.select_slider(
-            'Select a month',
-            options=months
-            )
-        st.write('Selected month:', mo)
-        # Convert month string to datetime object
-        month_date = datetime.strptime(mo, "%m-%Y")
-
-        # Extract year and month from the datetime object
-        year = month_date.year
-        month = month_date.month
-
-        # Create start_date and end_date based on the given month
-        start_date = datetime(year, month, 1).strftime("%Y-%m-%d")
-        last_day = calendar.monthrange(year, month)[1]
-        # Create the end date for the month
-        end_date = datetime(year, month, last_day).strftime("%Y-%m-%d")
-        # st.write('Dates between', start_date ,' and ', end_date)
-        ####
-        
-        adate = st.checkbox('Select a date between ' + str(start_date) + ' and '+ str(end_date))
-
-        collect_date = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi)
-        image_ids = collect_date.aggregate_array('system:index').getInfo()
-        dates = [image_id.split('_')[0][:8] for image_id in image_ids]
-        listdates = [date[:4] + '-' + date[4:6] + '-' + date[6:] for date in dates]
-
-        if adate:
-            
-            ad = st.select_slider(
-                'Select a date',
-                options=listdates
+        agree = st.checkbox('Select a MONTH between ' + str(sd) + ' and '+ str(ed))
+        if agree:        
+            mo = st.select_slider(
+                'Select a month',
+                options=months
                 )
-            st.write('Selected date:', ad)
-           
-            start_date = datetime.strptime(ad, "%Y-%m-%d")
- 
-            next_date = start_date + timedelta(days=1)
-            end_date = next_date#.strftime("%Y-%m-%d")+"T"
+            st.write('Selected month:', mo)
+            
+            month_date = datetime.strptime(mo, "%m-%Y")
+            year = month_date.year
+            month = month_date.month
+
+            start_date = datetime(year, month, 1).strftime("%Y-%m-%d")
+            last_day = calendar.monthrange(year, month)[1]
+
+            end_date = datetime(year, month, last_day).strftime("%Y-%m-%d")
+            
+            adate = st.checkbox('Select a date between ' + str(start_date) + ' and '+ str(end_date))
+
+            collect_date = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi)
+            image_ids = collect_date.aggregate_array('system:index').getInfo()
+            dates = [image_id.split('_')[0][:8] for image_id in image_ids]
+            listdates = [date[:4] + '-' + date[4:6] + '-' + date[6:] for date in dates]
+
+            if adate:
+                
+                ad = st.select_slider(
+                    'Select a date',
+                    options=listdates
+                    )
+                st.write('Selected date:', ad)
+            
+                start_date = datetime.strptime(ad, "%Y-%m-%d")
+    
+                next_date = start_date + timedelta(days=1)
+                end_date = next_date#.strftime("%Y-%m-%d")+"T"
 
     # NDVI_option = st.selectbox(
     #     "Select an index:",
@@ -264,7 +259,7 @@ if aoi != []:
         aoi = geemap.gdf_to_ee(gdf, geodesic=False)
         features = aoi.getInfo()['features']
             
-        st.write('Selected dates between:', start_date ,' and ', end_date)
+        st.warning('Selected dates between:', start_date ,' and ', end_date,icon="i")
         NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
         NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
         

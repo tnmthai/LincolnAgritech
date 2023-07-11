@@ -125,12 +125,12 @@ with row1_col2:
         Map.centerObject(aoi)
         titlemap = "Sentinel 2: " + str(RGB[0:start_index-1])
         Map.addLayer(se2c, rgbViza, titlemap)
-        stats = gm.zonal_statistics(se2c, aoi, statistics_type='MEAN', scale=1000)
-        
-        st.write(stats)
 
     dt = 'Selected dates between '+ str(sd) +' and '+ str(ed)        
     st.success(dt, icon="✅")
+stats = gm.zonal_statistics(se2c, aoi, statistics_type='mean', scale=1000)
+
+st.write(stats)
 
 
 Map.addLayerControl()

@@ -240,10 +240,10 @@ with row1_col1:
             
                 start_date = datetime.strptime(ad, "%Y-%m-%d")    
                 next_date = start_date + timedelta(days=1)
-                end_date = next_date#.strftime("%Y-%m-%d")+"T"
-    tb = 'Selected dates between '+ start_date +' and '+ end_date    
+                end_date = next_date #.strftime("%Y-%m-%d")+"T"
+    # tb = 'Selected dates between '+ start_date +' and '+ end_date    
     st.write(start_date, end_date)
-    st.warning(tb,icon="ℹ️")
+    # st.warning(tb,icon="ℹ️")
 
                
 if aoi != []:

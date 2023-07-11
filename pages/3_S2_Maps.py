@@ -8,7 +8,7 @@ import ee
 import geopandas as gpd
 from datetime import date, timedelta, datetime
 import fiona
-# st.set_page_config(layout="wide")
+st.set_page_config(layout="wide")
 @st.cache_data
 def ee_authenticate(token_name="EARTHENGINE_TOKEN"):
     geemap.ee_initialize(token_name=token_name)
@@ -111,12 +111,10 @@ RGB = st.selectbox(
     )
 start_index = RGB.find("(") + 1
 end_index = RGB.find(")")
-
 values = RGB[start_index:end_index]
 band = values.split(",")
 
 rgbViza = {"min":0.0, "max":0.7,"bands":band}
-
 # aoi = ee.FeatureCollection("FAO/GAUL/2015/level0").filter(ee.Filter.eq('ADM0_NAME','New Zealand')).geometry()
 if aoi!=[]:
     se2a = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(startDate,endDate).filterBounds(aoi).filter(

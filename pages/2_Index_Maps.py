@@ -231,8 +231,7 @@ with row1_col1:
             dates = [image_id.split('_')[0][:8] for image_id in image_ids]
             listdates = [date[:4] + '-' + date[4:6] + '-' + date[6:] for date in dates]
 
-            if adate:
-                
+            if adate:                
                 ad = st.select_slider(
                     'Select a date',
                     options=listdates
@@ -243,6 +242,7 @@ with row1_col1:
                 next_date = start_date + timedelta(days=1)
                 end_date = next_date#.strftime("%Y-%m-%d")+"T"
     tb = 'Selected dates between '+ start_date +' and '+ end_date    
+    st.write(start_date, end_date)
     st.warning(tb,icon="ℹ️")
 
                

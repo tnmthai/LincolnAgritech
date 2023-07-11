@@ -207,7 +207,7 @@ with row1_col1:
             st.warning("Please select a polygon!",icon="⚠️")
             aoi = []            
     if aoi != []:
-        agree = st.checkbox('Select a MONTH between ' + str(sd) + ' and '+ str(ed))
+        agree = st.checkbox('Select a MONTH between ' + str(months[0]) + ' and '+ str(months[-1]))
         if agree:        
             mo = st.select_slider(
                 'Select a month',

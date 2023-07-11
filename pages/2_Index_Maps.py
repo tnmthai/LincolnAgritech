@@ -239,16 +239,12 @@ with row1_col1:
                     )
                 st.write('Selected date:', ad)
             
-                start_date = datetime.strptime(ad, "%Y-%m-%d")
-    
+                start_date = datetime.strptime(ad, "%Y-%m-%d")    
                 next_date = start_date + timedelta(days=1)
                 end_date = next_date#.strftime("%Y-%m-%d")+"T"
+    tb = 'Selected dates between '+ start_date +' and '+ end_date    
+    st.warning(tb,icon="ℹ️")
 
-    # NDVI_option = st.selectbox(
-    #     "Select an index:",
-    #     NDVI_options,
-    #     index=0,
-    #     )
                
 if aoi != []:
 
@@ -258,8 +254,7 @@ if aoi != []:
         
         aoi = geemap.gdf_to_ee(gdf, geodesic=False)
         features = aoi.getInfo()['features']
-        tb = 'Selected dates between '+ start_date +' and '+ end_date    
-        st.warning(tb,icon="ℹ️")
+        
         NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
         NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
         

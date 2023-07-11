@@ -41,7 +41,7 @@ def uploaded_file_to_gdf(data):
 st.title("Sentinel 2 Bands and Combinations")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")
 global added_layers
-added_layers = []
+added_layers = {}
 
 def add_layer(band_combination,rgbViza):
     rgb = ee.ImageCollection("COPERNICUS/S2_SR") \
@@ -152,7 +152,7 @@ rgbViza = {"min":0.0, "max":0.7,"bands":band}
 #     Map.addLayer(se2c, rgbViza, titlemap)
 def main():
     add_layer(band, rgbViza)
-    
+    st.write(str(len(added_layers)))
     Map.to_streamlit(height=700)
 if __name__ == "__main__":
     main()

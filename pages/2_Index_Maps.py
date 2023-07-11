@@ -206,8 +206,8 @@ with row1_col1:
             st.write(":red[No Region of Interest (ROI) has been selected yet.]")
             st.warning("Please select a polygon!",icon="⚠️")
             aoi = []            
-    
-    agree = st.checkbox('Select a month between ' + str(sd) + ' and '+ str(ed))
+    if aoi != []:
+        agree = st.checkbox('Select a month between ' + str(sd) + ' and '+ str(ed))
     if agree:        
         mo = st.select_slider(
             'Select a month',

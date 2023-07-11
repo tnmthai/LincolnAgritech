@@ -102,7 +102,9 @@ def addDate(image):
     img_date = ee.Number.parse(img_date.format('YYYYMMdd'))
     return image.addBands(ee.Image(img_date).rename('date').toInt())
 
-palette = cm.palettes.ndvi
+palette = ['FFFFFF', 'CE7E45', 'DF923D', 'F1B555', 'FCD163', '99B718', '74A901', '66A000', '529400', '3E8601', '207401', '056201', '004C00', '023B01', '012E01', '011D01', '011301']
+# cm.palettes.ndvi
+
 vis_params = {
   'min': 0,
   'max': 1,

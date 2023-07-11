@@ -603,8 +603,7 @@ if aoi != []:
                     st.error("Please select smaller polygon!") 
             color = '#ff0000'        
             color_sequence = ['#ff0000', '#00ff00']
-            # # Create a pandas DataFrame from the lists
-        
+            # Create a pandas DataFrame from the lists        
             col1, col2 = st.columns((2, 1))        
             dfz = pd.DataFrame({'PolygonID': polyids, 'Date': datei, 'GCI': ndviv})
             col2.subheader("GCI Area")

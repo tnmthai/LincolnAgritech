@@ -241,6 +241,9 @@ with row1_col1:
                 start_date = datetime.strptime(ad, "%Y-%m-%d")    
                 next_date = start_date + timedelta(days=1)
                 end_date = next_date #.strftime("%Y-%m-%d")+"T"
+                tb = 'Selected dates '+ str(start_date.strftime("%Y-%m-%d")))
+            else:
+                tb = 'Selected dates between '+ str(start_date.strftime("%Y-%m-%d")) +' and '+ str(end_date.strftime("%Y-%m-%d"))
     tb = 'Selected dates between '+ str(start_date.strftime("%Y-%m-%d")) +' and '+ str(end_date.strftime("%Y-%m-%d"))
     
     st.warning(tb,icon="ℹ️")

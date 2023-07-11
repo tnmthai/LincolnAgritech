@@ -497,6 +497,12 @@ if aoi != []:
 
             col1.subheader("NDMI values")
             col1.write(dfz.transpose())
+            download1 = st.download_button(
+                label="Download data as CSV",
+                data=dfz,
+                file_name='NDMI.csv',
+                mime='text/csv'
+            )
             fig = px.line(dfz, x="Date", y="NDMI",color_discrete_sequence=color_sequence,title='NDMI')  #, color_discrete_sequence=color_sequence
 
             try:

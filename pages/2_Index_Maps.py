@@ -314,6 +314,13 @@ if aoi != []:
 
             col1.subheader("NDVI values")
             col1.write(dfz.transpose())
+            csv = convert_to_csv(dfz)
+            download1 = st.download_button(
+                label="Download data as CSV",
+                data=csv,
+                file_name='NDVI.csv',
+                mime='text/csv'
+            )
             fig = px.line(dfz, x="Date", y="NDVI",color_discrete_sequence=color_sequence,title='NDVI')  #, color_discrete_sequence=color_sequence
 
             try:
@@ -407,6 +414,13 @@ if aoi != []:
 
             col1.subheader("NDWI values")
             col1.write(dfz.transpose())
+            csv = convert_to_csv(dfz)
+            download1 = st.download_button(
+                label="Download data as CSV",
+                data=csv,
+                file_name='NDWI.csv',
+                mime='text/csv'
+            )
             fig = px.line(dfz, x="Date", y="NDWI",color_discrete_sequence=color_sequence,title='NDWI')  #, color_discrete_sequence=color_sequence
 
             try:
@@ -593,11 +607,18 @@ if aoi != []:
         
             col1, col2 = st.columns((2, 1))        
             dfz = pd.DataFrame({'PolygonID': polyids, 'Date': datei, 'GCI': ndviv})
-            col2.subheader("NDMI chart")
+            col2.subheader("GCI Area")
             col2.write(areas)  
 
-            col1.subheader("NDMI values")
+            col1.subheader("GCI values")
             col1.write(dfz.transpose())
+            csv = convert_to_csv(dfz)
+            download1 = st.download_button(
+                label="Download data as CSV",
+                data=csv,
+                file_name='GCI.csv',
+                mime='text/csv'
+            )
             fig = px.line(dfz, x="Date", y="GCI",color_discrete_sequence=color_sequence,title='GCI')  #, color_discrete_sequence=color_sequence
 
             try:

@@ -1,9 +1,13 @@
+import tempfile
+import os
+import uuid
 import streamlit as st
 import apps.lal as lal
 import geemap.foliumap as geemap
 import ee
 import geopandas as gpd
 from datetime import date, timedelta, datetime
+import fiona
 # st.set_page_config(layout="wide")
 @st.cache_data
 def ee_authenticate(token_name="EARTHENGINE_TOKEN"):
@@ -19,7 +23,21 @@ def maskCloudAndShadows(image):
   # Cloud probability less than 5% or cloud shadow classification
   mask = (cloud.And(snow)).And(cirrus.neq(1)).And(shadow.neq(1))
   return image.updateMask(mask).divide(10000)
+def uploaded_file_to_gdf(data):
+    _, file_extension = os.path.splitext(data.name)
+    file_id = str(uuid.uuid4())
+    file_path = os.path.join(tempfile.gettempdir(), f"{file_id}{file_extension}")
 
+    with open(file_path, "wb") as file:
+        file.write(data.getbuffer())
+
+    if file_path.lower().endswith(".kml"):
+        fiona.drvsupport.supported_drivers["KML"] = "rw"
+        gdf = gpd.read_file(file_path, driver="KML")
+    else:
+        gdf = gpd.read_file(file_path)
+
+    return gdf
 st.title("Sentinel 2 Bands and Combinations")
 ee_authenticate(token_name="EARTHENGINE_TOKEN")
 
@@ -34,11 +52,31 @@ Map = geemap.Map(
 )
 
 roi_options = ["Uploaded GeoJSON"] + list(lal.nz_rois.keys())
+crs = "epsg:4326"
 sample_roi = st.selectbox(
     "Select a existing ROI or upload a GeoJSON file:",
     roi_options,
     index=0,
 )
+if sample_roi != "Uploaded GeoJSON":
+        gdf = gpd.GeoDataFrame(
+            index=[0], crs=crs, geometry=[lal.nz_rois[sample_roi]]
+        )
+        
+        aoi = geemap.gdf_to_ee(gdf, geodesic=False)
+elif sample_roi == "Uploaded GeoJSON":
+    data = st.file_uploader(
+        "Upload a GeoJSON file to use as an ROI. Customize timelapse parameters and then click the Submit button.",
+        type=["geojson", "kml", "zip"],
+    )
+    if data:
+        gdf = uploaded_file_to_gdf(data)
+        st.session_state["aoi"] = aoi= geemap.gdf_to_ee(gdf, geodesic=False)    
+        # map1.add_gdf(gdf, "ROI")
+    else:
+        # st.write(":red[No Region of Interest (ROI) has been selected yet.]")
+        st.warning("No Region of Interest (ROI) has been selected yet!",icon="⚠️")
+        aoi = [] 
 
 today = date.today()
 default_date_yesterday = today - timedelta(days=1)
@@ -81,9 +119,9 @@ values = RGB[start_index:end_index]
 band = values.split(",")
 
 rgbViza = {"min":0.0, "max":0.7,"bands":band}
-aoi = ee.FeatureCollection("FAO/GAUL/2015/level0").filter(ee.Filter.eq('ADM0_NAME','New Zealand')).geometry()
+# aoi = ee.FeatureCollection("FAO/GAUL/2015/level0").filter(ee.Filter.eq('ADM0_NAME','New Zealand')).geometry()
 se2a = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(startDate,endDate).filterBounds(aoi).filter(
-    ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",60)).median().divide(10000)#.clip(aoi)
+    ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",60)).median().divide(10000).clip(aoi)
 se2c = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(
     startDate,endDate).filterBounds(aoi).filter(
     ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).median().clip(aoi)

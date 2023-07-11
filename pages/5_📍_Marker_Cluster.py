@@ -34,8 +34,8 @@ landsat = ee.Image('LANDSAT/LE7_TOA_5YEAR/1999_2003')
 landsat_vis = {'bands': ['B4', 'B3', 'B2'], 'gamma': 1.4}
 Map.addLayer(landsat, landsat_vis, "LE7_TOA_5YEAR/1999_2003")
 
-states = ee.FeatureCollection("TIGER/2018/States")
-Map.addLayer(states, {}, 'New Zealand')
+# states = ee.FeatureCollection("TIGER/2018/States")
+# Map.addLayer(states, {}, 'New Zealand')
 
 # out_dir = os.path.join(os.path.expanduser('~'), 'Downloads')
 # out_dem_stats = os.path.join(out_dir, 'dem_stats.csv')

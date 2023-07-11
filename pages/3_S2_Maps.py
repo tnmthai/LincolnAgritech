@@ -124,7 +124,12 @@ with row1_col2:
         Map.centerObject(aoi)
         titlemap = "Sentinel 2: " + str(RGB[0:start_index-1])
         Map.addLayer(se2c, rgbViza, titlemap)
+        stats = geemap.zonal_statistics(se2c, aoi, band)
+        st.write(stats)
+
     dt = 'Selected dates between '+ str(sd) +' and '+ str(ed)        
     st.success(dt, icon="✅")
+
+
 Map.addLayerControl()
 Map.to_streamlit(height=700)

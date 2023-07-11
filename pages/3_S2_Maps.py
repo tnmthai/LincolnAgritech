@@ -57,7 +57,7 @@ def add_layer(band_combination,rgbViza):
     
     # Add the layer to the map
     Map.addLayer(rgb, rgbViza, "Layer " + layer_id)
-    
+    Map.centerObject(aoi)
     # Store the added layer in the dictionary
     added_layers[layer_id] = rgb
 

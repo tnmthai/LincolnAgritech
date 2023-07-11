@@ -18,6 +18,9 @@ streamlit-folium
 streamlit-keplergl
 tropycal
 streamlit_plotly_events
+calendar
+warnings
+ee
 # git+https://github.com/giswqs/leafmap
 # git+https://github.com/giswqs/geemap
 

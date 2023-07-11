@@ -1,5 +1,5 @@
 import streamlit as st
-# import leafmap.foliumap as leafmap
+import apps.lal as lal
 import geemap.foliumap as geemap
 import ee
 import geopandas as gpd
@@ -33,7 +33,12 @@ Map = geemap.Map(
     plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
 )
 
-
+roi_options = ["Uploaded GeoJSON"] + list(lal.nz_rois.keys())
+sample_roi = st.selectbox(
+    "Select a existing ROI or upload a GeoJSON file:",
+    roi_options,
+    index=0,
+)
 
 today = date.today()
 default_date_yesterday = today - timedelta(days=1)

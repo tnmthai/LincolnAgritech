@@ -149,5 +149,7 @@ st.write(str(len(added_layers)))
 #     Map.centerObject(aoi)
 #     titlemap = "Sentinel 2: " + str(RGB[0:start_index-1])
 #     Map.addLayer(se2c, rgbViza, titlemap)
-
-Map.to_streamlit(height=700)
+def main():
+    Map.to_streamlit(height=700)
+if __name__ == "__main__":
+    main()

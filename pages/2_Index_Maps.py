@@ -315,7 +315,7 @@ if aoi != []:
             col2.write(areas)  
 
             col1.subheader("NDVI values")
-            col1.write(dfz)
+            col1.write(dfz.transpose())
             fig = px.line(dfz, x="Date", y="NDVI",color_discrete_sequence=color_sequence,title='NDVI')  #, color_discrete_sequence=color_sequence
 
             try:

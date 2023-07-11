@@ -3,6 +3,7 @@ import leafmap.foliumap as leafmap
 import ee
 import geemap
 import os
+
 Map = leafmap.Map()
 
 st.set_page_config(layout="wide")

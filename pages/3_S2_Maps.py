@@ -137,7 +137,7 @@ band = values.split(",")
 
 rgbViza = {"min":0.0, "max":0.7,"bands":band}
 add_layer(band, rgbViza)
-len(added_layers)
+print(added_layers)
 
 # aoi = ee.FeatureCollection("FAO/GAUL/2015/level0").filter(ee.Filter.eq('ADM0_NAME','New Zealand')).geometry()
 # if aoi!=[]:

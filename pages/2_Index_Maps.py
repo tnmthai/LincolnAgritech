@@ -266,7 +266,7 @@ if aoi != []:
         areas['Area (sqKm)'] = areas.geometry.area*10**4
         
         graph_ndvi = st.checkbox('Show graph')   
-               
+        palette
         # Create an empty DataFrame        
         try:
             map1.centerObject(aoi)
@@ -366,7 +366,7 @@ if aoi != []:
         areas['Area (sqKm)'] = areas.geometry.area*10**4
         
         graph_ndvi = st.checkbox('Show graph')   
-               
+        palette1       
         # Create an empty DataFrame        
         try:
             map1.centerObject(aoi)

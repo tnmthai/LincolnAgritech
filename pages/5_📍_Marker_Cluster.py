@@ -1,7 +1,7 @@
 import streamlit as st
-import leafmap.foliumap as leafmap
+import geemap.foliumap as leafmap
 import ee
-import geemap
+# import geemap
 import os
 
 Map = leafmap.Map(

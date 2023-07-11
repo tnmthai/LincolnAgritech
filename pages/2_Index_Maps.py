@@ -257,19 +257,15 @@ if aoi != []:
         
         NDVI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
         NDVI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(calculate_ndvi).map(addDate)
-        
-        
+                
         # Polygons in AOI
         areas = geemap.ee_to_gdf(aoi) 
         areas['PolygonID'] = areas.index.astype(str)   
         areas['Area (sqKm)'] = areas.geometry.area*10**4
         
-
         graph_ndvi = st.checkbox('Show graph')   
-        
-        
-        # Create an empty DataFrame
-        
+               
+        # Create an empty DataFrame        
         try:
             map1.centerObject(aoi)
             st.session_state["ndvi"] = map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), vis_params, "Median of NDVI for all selected dates")        
@@ -329,7 +325,7 @@ if aoi != []:
                     start_date = datetime.strptime(clickdate, "%Y-%m-%d")
                     next_date = start_date + timedelta(days=1)
                     end_date = next_date.strftime("%Y-%m-%d")+"T"
-                    cd = 'Clicked date:' + str(start_date.strftime("%Y-%m-%d"))
+                    cd = 'Clicked date: ' + str(start_date.strftime("%Y-%m-%d"))
                     st.success(cd, icon="✅")
                     NDVI_aday = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
                     st.session_state["ndviaday"] = map1.addLayer(NDVI_aday.clip(aoi).select('NDVI'), vis_params, "NDVI for "+str(clickdate))
@@ -408,7 +404,7 @@ if aoi != []:
             col2.write(areas)  
 
             col1.subheader("NDWI values")
-            col1.write(dfz)
+            col1.write(dfz.transpose())
             fig = px.line(dfz, x="Date", y="NDWI",color_discrete_sequence=color_sequence,title='NDWI')  #, color_discrete_sequence=color_sequence
 
             try:
@@ -422,7 +418,8 @@ if aoi != []:
                     start_date = datetime.strptime(clickdate, "%Y-%m-%d")
                     next_date = start_date + timedelta(days=1)
                     end_date = next_date.strftime("%Y-%m-%d")+"T"
-                    st.write('Clicked date:', start_date )
+                    cd = 'Clicked date: ' + str(start_date.strftime("%Y-%m-%d"))
+                    st.success(cd, icon="✅")
                     NDWI_aday = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDWI).map(addDate).median()
                     st.session_state["ndviaday"] = map1.addLayer(NDWI_aday.clip(aoi).select('NDWI'), vis_params1, "NDWI for "+str(clickdate))
                     map1.add_colormap(width=10, height=0.1, vmin=0, vmax=1,vis_params= vis_params1,label="NDWI", position=(0, 0))  
@@ -499,7 +496,7 @@ if aoi != []:
             col2.write(areas)  
 
             col1.subheader("NDMI values")
-            col1.write(dfz)
+            col1.write(dfz.transpose())
             fig = px.line(dfz, x="Date", y="NDMI",color_discrete_sequence=color_sequence,title='NDMI')  #, color_discrete_sequence=color_sequence
 
             try:
@@ -513,7 +510,8 @@ if aoi != []:
                     start_date = datetime.strptime(clickdate, "%Y-%m-%d")
                     next_date = start_date + timedelta(days=1)
                     end_date = next_date.strftime("%Y-%m-%d")+"T"
-                    st.write('Clicked date:', start_date )
+                    cd = 'Clicked date: ' + str(start_date.strftime("%Y-%m-%d"))
+                    st.success(cd, icon="✅")
                     NDMI_aday = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getNDWI).map(addDate).median()
                     st.session_state["ndviaday"] = map1.addLayer(NDMI_aday.clip(aoi).select('NDMI'), vis_params1, "NDMI for "+str(clickdate))
                     map1.add_colormap(width=10, height=0.1, vmin=0, vmax=1,vis_params= vis_params1,label="NDMI", position=(0, 0))  
@@ -590,7 +588,7 @@ if aoi != []:
             col2.write(areas)  
 
             col1.subheader("NDMI values")
-            col1.write(dfz)
+            col1.write(dfz.transpose())
             fig = px.line(dfz, x="Date", y="GCI",color_discrete_sequence=color_sequence,title='GCI')  #, color_discrete_sequence=color_sequence
 
             try:
@@ -604,7 +602,8 @@ if aoi != []:
                     start_date = datetime.strptime(clickdate, "%Y-%m-%d")
                     next_date = start_date + timedelta(days=1)
                     end_date = next_date.strftime("%Y-%m-%d")+"T"
-                    st.write('Clicked date:', start_date )
+                    cd = 'Clicked date: ' + str(start_date.strftime("%Y-%m-%d"))
+                    st.success(cd, icon="✅")
                     NDMI_aday = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getGCI).map(addDate).median()
                     st.session_state["ndviaday"] = map1.addLayer(NDMI_aday.clip(aoi).select('GCI'), vis_params1, "GCI for "+str(clickdate))
                     map1.add_colormap(width=10, height=0.1, vmin=0, vmax=8,vis_params= vis_params1,label="GCI", position=(0, 0))  

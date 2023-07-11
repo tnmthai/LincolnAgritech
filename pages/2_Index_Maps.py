@@ -241,7 +241,7 @@ with row1_col1:
                 end_date = next_date #.strftime("%Y-%m-%d")+"T"
                 tb = 'Selected dates '+ str(start_date.strftime("%Y-%m-%d"))                
             else:
-                tb = 'Selected dates between '+ str(start_date.strftime("%Y-%m-%d")) +' and '+ str(end_date.strftime("%Y-%m-%d"))   
+                tb = 'Selected dates between '+ str(start_date) +' and '+ str(end_date)   
     
         st.warning(tb,icon="ℹ️")
 

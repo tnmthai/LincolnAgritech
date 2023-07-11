@@ -223,7 +223,7 @@ with row1_col1:
             last_day = calendar.monthrange(year, month)[1]
 
             end_date = datetime(year, month, last_day).strftime("%Y-%m-%d")
-            tb = 'Selected dates between '+ str(start_date.strftime("%Y-%m-%d")) +' and '+ str(end_date.strftime("%Y-%m-%d"))   
+            tb = 'Selected dates between '+ str(start_date) +' and '+ str(end_date)     
             adate = st.checkbox('Select a date between ' + str(start_date) + ' and '+ str(end_date))
 
             collect_date = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi)
@@ -235,8 +235,7 @@ with row1_col1:
                 ad = st.select_slider(
                     'Select a date',
                     options=listdates
-                    )               
-            
+                    )                           
                 start_date = datetime.strptime(ad, "%Y-%m-%d")    
                 next_date = start_date + timedelta(days=1)
                 end_date = next_date #.strftime("%Y-%m-%d")+"T"

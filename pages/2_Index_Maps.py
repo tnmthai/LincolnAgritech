@@ -737,4 +737,4 @@ else:
     st.warning("Please select a polygon!",icon="⚠️")
 
 map1.addLayerControl()
-map1.to_streamlit(height=700)
+map1.to_streamlit(height=600)

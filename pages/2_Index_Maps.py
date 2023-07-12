@@ -123,7 +123,7 @@ map1 = geemap.Map(
     plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
 )
 
-roi_options = ["Uploaded GeoJSON"] + list(lal.nz_rois.keys())
+landsat_rois = ["Uploaded GeoJSON"] + list(lal.nz_rois.keys())
 crs = "epsg:4326"
 
 cols1,_ = st.columns((1,2)) 

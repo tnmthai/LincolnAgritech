@@ -62,7 +62,7 @@ m = geemap.Map(center=(-43.525650, 172.639847), zoom=6.25)
 m.split_map(
     left_layer= s2a, right_layer=s2b
 )
-# m.add_legend(title='RGB and NIR', legend=rgbViza)
+m.add_legend(title='RGB and NIR', legend=rgbViza)
 
 
 m.to_streamlit(height=700)

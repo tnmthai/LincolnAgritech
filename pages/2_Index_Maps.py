@@ -651,7 +651,7 @@ if aoi != []:
         areas['PolygonID'] = areas.index.astype(str)   
         areas['Area (sqKm)'] = areas.geometry.area*10**4
         
-        graph_ndvi = st.checkbox('Show graph')   
+        # graph_ndvi = st.checkbox('Show graph')   
                
         # Create an empty DataFrame        
         try:

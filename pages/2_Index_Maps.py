@@ -653,7 +653,7 @@ if aoi != []:
         try:
             map1.centerObject(aoi)
             # st.session_state["lai"] = 
-            map1.addLayer(NDMI_data.mean().multiply(0.001), vis_params1, "Median of LAI for all selected dates")        
+            map1.addLayer(NDMI_data, vis_params1, "Median of LAI for all selected dates")        
             # map1.add_colormap(width=10, height=0.1, vmin=-7, vmax=7,vis_params= vis_params1,label="LAI", position=(0, 0))
         except Exception as e:
             st.error(e)

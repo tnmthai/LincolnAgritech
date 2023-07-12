@@ -638,6 +638,7 @@ if aoi != []:
         NDMI_plot = ee.ImageCollection('JAXA/GCOM-C/L3/LAND/LAI/V2') \
                 .filterDate(start_date, end_date).filterBounds(aoi) \
                 .filter(ee.Filter.eq('SATELLITE_DIRECTION', 'D'))
+        
         dataset = ee.ImageCollection('JAXA/GCOM-C/L3/LAND/LAI/V2') \
                 .filterDate('2020-01-01', '2020-02-01') \
                 .filter(ee.Filter.eq('SATELLITE_DIRECTION', 'D')).mean().multiply(0.001)
@@ -657,7 +658,7 @@ if aoi != []:
             map1.centerObject(aoi)
             # st.session_state["lai"] = 
             map1.addLayer(NDMI_data, vis_params1, "Median of LAI for all selected dates")        
-            map1.add_colormap(width=10, height= 0.1, vmin=-7, vmax=7,vis_params= vis_params1,label="LAI", position=(0, 0))
+            # map1.add_colormap(width=10, height= 0.1, vmin=-7, vmax=7,vis_params= vis_params1,label="LAI", position=(0, 0))
         except Exception as e:
             st.error(e)
             st.error("Cloud is greater than 90% on selected day. Please select additional dates!")

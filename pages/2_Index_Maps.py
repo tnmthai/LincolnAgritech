@@ -195,7 +195,7 @@ with row1_col1:
     )
     if sample_roi != "Uploaded GeoJSON":
         gdf = gpd.GeoDataFrame(
-            index=[0], crs=crs, geometry=[roi_options[sample_roi]]
+            index=[0], crs=crs, geometry=[lal.nz_rois[sample_roi]]
         )
         # map1.add_gdf(gdf, "ROI")
         aoi = geemap.gdf_to_ee(gdf, geodesic=False)

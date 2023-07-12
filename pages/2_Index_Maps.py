@@ -640,7 +640,7 @@ if aoi != []:
                 .filter(ee.Filter.eq('SATELLITE_DIRECTION', 'D'))
         
         dataset = ee.ImageCollection('JAXA/GCOM-C/L3/LAND/LAI/V2') \
-                .filterDate('2020-01-01', '2020-02-01') \
+                .filterDate('2023-01-01', '2023-02-01') \
                 .filter(ee.Filter.eq('SATELLITE_DIRECTION', 'D')).mean().multiply(0.001)
         # NDMI_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getGCI).map(addDate).median()
         # NDMI_plot = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(calculate_gci).map(addDate)

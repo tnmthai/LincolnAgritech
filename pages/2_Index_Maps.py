@@ -123,7 +123,36 @@ map1 = geemap.Map(
     plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
 )
 
-landsat_rois = ["Uploaded GeoJSON"] + list(lal.nz_rois.keys())
+# # Load shp files
+# shp = gpd.read_file("data/nzshp/Canterbury.shp")
+# gdf = shp.to_crs({'init': 'epsg:4326'}) 
+# can = []
+# for index, row in gdf.iterrows():
+#     for pt in list(row['geometry'].exterior.coords): 
+#         can.append(list(pt))
+
+# shp = gpd.read_file("data/nzshp/Mitimiti.shp")
+# gdf = shp.to_crs({'init': 'epsg:4326'}) 
+# Mitimiti = []
+# for index, row in gdf.iterrows():
+#     for pt in list(row['geometry'].exterior.coords): 
+#         Mitimiti.append(list(pt))
+
+# shp = gpd.read_file("data/nzshp/Urewera.shp")
+# gdf = shp.to_crs({'init': 'epsg:4326'}) 
+# Urewera = []
+# for index, row in gdf.iterrows():
+#     for pt in list(row['geometry'].exterior.coords): 
+#         Urewera.append(list(pt))
+
+# landsat_rois = {
+#     "Canterbury":Polygon (can),
+#     "Mitimiti": Polygon(  Mitimiti  ),
+#     "Te Urewera": Polygon(  Urewera  ),
+
+# }
+
+roi_options = ["Uploaded GeoJSON"] + list(lal.nz_rois.keys())
 crs = "epsg:4326"
 
 cols1,_ = st.columns((1,2)) 
@@ -166,7 +195,7 @@ with row1_col1:
     )
     if sample_roi != "Uploaded GeoJSON":
         gdf = gpd.GeoDataFrame(
-            index=[0], crs=crs, geometry=[landsat_rois[sample_roi]]
+            index=[0], crs=crs, geometry=[roi_options[sample_roi]]
         )
         # map1.add_gdf(gdf, "ROI")
         aoi = geemap.gdf_to_ee(gdf, geodesic=False)

@@ -657,7 +657,7 @@ if aoi != []:
         try:
             map1.centerObject(aoi)
             # st.session_state["lai"] = 
-            map1.addLayer(dataset.clip(aoi), vis_params1, "Median of LAI for all selected dates")        
+            map1.addLayer(NDMI_data.clip(aoi), vis_params1, "Median of LAI for all selected dates")        
             map1.add_colormap(width=10, height= 0.1, vmin=-7, vmax=7,vis_params= vis_params1,label="LAI", position=(0, 0))
         except Exception as e:
             st.error(e)
@@ -726,6 +726,7 @@ if aoi != []:
                     NDMI_aday = ee.ImageCollection('JAXA/GCOM-C/L3/LAND/LAI/V3') \
                 .filterDate(start_date, end_date).filterBounds(aoi) \
                 .filter(ee.Filter.eq('SATELLITE_DIRECTION', 'D')).mean().multiply(0.001)
+                    
                     # ee.ImageCollection('COPERNICUS/S2_SR').filterDate(start_date, end_date).filterBounds(aoi).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).map(getGCI).map(addDate).median()
                     st.session_state["ndviaday"] = map1.addLayer(NDMI_aday.clip(aoi).select('LAI_AVE'), vis_params1, "LAI for "+str(clickdate))
                     map1.add_colormap(width=10, height=0.1, vmin=0, vmax=8,vis_params= vis_params1,label="LAI", position=(0, 0))  

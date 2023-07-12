@@ -621,6 +621,7 @@ if aoi != []:
                     'fff705','ffd611','ffb613','ff8b13','ff6e08','ff500d',
                     'ff0000','de0101','c21301','a71001','911003',]
         vis_params1 = {
+        'bands': ['LAI_AVE'],
         'min': -7,
         'max': 7,
         'palette': palette1}       

@@ -6,8 +6,8 @@ import os
 import uuid
 import streamlit as st
 import apps.lal as lal
-# import geemap.foliumap as geemap
-import geemap
+import geemap.foliumap as geemap
+# import geemap
 import ee
 import geopandas as gpd
 from datetime import date, timedelta, datetime
@@ -58,7 +58,7 @@ se2b = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(startDate,endDate).filt
 s2a = geemap.ee_tile_layer(se2a, rgbViza, 'RGB') #, opacity=0.75)
 s2b = geemap.ee_tile_layer(se2b, rgbVizb, 'NIR')#, opacity=0.75)
 
-m = leafmap.Map(center=(-43.525650, 172.639847), zoom=6.25)
+m = geemap.Map(center=(-43.525650, 172.639847), zoom=6.25)
 m.split_map(
     left_layer= s2a, right_layer=s2b
 )

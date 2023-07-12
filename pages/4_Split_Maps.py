@@ -6,8 +6,8 @@ import os
 import uuid
 import streamlit as st
 import apps.lal as lal
-import geemap.foliumap as geemap
-import geemap as gm
+# import geemap.foliumap as geemap
+import geemap
 import ee
 import geopandas as gpd
 from datetime import date, timedelta, datetime
@@ -46,14 +46,14 @@ with row1_col2:
     startDate = sd.strftime("%Y-%m-%d") + "T" 
     endDate = ed.strftime("%Y-%m-%d") + "T" 
 
-    rgbViza = {"min":0.0, "max":0.7,"bands":bandRGB}
-    rgbVizb = {"min":0.0, "max":0.7,"bands":bandNIR}
+rgbViza = {"min":0.0, "max":0.7,"bands":bandRGB}
+rgbVizb = {"min":0.0, "max":0.7,"bands":bandNIR}
 
 se2a = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(startDate,endDate).filter(
     ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",60)).median().divide(10000)
 
 se2b = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(startDate,endDate).filter(
-    ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).median().divide(10000)
+    ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",60)).map(maskCloudAndShadows).median().divide(10000)
 
 s2a = geemap.ee_tile_layer(se2a, rgbViza, 'RGB') #, opacity=0.75)
 s2b = geemap.ee_tile_layer(se2b, rgbVizb, 'NIR')#, opacity=0.75)

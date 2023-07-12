@@ -17,6 +17,7 @@ import plotly.express as px
 from streamlit_plotly_events import plotly_events
 from plotly.offline import plot
 import geemap.colormaps as cm
+import apps.lal as lal
 st.set_page_config(layout="wide")
 warnings.filterwarnings("ignore")
 @st.cache_data
@@ -122,37 +123,9 @@ map1 = geemap.Map(
     plugin_LatLngPopup=False, center=(-43.525650, 172.639847), zoom=6.25,
 )
 
-# Load shp files
-shp = gpd.read_file("data/nzshp/Canterbury.shp")
-gdf = shp.to_crs({'init': 'epsg:4326'}) 
-can = []
-for index, row in gdf.iterrows():
-    for pt in list(row['geometry'].exterior.coords): 
-        can.append(list(pt))
-
-shp = gpd.read_file("data/nzshp/Mitimiti.shp")
-gdf = shp.to_crs({'init': 'epsg:4326'}) 
-Mitimiti = []
-for index, row in gdf.iterrows():
-    for pt in list(row['geometry'].exterior.coords): 
-        Mitimiti.append(list(pt))
-
-shp = gpd.read_file("data/nzshp/Urewera.shp")
-gdf = shp.to_crs({'init': 'epsg:4326'}) 
-Urewera = []
-for index, row in gdf.iterrows():
-    for pt in list(row['geometry'].exterior.coords): 
-        Urewera.append(list(pt))
-
-landsat_rois = {
-    "Canterbury":Polygon (can),
-    "Mitimiti": Polygon(  Mitimiti  ),
-    "Te Urewera": Polygon(  Urewera  ),
-
-}
-
-roi_options = ["Uploaded GeoJSON"] + list(landsat_rois.keys())
+roi_options = ["Uploaded GeoJSON"] + list(lal.nz_rois.keys())
 crs = "epsg:4326"
+
 cols1,_ = st.columns((1,2)) 
 row1_col1, row1_col2 = st.columns([2, 1])
 start_date = '2023-01-01'

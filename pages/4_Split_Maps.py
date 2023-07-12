@@ -50,7 +50,7 @@ rgbViza = {"min":0.0, "max":0.7,"bands":bandRGB}
 rgbVizb = {"min":0.0, "max":0.7,"bands":bandNIR}
 
 se2a = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(startDate,endDate).filter(
-    ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",60)).median().divide(10000)
+    ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",60)).map(maskCloudAndShadows).median().divide(10000)
 
 se2b = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(startDate,endDate).filter(
     ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",60)).map(maskCloudAndShadows).median().divide(10000)

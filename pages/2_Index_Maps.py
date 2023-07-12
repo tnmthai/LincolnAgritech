@@ -614,8 +614,7 @@ if aoi != []:
                                                     
             except Exception as e:
                 st.error("Please select a day from the graph to view the corresponding NDMI value for that day.")
-    elif NDVI_option == "Leaf Area Index":
-        
+    elif NDVI_option == "Leaf Area Index":        
         palette1 = ['040274','040281','0502a3','0502b8','0502ce','0502e6',
                     '0602ff','235cb1','307ef3','269db1','30c8e2','32d3ef',
                     '3be285','3ff38f','86e26f','3ae237','b5e22e','d6e21f',
@@ -624,9 +623,7 @@ if aoi != []:
         vis_params1 = {
         'min': -7,
         'max': 7,
-        'palette': palette1}
-        
-
+        'palette': palette1}       
         map1.add_gdf(gdf, "ROI")
         
         aoi = geemap.gdf_to_ee(gdf, geodesic=False)
@@ -635,7 +632,7 @@ if aoi != []:
         # st.write('Selected dates between:', start_date ,' and ', end_date)
         NDMI_data = ee.ImageCollection('JAXA/GCOM-C/L3/LAND/LAI/V2') \
                 .filterDate(start_date, end_date) \
-                .filter(ee.Filter.eq('SATELLITE_DIRECTION', 'D')).mean().multiply(0.001)
+                .filter(ee.Filter.eq('SATELLITE_DIRECTION', 'D'))
         
         NDMI_plot = ee.ImageCollection('JAXA/GCOM-C/L3/LAND/LAI/V2') \
                 .filterDate(start_date, end_date).filterBounds(aoi) \
@@ -656,7 +653,7 @@ if aoi != []:
         try:
             map1.centerObject(aoi)
             # st.session_state["lai"] = 
-            map1.addLayer(NDMI_data, vis_params1, "Median of LAI for all selected dates")        
+            map1.addLayer(NDMI_data.mean().multiply(0.001), vis_params1, "Median of LAI for all selected dates")        
             # map1.add_colormap(width=10, height=0.1, vmin=-7, vmax=7,vis_params= vis_params1,label="LAI", position=(0, 0))
         except Exception as e:
             st.error(e)

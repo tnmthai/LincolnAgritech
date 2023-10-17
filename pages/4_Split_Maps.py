@@ -5,15 +5,28 @@ import geemap.eefolium as geemap
 st.set_page_config(layout="wide")
 st.title("Split-panel Map")
 
-# Define utility functions
 def maskCloudAndShadows(image):
-    # ... (Your existing code for this function)
-
-def getNDVI(image):
-    # ... (Your existing code for this function)
+  cloudProb = image.select('MSK_CLDPRB')
+  snowProb = image.select('MSK_SNWPRB')
+  cloud = cloudProb.lt(5)
+  snow = snowProb.lt(5)
+  scl = image.select('SCL')
+  shadow = scl.eq(3); # 3 = cloud shadow
+  cirrus = scl.eq(10); # 10 = cirrus
+  # Cloud probability less than 5% or cloud shadow classification
+  mask = (cloud.And(snow)).And(cirrus.neq(1)).And(shadow.neq(1))
+  return image.updateMask(mask).divide(10000)
+def getNDVI(image): 
+    ndvi = image.normalizedDifference(['B8','B4']).rename("NDVI")
+    image = image.addBands(ndvi)
+    return(image)
 
 def addDate(image):
-    # ... (Your existing code for this function)
+    img_date = ee.Date(image.date())
+    img_date = ee.Number.parse(img_date.format('YYYYMMdd'))
+    return image.addBands(ee.Image(img_date).rename('date').toInt())
+
+
 
 # Define visualization parameters
 bandRGB = ['B4', 'B3', 'B2']

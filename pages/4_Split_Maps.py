@@ -76,12 +76,14 @@ se2a = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(startDate,endDate).filt
 se2b = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(startDate,endDate).filter(
     ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",60)).map(maskCloudAndShadows).median()
 ndvi_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(startDate, endDate).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",60)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median().select('NDVI')
+se2c = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(startDate,endDate).filter(
+    ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",60)).map(maskCloudAndShadows).median().map(getNDVI).select('NDVI')
 
 # map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), vis_params, "Median of NDVI for all selected dates")        
 
 s2a = geemap.ee_tile_layer(se2a, rgbViza, 'RGB') #, opacity=0.75)
 # s2b = geemap.ee_tile_layer(se2a, rgbVizb, 'NIR')#, opacity=0.75)
-s2b = geemap.ee_tile_layer(ndvi_data,vis_params, 'NDVI')#, opacity=0.75)
+s2b = geemap.ee_tile_layer(se2c,vis_params, 'NDVI')#, opacity=0.75)
 
 m = geemap.Map(center=(-43.525650, 172.639847), zoom=6.25)
 m.split_map(

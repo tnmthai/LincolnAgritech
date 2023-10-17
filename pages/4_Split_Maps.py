@@ -76,8 +76,7 @@ se2a = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(startDate,endDate).filt
 se2b = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(startDate,endDate).filter(
     ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",60)).map(maskCloudAndShadows).median()
 ndvi_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(startDate, endDate).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",60)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median().select('NDVI')
-se2c = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(startDate,endDate).filter(
-    ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",60)).map(maskCloudAndShadows).median().map(getNDVI).select('NDVI')
+se2c = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(startDate,endDate).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",60)).map(maskCloudAndShadows).map(getNDVI).select('NDVI').median()
 
 # map1.addLayer(NDVI_data.clip(aoi).select('NDVI'), vis_params, "Median of NDVI for all selected dates")        
 

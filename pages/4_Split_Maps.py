@@ -81,7 +81,7 @@ ndvi_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(startDate, endDate
 
 s2a = geemap.ee_tile_layer(se2a, rgbViza, 'RGB') #, opacity=0.75)
 # s2b = geemap.ee_tile_layer(se2a, rgbVizb, 'NIR')#, opacity=0.75)
-s2b = geemap.ee_tile_layer(ndvi_data,'NDVI')#, opacity=0.75)
+s2b = geemap.ee_tile_layer(ndvi_data,vis_params, 'NDVI')#, opacity=0.75)
 
 m = geemap.Map(center=(-43.525650, 172.639847), zoom=6.25)
 m.split_map(

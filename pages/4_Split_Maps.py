@@ -26,10 +26,26 @@ def maskCloudAndShadows(image):
   # Cloud probability less than 5% or cloud shadow classification
   mask = (cloud.And(snow)).And(cirrus.neq(1)).And(shadow.neq(1))
   return image.updateMask(mask).divide(10000)
+def getNDVI(image): 
+    ndvi = image.normalizedDifference(['B8','B4']).rename("NDVI")
+    image = image.addBands(ndvi)
+    return(image)
+def calculate_ndvi(image):
+    ndvi = image.normalizedDifference(['B8', 'B4'])
+    return ndvi.rename('NDVI').copyProperties(image, ['system:time_start'])
+
+def addDate(image):
+    img_date = ee.Date(image.date())
+    img_date = ee.Number.parse(img_date.format('YYYYMMdd'))
+    return image.addBands(ee.Image(img_date).rename('date').toInt())
+
 
 bandRGB = ['B4','B3','B2']
 bandNIR = ['B8','B4','B3']
-
+vis_params = {
+  'min': 0,
+  'max': 1,
+  'palette': palette}
 row1_col1, row1_col2, row1_col3 = st.columns([1, 1 , 1])
 with row1_col2:
     today = date.today()
@@ -54,10 +70,12 @@ se2a = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(startDate,endDate).filt
 
 se2b = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(startDate,endDate).filter(
     ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",60)).map(maskCloudAndShadows).median()
+ndvi_data = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(startDate, endDate).filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",60)).map(maskCloudAndShadows).map(getNDVI).map(addDate).median()
+
 
 s2a = geemap.ee_tile_layer(se2a, rgbViza, 'RGB') #, opacity=0.75)
-s2b = geemap.ee_tile_layer(se2a, rgbVizb, 'NIR')#, opacity=0.75)
-
+# s2b = geemap.ee_tile_layer(se2a, rgbVizb, 'NIR')#, opacity=0.75)
+s2b = geemap.ee_tile_layer(se2a, rgbVizb, 'NDVI')#, opacity=0.75)
 m = geemap.Map(center=(-43.525650, 172.639847), zoom=6.25)
 m.split_map(
     left_layer= s2a, right_layer=s2b

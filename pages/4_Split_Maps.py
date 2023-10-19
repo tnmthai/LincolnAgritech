@@ -86,7 +86,7 @@ s2b = geemap.ee_tile_layer(se2c,vis_params, 'NDVI')#, opacity=0.75)
 
 m = geemap.Map(center=(-43.525650, 172.639847), zoom=6.25)
 m.split_map(
-    left_layer= s2a, right_layer=s2b
+    left_layer= s2b, right_layer=s2a
 )
 # m.add_legend(title='RGB and NIR')
 

@@ -2,7 +2,7 @@
 # cartopy
 ee
 folium
-geemap
+geemap==0.25.0
 geopandas
 fiona
 jupyter-server-proxy

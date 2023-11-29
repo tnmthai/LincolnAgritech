@@ -1,13 +1,13 @@
 --find-links=https://girder.github.io/large_image_wheels GDAL
 # cartopy
-ee
+
 folium
 geemap==0.25.0
 geopandas
 fiona
 jupyter-server-proxy
 keplergl
-leafmap
+leafmap==0.25.0
 localtileserver
 nbserverproxy
 owslib
@@ -19,6 +19,8 @@ streamlit-folium
 streamlit-keplergl
 tropycal
 streamlit_plotly_events
+ee
+
 
 # git+https://github.com/giswqs/leafmap
 # git+https://github.com/giswqs/geemap

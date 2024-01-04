@@ -49,7 +49,7 @@ def uploaded_file_to_gdf(data):
 
     return gdf
 st.title("Sentinel 2 Bands and Combinations")
-ee_authenticate(token_name="EARTHENGINE_TOKEN")
+# ee_authenticate(token_name="EARTHENGINE_TOKEN")
 
 Map = geemap.Map(
     basemap="HYBRID",

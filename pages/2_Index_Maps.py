@@ -117,7 +117,7 @@ vis_params = {
   'palette': palette}
 
 st.title("Index Maps")
-ee_authenticate(token_name="EARTHENGINE_TOKEN")
+# ee_authenticate(token_name="EARTHENGINE_TOKEN")
 ee.Initialize()
 
 map1 = geemap.Map(

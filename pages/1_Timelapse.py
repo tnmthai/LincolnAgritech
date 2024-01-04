@@ -16,9 +16,20 @@ from shapely.geometry import MultiPolygon
 st.set_page_config(layout="wide")
 warnings.filterwarnings("ignore")
 
-@st.cache_data
-def ee_authenticate(token_name="EARTHENGINE_TOKEN"):
-    geemap.ee_initialize(token_name=token_name)
+# @st.cache_data
+
+service_account =  "ofv-99@ee-ofv.iam.gserviceaccount.com"
+
+private_key = st.secrets["EARTHENGINE_TOKEN"]
+credentials = ee.ServiceAccountCredentials(
+    service_account, key_data=private_key
+)
+
+ee.Initialize(credentials)
+
+
+# def ee_authenticate(token_name="EARTHENGINE_TOKEN"):
+#     geemap.ee_initialize(token_name=token_name)
 
 import geopandas as gpd
 shp = gpd.read_file("data/nzshp/Canterbury.shp")

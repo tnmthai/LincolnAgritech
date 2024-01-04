@@ -13,6 +13,12 @@ import geopandas as gpd
 from datetime import date, timedelta, datetime
 import fiona
 
+service_account =  "ofv-99@ee-ofv.iam.gserviceaccount.com"
+private_key = st.secrets["EARTHENGINE_TOKEN"]
+credentials = ee.ServiceAccountCredentials(
+    service_account, key_data=private_key
+)
+ee.Initialize(credentials)
 
 
 st.set_page_config(layout="wide")

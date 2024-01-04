@@ -10,9 +10,18 @@ import geopandas as gpd
 from datetime import date, timedelta, datetime
 import fiona
 st.set_page_config(layout="wide")
+
+# def ee_authenticate(token_name="EARTHENGINE_TOKEN"):
+#     geemap.ee_initialize(token_name=token_name)
+
+service_account =  "ofv-99@ee-ofv.iam.gserviceaccount.com"
+private_key = st.secrets["EARTHENGINE_TOKEN"]
+credentials = ee.ServiceAccountCredentials(
+    service_account, key_data=private_key
+)
+ee.Initialize(credentials)
+
 @st.cache_data
-def ee_authenticate(token_name="EARTHENGINE_TOKEN"):
-    geemap.ee_initialize(token_name=token_name)
 def maskCloudAndShadows(image):
   cloudProb = image.select('MSK_CLDPRB')
   snowProb = image.select('MSK_SNWPRB')

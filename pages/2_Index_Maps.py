@@ -54,9 +54,15 @@ def maskCloudAndShadows(image):
   mask = (cloud.And(snow)).And(cirrus.neq(1)).And(shadow.neq(1))
   return image.updateMask(mask)
 # Connect to GEE
-def ee_authenticate(token_name="EARTHENGINE_TOKEN"):
-    geemap.ee_initialize(token_name=token_name)
+# def ee_authenticate(token_name="EARTHENGINE_TOKEN"):
+#     geemap.ee_initialize(token_name=token_name)
+service_account =  "ofv-99@ee-ofv.iam.gserviceaccount.com"
+private_key = st.secrets["EARTHENGINE_TOKEN"]
+credentials = ee.ServiceAccountCredentials(
+    service_account, key_data=private_key
+)
 
+ee.Initialize(credentials)
 # Normalized difference vegetation index (NDVI)
 def getNDVI(image): 
     ndvi = image.normalizedDifference(['B8','B4']).rename("NDVI")

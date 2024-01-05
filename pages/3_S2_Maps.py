@@ -128,8 +128,7 @@ with row1_col2:
     if aoi!=[]:
         se2a = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(startDate,endDate).filterBounds(aoi).filter(
             ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",60)).median().divide(10000).clip(aoi)
-        se2c = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(
-            startDate,endDate).filterBounds(aoi).filter(
+        se2c = ee.ImageCollection('COPERNICUS/S2_SR').filterDate(startDate,endDate).filterBounds(aoi).filter(
             ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE",90)).map(maskCloudAndShadows).median().clip(aoi)
         Map.centerObject(aoi)
         titlemap = "Sentinel 2: " + str(RGB[0:start_index-1])

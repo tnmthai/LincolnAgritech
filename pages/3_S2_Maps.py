@@ -21,7 +21,7 @@ credentials = ee.ServiceAccountCredentials(
 )
 ee.Initialize(credentials)
 
-@st.cache_data
+# @st.cache_data
 def maskCloudAndShadows(image):
   cloudProb = image.select('MSK_CLDPRB')
   snowProb = image.select('MSK_SNWPRB')

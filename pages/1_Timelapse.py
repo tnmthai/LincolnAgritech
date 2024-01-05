@@ -27,10 +27,6 @@ credentials = ee.ServiceAccountCredentials(
 
 ee.Initialize(credentials)
 
-
-# def ee_authenticate(token_name="EARTHENGINE_TOKEN"):
-#     geemap.ee_initialize(token_name=token_name)
-
 import geopandas as gpd
 shp = gpd.read_file("data/nzshp/Canterbury.shp")
 gdf = shp.to_crs({'init': 'epsg:4326'}) 
@@ -141,7 +137,7 @@ def app():
     st.session_state["vis_params"] = None
 
     with row1_col1:
-        # ee_authenticate(token_name="EARTHENGINE_TOKEN")
+        
         m = geemap.Map(
             basemap="HYBRID",
             plugin_Draw=True,

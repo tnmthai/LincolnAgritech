@@ -1,5 +1,5 @@
 import streamlit as st
-# import leafmap.foliumap as leafmap
+import ee
 
 st.set_page_config(layout="wide")
 
@@ -46,3 +46,12 @@ with row1_col2:
 with row1_col3:
     st.image("data/mitimiti.gif")
     st.markdown("""Mitimiti""")
+
+service_account =  "ofv-99@ee-ofv.iam.gserviceaccount.com"
+
+private_key = st.secrets["EARTHENGINE_TOKEN"]
+credentials = ee.ServiceAccountCredentials(
+    service_account, key_data=private_key
+)
+
+ee.Initialize(credentials)
